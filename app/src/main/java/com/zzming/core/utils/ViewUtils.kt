@@ -14,7 +14,7 @@ import com.zzming.core.extension.logError
 /**
  * @author ZhongZiMing
  * @time 2020/6/8 17:49
- * @description
+ * @description View工具类
  **/
 class ViewUtils {
 

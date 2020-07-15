@@ -7,11 +7,15 @@ import com.zzming.core.LibCore
 import com.zzming.core.bean.PageInfo
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
+import com.zzming.core.net.HeaderInterceptor
+import com.zzming.core.net.LogInterceptor
+import com.zzming.core.net.RetrofitUtils
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -39,28 +43,7 @@ open class BaseViewModel : ViewModel() {
     /**
      * retrofit
      */
-    val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(baseUrl())
-            .client(httpClient())
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    /**
-     * 设置 OkHttpClient
-     */
-    open fun httpClient(): OkHttpClient {
-        return LibCore.httpClient ?: OkHttpClient.Builder().build()
-    }
-
-    /**
-     * 设置 BASE_URL
-     */
-    open fun baseUrl(): String {
-        return LibCore.BASE_URL ?: ""
-    }
+    val retrofit = RetrofitUtils.instance.retrofit
 
     /**
      * 刷新

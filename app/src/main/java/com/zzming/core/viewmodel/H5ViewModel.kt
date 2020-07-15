@@ -1,4 +1,6 @@
-package com.zzming.core.base
+package com.zzming.core.viewmodel
+
+import com.zzming.core.base.BaseViewModel
 
 /**
  * @author ZhongZiMing

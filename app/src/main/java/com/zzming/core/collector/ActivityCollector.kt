@@ -25,7 +25,7 @@ class ActivityCollector private constructor() {
     /**
      * 当前栈顶Activity
      */
-    lateinit var activity : Activity
+    var activity : Activity? = null
 
     /**
      * Activity 集合
@@ -43,7 +43,7 @@ class ActivityCollector private constructor() {
      * @param activity
      */
     fun checkRepeatActivity(activity: Activity): Boolean {
-        return if (this.activity.A_TAG == activity.A_TAG) {
+        return if (this.activity?.A_TAG == activity.A_TAG) {
             Arrays.binarySearch(repeatActivities, activity.A_TAG) > 0
         } else {
             false

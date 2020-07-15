@@ -3,10 +3,12 @@ package com.zzming.core.base
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
+import com.zzming.core.utils.ViewUtils
 import java.lang.ref.WeakReference
 
 /**
@@ -67,7 +69,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
      */
     open fun initViewModel() {}
 
-    /**生命周期**/
+    /**************生命周期****************/
 
     override fun onStart() {
         super.onStart()
@@ -94,7 +96,13 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
         ActivityCollector.INSTANCE.removeActivity(weakRefActivity)
     }
 
-    /**生命周期**/
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ViewUtils.hieKeyboard(currentFocus,ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+    /**************生命周期****************/
+
 
     /**
      * Loading
@@ -122,6 +130,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
                 putString(Constant.PAGE_ROOT_TAG, rootTag ?: TAG)
             }
             bundle?.let { mBundle.putAll(it) }
+            intent.putExtras(mBundle)
             startActivityForResult(intent, Constant.PAGE_REQUEST_CODE)
         } catch (e: ClassNotFoundException) {
             logError("$TAG 中跳转页面失败，未找到$toTag 请检查配置", e)
@@ -134,7 +143,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (Constant.PAGE_REQUEST_CODE == requestCode && Constant.PAGE_RESULT_CODE == resultCode) {
             val rootTag = data?.getStringExtra(Constant.PAGE_ROOT_TAG)
-            if (TAG != rootTag) {
+            if (!rootTag.isNullOrEmpty() && TAG != rootTag) {
                 onBackPressed()
             }
         }
@@ -152,8 +161,10 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     private fun backToRootPage() {
         val intent = Intent()
         val rootTag = getIntent().extras?.getString(Constant.PAGE_ROOT_TAG)
-        intent.putExtra(Constant.PAGE_ROOT_TAG, rootTag)
-        setResult(Constant.PAGE_RESULT_CODE, intent)
+        if(!rootTag.isNullOrEmpty()){
+            intent.putExtra(Constant.PAGE_ROOT_TAG, rootTag)
+            setResult(Constant.PAGE_RESULT_CODE, intent)
+        }
         finish()
     }
 

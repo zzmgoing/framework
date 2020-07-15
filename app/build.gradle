@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
+    buildToolsVersion '30.0.0'
 
     defaultConfig {
         applicationId "com.zzming.core"
@@ -47,6 +48,8 @@ dependencies {
     api "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
     //LiveData KTX
     api "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    //APP Startup
+    api "androidx.startup:startup-runtime:1.0.0-alpha01"
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -67,6 +70,8 @@ dependencies {
     api 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
     //permissionx
     api 'com.permissionx.guolindev:permissionx:1.2.2'
+    //agentweb
+    api 'com.just.agentweb:agentweb:4.1.3'
 
 
 }

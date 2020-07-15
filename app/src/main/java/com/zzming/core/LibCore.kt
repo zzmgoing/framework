@@ -1,6 +1,6 @@
 package com.zzming.core
 
-import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import okhttp3.OkHttpClient
@@ -10,23 +10,24 @@ import okhttp3.OkHttpClient
  * @time 2020/6/8 16:25
  * @description 初始化入口
  **/
-class LibCore {
+class LibCore private constructor() {
 
     companion object {
+
+        /**
+         * LibCore
+         */
+        val instance: LibCore by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { LibCore() }
+
         /**
          * 全局上下文
          */
-        var context: Application? = null
+        lateinit var context: Context
 
         /**
          * 主线程Handler
          */
-        var handler: Handler? = null
-
-        /**
-         * 主线程ID
-         */
-        var mainThreadId: Int = 0
+        lateinit var handler: Handler
 
         /**
          * BASE_URL
@@ -39,31 +40,43 @@ class LibCore {
         var httpClient: OkHttpClient? = null
 
         /**
-         * 初始化
+         * Header
          */
-        fun init(c: Application): Companion {
-            context = c
-            handler = Handler(Looper.getMainLooper())
-            mainThreadId = android.os.Process.myTid()
-            return this
-        }
+        var httpHeaders: MutableMap<String, String>? = null
 
-        /**
-         * 设置BASE_URL
-         */
-        fun initBaseUrl(baseUrl: String?): Companion {
-            BASE_URL = baseUrl?: ""
-            return this
-        }
+    }
 
-        /**
-         * 设置 OkHttpClient
-         */
-        fun initHttpClient(httpClient: OkHttpClient?): Companion {
-            Companion.httpClient = httpClient?: OkHttpClient.Builder().build()
-            return this
-        }
+    /**
+     * 初始化
+     */
+    fun init(c: Context): LibCore {
+        context = c.applicationContext
+        handler = Handler(Looper.getMainLooper())
+        return this
+    }
 
+    /**
+     * 设置BASE_URL
+     */
+    fun initBaseUrl(baseUrl: String?): LibCore {
+        BASE_URL = baseUrl
+        return this
+    }
+
+    /**
+     * 设置 OkHttpClient
+     */
+    fun initHttpClient(client: OkHttpClient?): LibCore {
+        httpClient = client
+        return this
+    }
+
+    /**
+     * 设置网络请求头
+     */
+    fun initHttpHeader(headers: MutableMap<String, String>?): LibCore {
+        httpHeaders = headers
+        return this
     }
 
 }

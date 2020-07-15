@@ -41,6 +41,16 @@ class Constant {
         const val SUCCESS = 1
         const val FAIL = 2
 
+        /**
+         *  h5页面title
+         */
+        const val PARAMS_H5_TITLE = "params_h5_title"
+
+        /**
+         *  h5页面url
+         */
+        const val PARAMS_H5_URL = "params_h5_url"
+
     }
 
 }

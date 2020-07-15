@@ -1,5 +1,6 @@
 package com.zzming.core.utils
 
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -18,7 +19,7 @@ import com.zzming.core.extension.runOnMainThread
  */
 object ToastUtil {
 
-    private const val MAIN_THREAD = "main"
+    @JvmStatic
     private val mToast: Toast = initToast()
     private var imageView: ImageView? = null
     private var textView: TextView? = null
@@ -56,7 +57,7 @@ object ToastUtil {
      */
     @JvmOverloads
     fun show(str: String, type: Int = TYPE_NOMAL, duration: Int = Toast.LENGTH_SHORT) {
-        if (MAIN_THREAD == Thread.currentThread().name) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             realShow(str, type, duration)
         } else {
             runOnMainThread{ realShow(str, type, duration) }

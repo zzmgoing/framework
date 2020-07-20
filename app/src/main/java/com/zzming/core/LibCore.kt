@@ -52,6 +52,7 @@ class LibCore private constructor() {
     fun init(c: Context): LibCore {
         context = c.applicationContext
         handler = Handler(Looper.getMainLooper())
+        AutoSizeInitializer.init(c)
         return this
     }
 

@@ -26,10 +26,18 @@ val Fragment.F_TAG: String
     }
 
 /**
+ * simpleName
+ */
+val Any.SIMPLE_NAME_TAG: String
+    get() {
+        return javaClass.simpleName
+    }
+
+/**
  * 在主线程上执行操作
  */
 fun runOnMainThread(runnable: () -> Unit) {
-    LibCore.handler?.post(runnable)
+    LibCore.handler.post(runnable)
 }
 
 /**

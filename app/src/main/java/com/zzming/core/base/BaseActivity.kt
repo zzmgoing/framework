@@ -1,16 +1,13 @@
 package com.zzming.core.base
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
 import com.zzming.core.utils.ViewUtils
 import me.jessyan.autosize.internal.CustomAdapt
-import java.lang.ref.WeakReference
 
 /**
  * @author ZhongZiMing
@@ -34,16 +31,9 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener, CustomAdapt {
      */
     protected var activity: BaseActivity? = null
 
-    /**
-     * Activity弱引用
-     */
-    private var weakRefActivity: WeakReference<Activity>? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = this
-        weakRefActivity = WeakReference(this)
-        ActivityCollector.INSTANCE.addActivity(weakRefActivity)
         beforeContentView()
         initContentView()
         initViewModel()
@@ -79,7 +69,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener, CustomAdapt {
     override fun onResume() {
         super.onResume()
         isActive = true
-        ActivityCollector.INSTANCE.setCurrentActivity(this)
     }
 
     override fun onPause() {
@@ -94,7 +83,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener, CustomAdapt {
     override fun onDestroy() {
         super.onDestroy()
         activity = null
-        ActivityCollector.INSTANCE.removeActivity(weakRefActivity)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

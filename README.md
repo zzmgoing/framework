@@ -60,8 +60,8 @@ api 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
 //permissionx
 
-api 'com.permissionx.guolindev:permissionx:1.2.2'
+api 'com.permissionx.guolindev:permissionx:1.3.0'
 
 //autosize
 
-implementation 'me.jessyan:autosize:1.2.1'
+api 'me.jessyan:autosize:1.2.1'

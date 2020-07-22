@@ -2,6 +2,7 @@ package com.zzming.core.collector
 
 import android.app.Activity
 import com.zzming.core.extension.A_TAG
+import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
 import java.lang.ref.WeakReference
 import java.util.*
@@ -13,8 +14,6 @@ import java.util.*
  **/
 class ActivityCollector private constructor() {
 
-    private val TAG = javaClass.simpleName
-
     companion object {
         @JvmStatic
         val INSTANCE: ActivityCollector by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -25,12 +24,12 @@ class ActivityCollector private constructor() {
     /**
      * 当前栈顶Activity
      */
-    var activity : Activity? = null
+    var weakRefActivity: WeakReference<Activity>? = null
 
     /**
      * Activity 集合
      */
-    val activities = LinkedList<WeakReference<Activity>?>()
+    private val activities = LinkedList<WeakReference<Activity>?>()
 
     /**
      * 允许重复打开的Activity，避免点击或回调打开多个相同页面
@@ -43,7 +42,7 @@ class ActivityCollector private constructor() {
      * @param activity
      */
     fun checkRepeatActivity(activity: Activity): Boolean {
-        return if (this.activity?.A_TAG == activity.A_TAG) {
+        return if (this.weakRefActivity?.get()?.A_TAG == activity.A_TAG) {
             Arrays.binarySearch(repeatActivities, activity.A_TAG) > 0
         } else {
             false
@@ -53,23 +52,41 @@ class ActivityCollector private constructor() {
     /**
      * 添加Activity
      */
-    fun addActivity(weakRefActivity: WeakReference<Activity>?){
-        activities.add(weakRefActivity)
+    fun addActivity(activity: Activity) {
+        activities.add(WeakReference(activity))
+        logDebug(SIMPLE_NAME_TAG, "add ${activity.SIMPLE_NAME_TAG}")
     }
 
     /**
      * 删除Activity
      */
-    fun removeActivity(weakRefActivity: WeakReference<Activity>?){
-        val result = activities.remove(weakRefActivity)
-        logDebug(TAG, "remove activity reference $result")
+    fun removeActivity(activity: Activity) {
+        findActivityReference(activity)?.let {
+            val result = activities.remove(it)
+            logDebug(SIMPLE_NAME_TAG, "remove activity reference $result")
+        }
+    }
+
+    /**
+     * 寻找WeakReference
+     */
+    private fun findActivityReference(activity: Activity): WeakReference<Activity>? {
+        var weakRefActivity: WeakReference<Activity>? = null
+        activities.forEach {
+            if (activity == it?.get()) {
+                weakRefActivity = it
+            }
+        }
+        return weakRefActivity
     }
 
     /**
      * 设置当前Activity，即为栈顶Activity
      */
-    fun setCurrentActivity(activity : Activity){
-        this.activity = activity
+    fun setCurrentActivity(activity: Activity) {
+        findActivityReference(activity)?.let {
+            this.weakRefActivity = it
+        }
     }
 
     /**

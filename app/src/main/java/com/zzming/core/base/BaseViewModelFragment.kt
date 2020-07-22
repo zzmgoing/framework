@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.zzming.core.LibCore
 import com.zzming.core.extension.bindLinearLayoutManager
 
 /**
@@ -21,7 +22,7 @@ abstract class BaseViewModelFragment<T : BaseViewModel> : BaseFragment(), OnLoad
      * ViewModel
      */
     val viewModel: T by lazy {
-        ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application).create(getModelClass())
+        ViewModelProvider.AndroidViewModelFactory.getInstance(LibCore.context).create(getModelClass())
     }
 
     abstract fun getModelClass(): Class<T>

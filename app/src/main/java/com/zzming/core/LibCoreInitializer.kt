@@ -1,5 +1,6 @@
 package com.zzming.core
 
+import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 
@@ -10,7 +11,7 @@ import androidx.startup.Initializer
  **/
 class LibCoreInitializer : Initializer<LibCore> {
     override fun create(context: Context): LibCore {
-        LibCore.instance.init(context)
+        LibCore.instance.init(context.applicationContext as Application)
         return LibCore.instance
     }
 

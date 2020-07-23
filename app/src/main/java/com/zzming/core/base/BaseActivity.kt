@@ -64,6 +64,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener, CustomAdapt {
 
     override fun onStart() {
         super.onStart()
+
     }
 
     override fun onResume() {

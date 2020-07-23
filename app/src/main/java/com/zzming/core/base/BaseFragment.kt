@@ -17,12 +17,12 @@ abstract class BaseFragment : Fragment(), ViewListener, CustomAdapt {
     /**
      * Fragment中创建的布局
      */
-    protected var rootView: View? = null
+    protected lateinit var rootView: View
 
     /**
      * activity
      */
-    protected var baseActivity: BaseActivity? = null
+    protected lateinit var baseActivity: BaseActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(getLayoutId(), container, false)
@@ -97,21 +97,21 @@ abstract class BaseFragment : Fragment(), ViewListener, CustomAdapt {
      * Loading
      */
     override fun showLoadingState(type: Int) {
-        baseActivity?.showLoadingState(type)
+        baseActivity.showLoadingState(type)
     }
 
     /**
      * LoadMore
      */
     override fun showLoadMoreState(type: Int) {
-        baseActivity?.showLoadMoreState(type)
+        baseActivity.showLoadMoreState(type)
     }
 
     /**
      * startActivity
      */
     override fun startActivity(toTag: String, rootTag: String?, bundle: Bundle?, type: String?) {
-        baseActivity?.startActivity(toTag, rootTag, bundle, type)
+        baseActivity.startActivity(toTag, rootTag, bundle, type)
     }
 
 }

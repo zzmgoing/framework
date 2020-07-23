@@ -1,6 +1,7 @@
 package com.zzming.core.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import android.widget.EditText
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import com.zzming.core.LibCore
+import com.zzming.core.base.BaseActivity
 import com.zzming.core.extension.logError
 
 /**
@@ -38,7 +40,7 @@ class ViewUtils {
          */
         fun getString(@StringRes id: Int): String? {
             return try {
-                LibCore.context?.resources?.getString(id)
+                LibCore.context.resources?.getString(id)
             } catch (e: NotFoundException) {
                 logError("没有找到id为 $id 的String，请检查是否配置。")
                 null
@@ -49,14 +51,14 @@ class ViewUtils {
          * 得到Drawable
          */
         fun getDrawable(@DrawableRes id: Int): Drawable? {
-            return ContextCompat.getDrawable(LibCore.context!!, id)
+            return ContextCompat.getDrawable(LibCore.context, id)
         }
 
         /**
          * 得到Color
          */
         fun getColor(@ColorRes id: Int): Int {
-            return ContextCompat.getColor(LibCore.context!!, id)
+            return ContextCompat.getColor(LibCore.context, id)
         }
 
         /**
@@ -66,7 +68,8 @@ class ViewUtils {
             if (MotionEvent.ACTION_DOWN == event?.action) {
                 if (isShouldHideKeyboard(view, event)) {
                     view?.windowToken.let {
-                        val im = LibCore.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        val im =
+                            LibCore.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         im.hideSoftInputFromWindow(it, InputMethodManager.HIDE_NOT_ALWAYS)
                     }
                 }
@@ -105,6 +108,15 @@ class ViewUtils {
                 loadAnimation
             }
             view.startAnimation(animation)
+        }
+
+        /**
+         * 返回到之前的Activity
+         */
+        fun goBackActivity(back: BaseActivity, intent: Intent? = null) {
+            val backIntent = intent ?: Intent()
+            backIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            LibCore.context.startActivity(intent)
         }
 
     }

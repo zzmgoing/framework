@@ -3,19 +3,11 @@ package com.zzming.core.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zzming.core.LibCore
 import com.zzming.core.bean.PageInfo
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
-import com.zzming.core.net.HeaderInterceptor
-import com.zzming.core.net.LogInterceptor
 import com.zzming.core.net.RetrofitUtils
 import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**

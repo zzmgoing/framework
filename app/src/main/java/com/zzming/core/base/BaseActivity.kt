@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
 import com.zzming.core.utils.ViewUtils
@@ -30,6 +31,11 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener, CustomAdapt {
      * 当前Activity的实例。
      */
     protected var activity: BaseActivity? = null
+
+    /**
+     * ViewDataBinding
+     */
+    var viewBinding: ViewDataBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

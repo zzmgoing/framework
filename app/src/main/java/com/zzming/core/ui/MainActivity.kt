@@ -1,7 +1,12 @@
 package com.zzming.core.ui
 
+import android.content.Intent
+import androidx.databinding.DataBindingUtil
 import com.zzming.core.R
 import com.zzming.core.base.BaseActivity
+import com.zzming.core.databinding.CoreActivityMainBinding
+import com.zzming.core.utils.LanguageUtil
+import kotlinx.android.synthetic.main.core_activity_main.*
 
 /**
  * @author ZhongWei
@@ -10,9 +15,14 @@ import com.zzming.core.base.BaseActivity
  **/
 class MainActivity: BaseActivity() {
     override fun initContentView() {
-        setContentView(R.layout.core_activity_main)
+       val viewBinding = DataBindingUtil.setContentView<CoreActivityMainBinding>(
+            this,
+            R.layout.core_activity_main
+        )
+        viewBinding.language = LanguageUtil.language
     }
 
     override fun initView() {
+        hello.setOnClickListener { startActivity(Intent(this,Test1Activity::class.java)) }
     }
 }

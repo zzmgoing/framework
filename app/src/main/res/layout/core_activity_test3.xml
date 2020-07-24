@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/hello"
+            android:id="@+id/hello3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
             android:text="@{language.hello}"
@@ -24,7 +24,6 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/world"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
             android:text="@{language.world}"

@@ -61,4 +61,3 @@ fun RecyclerView.bindLinearLayoutManager(context: Context) {
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     this.layoutManager = layoutManager
 }
-

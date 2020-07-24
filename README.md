@@ -30,10 +30,6 @@ api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 //smart:refresh-layout  
 api 'com.scwang.smart:refresh-layout-kernel:2.0.1'  
 api 'com.scwang.smart:refresh-header-classics:2.0.1'  
-//immersionbar  
-api 'com.gyf.immersionbar:immersionbar:3.0.0'  
-api 'com.gyf.immersionbar:immersionbar-components:3.0.0'  
-api 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'  
 //permissionx  
 api 'com.permissionx.guolindev:permissionx:1.3.0'  
 //autosize  

@@ -22,22 +22,17 @@ class Test3Activity: BaseActivity() {
             this,
             R.layout.core_activity_test3
         )
-        contentView.language = LanguageUtil.language
-        contentView.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-
-            }
-        })
+        contentView.language = LanguageUtil.language.value
     }
 
     override fun initView() {
         hello3.setOnClickListener {
-            val lang = if(LanguageUtil.localType == Locale.SIMPLIFIED_CHINESE){
+            val lang = if(LanguageUtil.currentType == LanguageUtil.LanguageType.CHINESE){
                 "英文"
             }else{
                 "中文"
             }
-            LanguageUtil.changeLanguage(Locale.ENGLISH)
+            LanguageUtil.changeLanguage(LanguageUtil.LanguageType.ENGLISH)
 //            contentView.language = LanguageUtil.language
             contentView.notifyChange()
             Toast.makeText(this,"语言环境已切换为$lang",Toast.LENGTH_SHORT).show()

@@ -1,18 +1,19 @@
-if(isLibrary){
+if (isLibrary) {
     apply plugin: 'com.android.library'
-}else{
+} else {
     apply plugin: 'com.android.application'
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "com.zzming.language"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.0'
+    buildToolsVersion '30.0.1'
 
     defaultConfig {
-        if(!isLibrary){
+        if (!isLibrary) {
             applicationId coreApplicationId
         }
         minSdkVersion 16
@@ -39,8 +40,8 @@ android {
         jvmTarget = '1.8'
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding = true
     }
 
 }

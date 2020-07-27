@@ -1,83 +1,75 @@
 package com.zzming.core.utils
 
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.zzming.core.BR
-import com.zzming.core.bean.Language
-import java.util.*
+import com.zzming.core.Language
+import com.zzming.core.LibCore
+import org.json.JSONObject
+import kotlin.collections.HashMap
 
 /**
  * @author ZhongWei
  * @time 2020/7/24 19:11
- * @description
+ * @description 切换语言工具类
  **/
 object LanguageUtil {
 
     /**
-     * 当前语言
+     * 当前语言包
      */
-    var language: Language  = initZH()
+    @JvmField
+    val language: MutableLiveData<Language> = MutableLiveData()
 
     /**
-     * 中文
+     * 所有语言包
      */
-    private val zhLanguage: Language by lazy { initZH() }
+    private val languageMap: HashMap<LanguageType, Language> = HashMap()
 
     /**
-     * 英文
+     * 语言类型
      */
-    private val enLanguage: Language by lazy { initEN() }
+    enum class LanguageType(val key: String) {
+        CHINESE("values_zh"), ENGLISH("values")
+    }
 
     /**
      * 当前选中语言类型
      */
-    var localType: Locale = Locale.SIMPLIFIED_CHINESE
-
-    init {
-        language = zhLanguage
-    }
+    var currentType: LanguageType = LanguageType.CHINESE
 
     /**
-     * 初始化中文
+     * 初始化语言包
      */
-    private fun initZH(): Language {
-        val zhLanguage = Language()
-        zhLanguage.hello = "嘿"
-        zhLanguage.world = "哈哈"
-        return zhLanguage
+    fun init() {
+        loadLanguageJson()
     }
 
-    /**
-     * 初始化英文
-     */
-    private fun initEN(): Language {
-        val enLanguage = Language()
-        enLanguage.hello = "hello"
-        enLanguage.world = "world"
-        return enLanguage
+    private fun loadLanguageJson() {
+        try {
+            val json = LibCore.context.resources.assets.open("language.json").bufferedReader().use {
+                it.readText()
+            }
+            val jsonObject = JSONObject(json)
+
+            val language = Gson().fromJson(json, Language::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     /**
      * 选择语言
      */
-    fun changeLanguage(locale: Locale,viewBinding: ViewDataBinding? = null) {
-        if (localType == locale) {
+    fun changeLanguage(type: LanguageType, viewBinding: ViewDataBinding? = null) {
+        if (currentType == type) {
             return
         }
-        language = when (locale) {
-            Locale.SIMPLIFIED_CHINESE -> zhLanguage
-            Locale.ENGLISH -> enLanguage
-            else -> zhLanguage
-        }
-        localType = locale
-        viewBinding?.setVariable(BR.language,language)
+        val language = languageMap[type]
+        this.language.postValue(language)
+        this.currentType = type
+        viewBinding?.setVariable(BR.language, language)
     }
-
-//    fun getString(local: Locale) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            LibCore.context.resources.configuration.setLocale(local)
-//        } else {
-//            LibCore.context.resources.configuration.locale = local
-//        }
-//    }
 
 }

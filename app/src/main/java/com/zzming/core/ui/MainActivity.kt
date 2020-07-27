@@ -19,7 +19,7 @@ class MainActivity: BaseActivity() {
             this,
             R.layout.core_activity_main
         )
-        viewBinding.language = LanguageUtil.language
+        viewBinding.language = LanguageUtil.language.value
     }
 
     override fun initView() {

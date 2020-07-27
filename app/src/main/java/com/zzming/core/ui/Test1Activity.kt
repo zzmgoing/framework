@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.core_activity_test1.*
  **/
 class Test1Activity: BaseActivity() {
     override fun initContentView() {
-        DataBindingUtil.setContentView<CoreActivityTest1Binding>(this,R.layout.core_activity_test1).language = LanguageUtil.language
+        DataBindingUtil.setContentView<CoreActivityTest1Binding>(this,R.layout.core_activity_test1).language = LanguageUtil.language.value
     }
 
     override fun initView() {

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">基础依赖库</string>
+
+    <string name="main_tab_home">首页</string>
+    <string name="main_tab_function">功能</string>
+    <string name="main_tab_mine">我的</string>
+
+    <string name="international_testing">国际化测试</string>
+    <string name="change_language_chinese">切换为中文</string>
+    <string name="change_language_english">切换为英文</string>
+</resources>

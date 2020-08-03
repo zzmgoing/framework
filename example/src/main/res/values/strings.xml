@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">core_library</string>
+
+    <string name="main_tab_home">Home</string>
+    <string name="main_tab_function">Function</string>
+    <string name="main_tab_mine">Mine</string>
+
+    <string name="international_testing">International testing</string>
+    <string name="change_language_chinese">change language to Chinese</string>
+    <string name="change_language_english">change language to English</string>
+</resources>

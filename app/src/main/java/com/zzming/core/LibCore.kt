@@ -2,16 +2,11 @@ package com.zzming.core
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.zzming.core.collector.ActivityCollector
 import okhttp3.OkHttpClient
-import java.lang.ref.WeakReference
 
 /**
  * @author ZhongZiMing
@@ -60,7 +55,6 @@ class LibCore private constructor() {
     fun init(application: Application): LibCore {
         context = application
         handler = Handler(Looper.getMainLooper())
-        AutoSizeInitializer.init(context)
         registerActivityLifeCycle()
         return this
     }
@@ -103,9 +97,6 @@ class LibCore private constructor() {
 
             override fun onActivityCreated(p0: Activity, p1: Bundle?) {
                 ActivityCollector.INSTANCE.addActivity(p0)
-                val contentView = p0.window.decorView.findViewById<View>(android.R.id.content)
-                val binding = DataBindingUtil.findBinding<ViewDataBinding>(contentView)
-//                binding?.
             }
 
             override fun onActivityStarted(p0: Activity) {

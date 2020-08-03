@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.zzming.example.Language"/>
+        <import type="com.zzming.example.LanguageLib"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="@dimen/dimen_10dp">
+
+        <TextView
+            android:id="@+id/mine_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_24sp"
+            android:gravity="center"
+            android:text="@{LanguageLib.INSTANCE.find(Language.MAIN_TAB_MINE)}"
+            android:background="@color/colorAccent"/>
+
+    </LinearLayout>
+</layout>

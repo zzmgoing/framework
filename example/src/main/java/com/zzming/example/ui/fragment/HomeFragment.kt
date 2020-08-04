@@ -29,7 +29,7 @@ class HomeFragment: BaseFragment() {
 
     override fun initView() {
         test_language.setOnClickListener {
-            AlertDialog.Builder(baseActivity).apply {
+            AlertDialog.Builder(activity!!).apply {
                 setTitle(LanguageLib.find(Language.INTERNATIONAL_TESTING))
                 setMessage(LanguageLib.find(Language.INTERNATIONAL_TESTING))
                 setPositiveButton(LanguageLib.find(Language.CHANGE_LANGUAGE_CHINESE)) { _, _ ->

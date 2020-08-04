@@ -18,8 +18,22 @@ abstract class BaseFragment : Fragment(), ViewListener {
      */
     protected lateinit var baseActivity: BaseActivity
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(getLayoutId(),container,false)
+    /**
+     * 是否已经加载过数据
+     */
+    var isLoadData = false
+
+    /**
+     * rootView
+     */
+    lateinit var rootView: View
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(getLayoutId(), container, false)
         return onCreateView(view)
     }
 
@@ -52,12 +66,15 @@ abstract class BaseFragment : Fragment(), ViewListener {
     /**
      * 加载数据
      */
-    open fun onRefresh() {}
+    open fun onRefresh() {
+        isLoadData = true
+    }
 
     /**
      * 初始化View
      */
-    open fun onCreateView(view: View): View{
+    open fun onCreateView(view: View): View {
+        this.rootView = view
         return view
     }
 

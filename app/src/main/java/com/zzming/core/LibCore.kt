@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.zzming.core.collector.ActivityCollector
+import com.zzming.core.utils.APPUtils
+import com.zzming.core.utils.CorePreferencesUtils
 import okhttp3.OkHttpClient
 
 /**
@@ -21,6 +23,11 @@ class LibCore private constructor() {
          * LibCore
          */
         val instance: LibCore by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { LibCore() }
+
+        /**
+         * 是否已经初始化
+         */
+        var isInit = false
 
         /**
          * 全局上下文
@@ -53,8 +60,15 @@ class LibCore private constructor() {
      * 初始化
      */
     fun init(application: Application): LibCore {
+        if(isInit){
+            return this
+        }
+        isInit = true
         context = application
         handler = Handler(Looper.getMainLooper())
+        CorePreferencesUtils.init(context).getLocale()?.let {
+            APPUtils.changLanguage(context, it)
+        }
         registerActivityLifeCycle()
         return this
     }
@@ -86,8 +100,8 @@ class LibCore private constructor() {
     /**
      * 注册Activity生命周期回调
      */
-    private fun registerActivityLifeCycle(){
-        context.registerActivityLifecycleCallbacks(object: Application.ActivityLifecycleCallbacks{
+    private fun registerActivityLifeCycle() {
+        context.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
 
             override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
             }

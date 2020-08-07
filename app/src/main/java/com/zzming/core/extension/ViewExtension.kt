@@ -43,12 +43,12 @@ fun runOnMainThread(runnable: () -> Unit) {
 /**
  * 显示土司
  */
-fun showToast(msg: String){
-    if("main" == Thread.currentThread().name){
-        Toast.makeText(LibCore.context,msg,Toast.LENGTH_SHORT).show()
-    }else{
+fun showToast(msg: String) {
+    if ("main" == Thread.currentThread().name) {
+        Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
+    } else {
         runOnMainThread {
-            Toast.makeText(LibCore.context,msg,Toast.LENGTH_SHORT).show()
+            Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -60,4 +60,15 @@ fun RecyclerView.bindLinearLayoutManager(context: Context) {
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     this.layoutManager = layoutManager
+}
+
+/**
+ * 跟据key获取value
+ */
+fun String.localized(context: Context? = LibCore.context): String {
+    val id = context?.resources?.getIdentifier(this, "string", context.packageName) ?: 0
+    if (id == 0) {
+        return this
+    }
+    return context?.getString(id) ?: this
 }

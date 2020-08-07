@@ -134,7 +134,6 @@ class LazyFragmentPagerAdapter(
     private fun refreshFragment(position: Int) {
         currentPosition = position
         currentFragment = fragments[position]
-        logError(SIMPLE_NAME_TAG, "加载的fragment为${currentFragment.SIMPLE_NAME_TAG}")
         loadFragmentData()
     }
 

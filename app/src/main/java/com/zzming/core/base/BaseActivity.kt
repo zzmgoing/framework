@@ -1,5 +1,6 @@
 package com.zzming.core.base
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
+import com.zzming.core.utils.APPUtils
 import com.zzming.core.utils.ViewUtils
 
 /**
@@ -94,6 +96,10 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         ViewUtils.hieKeyboard(currentFocus, ev)
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(APPUtils.attachBaseContext(newBase))
     }
 
     /**************生命周期****************/

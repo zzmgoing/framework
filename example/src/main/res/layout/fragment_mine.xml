@@ -3,9 +3,6 @@
 
     <data>
 
-        <import type="com.zzming.example.Language"/>
-        <import type="com.zzming.example.LanguageLib"/>
-
     </data>
 
     <LinearLayout
@@ -22,7 +19,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_24sp"
             android:gravity="center"
-            android:text="@{LanguageLib.INSTANCE.find(Language.MAIN_TAB_MINE)}"
+            android:text="@string/main_tab_mine"
             android:background="@color/colorAccent"/>
 
     </LinearLayout>

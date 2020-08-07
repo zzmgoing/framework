@@ -1,8 +1,10 @@
 package com.zzming.example
 
 import android.app.Application
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import android.content.Context
+import android.content.res.Configuration
+import com.zzming.core.utils.APPUtils
+import com.zzming.core.utils.CorePreferencesUtils
 
 /**
  * @author ZhongZiMing
@@ -18,8 +20,19 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        GlobalScope.launch {
-            LanguageLib.init(context, LanguageType.CHINESE)
+        CorePreferencesUtils.getLocale()?.let {
+            APPUtils.changLanguage(this, it)
+        }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(APPUtils.attachBaseContext(base))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        CorePreferencesUtils.getLocale()?.let {
+            APPUtils.changLanguage(this, it)
         }
     }
 

@@ -111,4 +111,18 @@ class ActivityCollector private constructor() {
         }
     }
 
+    /**
+     * 重新创建所有Activity
+     */
+    fun reCreateAll(){
+        if (activities.isNotEmpty()) {
+            for (activityWeakReference in activities) {
+                val activity = activityWeakReference?.get()
+                if (activity != null && !activity.isFinishing) {
+                    activity.recreate()
+                }
+            }
+        }
+    }
+
 }

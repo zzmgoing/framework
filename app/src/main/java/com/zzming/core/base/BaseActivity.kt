@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import com.zzming.core.common.Constant
+import com.zzming.core.extension.A_TAG
 import com.zzming.core.extension.logError
 import com.zzming.core.utils.APPUtils
 import com.zzming.core.utils.ViewUtils
@@ -19,25 +20,18 @@ import com.zzming.core.utils.ViewUtils
 abstract class BaseActivity : AppCompatActivity(), ViewListener {
 
     /**
-     * Activity TAG
-     */
-    val TAG = this.javaClass.name
-
-    /**
      * 判断当前Activity是否在前台
      */
-    protected var isActive: Boolean = false
+    var isActive: Boolean = false
 
     /**
-     * 当前Activity的实例。
+     * 当前Activity的实例
      */
-    protected var activity: BaseActivity? = null
+    var activity: BaseActivity? = null
 
     /**
-     * ViewDataBinding
+     * onCreate
      */
-    var viewBinding: ViewDataBinding? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = this
@@ -126,15 +120,15 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
         try {
             val intent = Intent(this, Class.forName(toTag))
             val mBundle: Bundle = Bundle().apply {
-                putString(Constant.PAGE_FROM_TAG, TAG)
+                putString(Constant.PAGE_FROM_TAG, A_TAG)
                 putString(Constant.PAGE_FROM_TYPE, type)
-                putString(Constant.PAGE_ROOT_TAG, rootTag ?: TAG)
+                putString(Constant.PAGE_ROOT_TAG, rootTag ?: A_TAG)
             }
             bundle?.let { mBundle.putAll(it) }
             intent.putExtras(mBundle)
             startActivityForResult(intent, Constant.PAGE_REQUEST_CODE)
         } catch (e: ClassNotFoundException) {
-            logError("$TAG 中跳转页面失败，未找到$toTag 请检查配置", e)
+            logError("$A_TAG 中跳转页面失败，未找到$toTag 请检查配置", e)
         }
     }
 
@@ -144,13 +138,16 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (Constant.PAGE_REQUEST_CODE == requestCode && Constant.PAGE_RESULT_CODE == resultCode) {
             val rootTag = data?.getStringExtra(Constant.PAGE_ROOT_TAG)
-            if (!rootTag.isNullOrEmpty() && TAG != rootTag) {
+            if (!rootTag.isNullOrEmpty() && A_TAG != rootTag) {
                 onBackPressed()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    /**
+     * onBackPressed
+     */
     override fun onBackPressed() {
         super.onBackPressed()
         backToRootPage()

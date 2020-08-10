@@ -1,17 +1,11 @@
 package com.zzming.core.utils
 
-import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
-import android.os.Process
 import com.zzming.core.base.LocalContextWrapper
-import com.zzming.core.collector.ActivityCollector
-import com.zzming.core.service.RestartAppService
 import java.util.*
-import kotlin.system.exitProcess
 
 
 /**
@@ -23,6 +17,7 @@ object APPUtils {
 
     /**
      * 切换语言
+     * attachBaseContext
      */
     fun attachBaseContext(newBase: Context?): Context? {
         CorePreferencesUtils.init(newBase)
@@ -81,34 +76,6 @@ object APPUtils {
         } else {
             context.resources.configuration.locale
         }
-    }
-
-    /**
-     * 重启APP
-     */
-    fun restartApp(context: Context) {
-        ActivityCollector.INSTANCE.finishAll()
-        val service = Intent(context, RestartAppService::class.java)
-        service.action = "android.intent.action.RESPOND_VIA_MESSAGE"
-        service.putExtra(RestartAppService.APP_PACKAGE_NAME, context.packageName)
-        context.startService(service)
-//        Process.killProcess(Process.myPid())
-    }
-
-    /**
-     * 杀死当前进程
-     */
-    private fun killAppProcess(context: Context) {
-        context.getSystemService(Context.ACTIVITY_SERVICE).apply {
-            this as ActivityManager
-            runningAppProcesses.forEach {
-                if (it.pid != Process.myPid()) {
-                    Process.killProcess(it.pid)
-                }
-            }
-        }
-        Process.killProcess(Process.myPid())
-        exitProcess(0)
     }
 
 }

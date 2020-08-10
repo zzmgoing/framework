@@ -1,6 +1,5 @@
 package com.zzming.core.net
 
-import com.zzming.core.LibCore
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,11 +11,7 @@ import java.util.concurrent.TimeUnit
  * @time 2020/7/15 16:57
  * @description
  **/
-class RetrofitUtils private constructor() {
-
-    companion object {
-        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { RetrofitUtils() }
-    }
+object RetrofitUtils {
 
     /**
      * Retrofit
@@ -33,7 +28,7 @@ class RetrofitUtils private constructor() {
      */
     var baseUrl: String? = null
         get() = if (field == null) {
-            LibCore.BASE_URL ?: ""
+            HttpConfig.BASE_URL ?: ""
         } else {
             field
         }
@@ -59,7 +54,7 @@ class RetrofitUtils private constructor() {
      */
     private fun defaultRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(LibCore.BASE_URL ?: "")
+            .baseUrl(HttpConfig.BASE_URL ?: "")
             .client(defaultHttpClient())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
@@ -70,7 +65,7 @@ class RetrofitUtils private constructor() {
      * OkHttpClient
      */
     private fun defaultHttpClient(): OkHttpClient {
-        return LibCore.httpClient ?: OkHttpClient.Builder()
+        return HttpConfig.httpClient ?: OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
             .addInterceptor(LogInterceptor())
             .connectTimeout(1, TimeUnit.MINUTES)

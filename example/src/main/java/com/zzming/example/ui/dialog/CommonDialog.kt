@@ -14,7 +14,7 @@ import java.util.*
 /**
  * @author ZhongWei
  * @time 2020/8/5 16:13
- * @description 切换语言
+ * @description
  **/
 object CommonDialog {
 
@@ -27,12 +27,12 @@ object CommonDialog {
             setMessage(LanguageConfig.INTERNATIONAL_TESTING.localized(activity))
             setPositiveButton(LanguageConfig.CHANGE_LANGUAGE_CHINESE.localized(activity)) { _, _ ->
                 if(CorePreferencesUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)){
-                    ActivityCollector.INSTANCE.reCreateAll()
+                    ActivityCollector.recreateAll()
                 }
             }
             setNegativeButton(LanguageConfig.CHANGE_LANGUAGE_ENGLISH.localized(activity)) { _, _ ->
                 if(CorePreferencesUtils.saveLocale(Locale.ENGLISH)){
-                    ActivityCollector.INSTANCE.reCreateAll()
+                    ActivityCollector.recreateAll()
                 }
             }
         }.create().show()

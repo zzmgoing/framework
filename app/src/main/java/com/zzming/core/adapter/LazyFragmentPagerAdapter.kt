@@ -91,19 +91,6 @@ class LazyFragmentPagerAdapter(
         bindBottomNavigationView(bottomNavigationView)
     }
 
-    /**
-     * 加载fragment数据
-     */
-    fun loadFragmentData() {
-        if (isRefresh) {
-            currentFragment.onRefresh()
-        } else {
-            if (!currentFragment.isLoadData) {
-                currentFragment.onRefresh()
-            }
-        }
-    }
-
     override fun onPageSelected(position: Int) {
         refreshFragment(position)
         customBottomNavigationView?.let {
@@ -135,6 +122,19 @@ class LazyFragmentPagerAdapter(
         currentPosition = position
         currentFragment = fragments[position]
         loadFragmentData()
+    }
+
+    /**
+     * 加载fragment数据
+     */
+    private fun loadFragmentData() {
+        if (isRefresh) {
+            currentFragment.onRefresh()
+        } else {
+            if (!currentFragment.isLoadData) {
+                currentFragment.onRefresh()
+            }
+        }
     }
 
 }

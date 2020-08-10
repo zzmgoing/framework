@@ -12,14 +12,7 @@ import java.util.*
  * @time 2020/6/5 14:18
  * @description Activity管理
  **/
-class ActivityCollector private constructor() {
-
-    companion object {
-        @JvmStatic
-        val INSTANCE: ActivityCollector by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            ActivityCollector()
-        }
-    }
+object ActivityCollector {
 
     /**
      * 当前栈顶Activity
@@ -40,6 +33,8 @@ class ActivityCollector private constructor() {
     /**
      * 检查是否为重复页面，true则表明当前栈顶已有相同Activity
      * @param activity
+     * true 表明打开相同栈顶页面
+     * false 表明不打开相同栈顶页面，比如不重复打开登录页面
      */
     fun checkRepeatActivity(activity: Activity): Boolean {
         return if (this.weakRefActivity?.get()?.A_TAG == activity.A_TAG) {
@@ -53,8 +48,10 @@ class ActivityCollector private constructor() {
      * 添加Activity
      */
     fun addActivity(activity: Activity) {
-        activities.add(WeakReference(activity))
-        logDebug(SIMPLE_NAME_TAG, "add ${activity.SIMPLE_NAME_TAG}")
+        if (findActivityReference(activity) == null) {
+            activities.add(WeakReference(activity))
+            logDebug(SIMPLE_NAME_TAG, "add ${activity.SIMPLE_NAME_TAG}")
+        }
     }
 
     /**
@@ -102,9 +99,10 @@ class ActivityCollector private constructor() {
     fun finishAll() {
         if (activities.isNotEmpty()) {
             for (activityWeakReference in activities) {
-                val activity = activityWeakReference?.get()
-                if (activity != null && !activity.isFinishing) {
-                    activity.finish()
+                activityWeakReference?.get()?.apply {
+                    if (!isFinishing) {
+                        finish()
+                    }
                 }
             }
             activities.clear()
@@ -114,12 +112,13 @@ class ActivityCollector private constructor() {
     /**
      * 重新创建所有Activity
      */
-    fun reCreateAll(){
+    fun recreateAll() {
         if (activities.isNotEmpty()) {
             for (activityWeakReference in activities) {
-                val activity = activityWeakReference?.get()
-                if (activity != null && !activity.isFinishing) {
-                    activity.recreate()
+                activityWeakReference?.get()?.apply {
+                    if (!isFinishing) {
+                        recreate()
+                    }
                 }
             }
         }

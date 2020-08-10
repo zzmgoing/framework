@@ -1,6 +1,5 @@
 package com.zzming.core.net
 
-import com.zzming.core.LibCore
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -12,7 +11,7 @@ import okhttp3.Response
 class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
-        LibCore.httpHeaders?.let {
+        HttpConfig.commonHeaders?.let {
             for ((key, value) in it) {
                 builder.addHeader(key, value)
             }

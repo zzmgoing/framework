@@ -7,7 +7,11 @@ import com.zzming.core.bean.PageInfo
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
 import com.zzming.core.net.RetrofitUtils
+import com.zzming.core.service.ApiService
 import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -18,12 +22,12 @@ import kotlin.coroutines.CoroutineContext
 open class BaseViewModel : ViewModel() {
 
     /**
-     * 是否在加载中 true加载中  false加载完成
+     * 加载中的状态
      */
     val loadingState = MutableLiveData<Int>()
 
     /**
-     * 是否在加载中 true加载中  false加载完成
+     * 列表页面加载更多的状态
      */
     val loadMoreState = MutableLiveData<Int>()
 
@@ -31,11 +35,6 @@ open class BaseViewModel : ViewModel() {
      * 列表加载页数
      */
     val pageInfo = PageInfo()
-
-    /**
-     * retrofit
-     */
-    val retrofit = RetrofitUtils.instance.retrofit
 
     /**
      * 刷新

@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.zzming.core.LibCore.Companion.context
+import com.zzming.core.LibCore.context
 import com.zzming.core.R
 import com.zzming.core.extension.runOnMainThread
 
@@ -19,7 +19,6 @@ import com.zzming.core.extension.runOnMainThread
  */
 object ToastUtil {
 
-    @JvmStatic
     private val mToast: Toast = initToast()
     private var imageView: ImageView? = null
     private var textView: TextView? = null

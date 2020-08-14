@@ -2,12 +2,9 @@ package com.zzming.example.ui.dialog
 
 import android.app.Activity
 import androidx.appcompat.app.AlertDialog
-import com.zzming.core.LibCore
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.extension.localized
-import com.zzming.core.utils.APPUtils
 import com.zzming.core.utils.CorePreferencesUtils
-import com.zzming.example.LanguageConfig
 import com.zzming.example.R
 import java.util.*
 
@@ -24,14 +21,14 @@ object CommonDialog {
     fun showLanguage(activity: Activity) {
         AlertDialog.Builder(activity).apply {
             setTitle(activity.getString(R.string.international_testing))
-            setMessage(LanguageConfig.INTERNATIONAL_TESTING.localized(activity))
-            setPositiveButton(LanguageConfig.CHANGE_LANGUAGE_CHINESE.localized(activity)) { _, _ ->
-                if(CorePreferencesUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)){
+            setMessage(R.string.international_testing.localized(activity))
+            setPositiveButton(R.string.change_language_chinese.localized(activity)) { _, _ ->
+                if (CorePreferencesUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)) {
                     ActivityCollector.recreateAll()
                 }
             }
-            setNegativeButton(LanguageConfig.CHANGE_LANGUAGE_ENGLISH.localized(activity)) { _, _ ->
-                if(CorePreferencesUtils.saveLocale(Locale.ENGLISH)){
+            setNegativeButton(R.string.change_language_english.localized(activity)) { _, _ ->
+                if (CorePreferencesUtils.saveLocale(Locale.ENGLISH)) {
                     ActivityCollector.recreateAll()
                 }
             }

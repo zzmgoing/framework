@@ -72,3 +72,10 @@ fun String.localized(context: Context? = LibCore.context): String {
     }
     return context?.getString(id) ?: this
 }
+
+/**
+ * 跟据key获取value
+ */
+fun Int.localized(context: Context? = LibCore.context): String {
+    return context?.getString(this) ?: ""
+}

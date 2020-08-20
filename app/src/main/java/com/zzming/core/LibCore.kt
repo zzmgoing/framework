@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.zzming.core.collector.ActivityCollector
+import com.zzming.core.common.LibCoreConfig
+import com.zzming.core.utils.SPUtils
 
 /**
  * @author ZhongZiMing
@@ -33,13 +35,14 @@ object LibCore : Application.ActivityLifecycleCallbacks {
      * 初始化
      */
     fun init(application: Application): LibCore {
-        if (isInit) {
-            return this
+        if (!isInit) {
+            isInit = true
+            context = application
+            handler = Handler(Looper.getMainLooper())
+            registerActivityLifecycleCallbacks()
+            LibCoreConfig.init()
+            SPUtils.init(context)
         }
-        isInit = true
-        context = application
-        handler = Handler(Looper.getMainLooper())
-        registerActivityLifecycleCallbacks()
         return this
     }
 
@@ -50,7 +53,7 @@ object LibCore : Application.ActivityLifecycleCallbacks {
         context.registerActivityLifecycleCallbacks(this)
     }
 
-    fun unregisterActivityLifecycleCallbacks(){
+    fun unregisterActivityLifecycleCallbacks() {
         context.unregisterActivityLifecycleCallbacks(this)
     }
 

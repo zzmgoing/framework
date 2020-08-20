@@ -5,11 +5,11 @@ package com.zzming.core.base
  * @time 2020/8/4 19:19
  * @description 做爱做的事
  **/
-interface DoSomeThingListener {
+interface DoThingListener {
 
     /**
      * 做爱做的事
      */
-    fun doSomeThing(any: Any?): Any?
+    fun doThing(any: Any?): Any?
 
 }

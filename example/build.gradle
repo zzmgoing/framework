@@ -1,17 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: '../config.gradle'
+
+def ext = rootProject.ext
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion ext._compileSdkVersion
+    buildToolsVersion ext._buildToolsVersion
 
     defaultConfig {
-        applicationId 'com.zzming.example'
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId ext._applicationId
+        minSdkVersion ext._minSdkVersion
+        targetSdkVersion ext._targetSdkVersion
+        versionCode ext._versionCode
+        versionName ext._versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

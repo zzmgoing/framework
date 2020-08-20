@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.zzming.core.utils.APPUtils
-import com.zzming.core.utils.CorePreferencesUtils
+import com.zzming.core.utils.SPUtils
 
 /**
  * @author ZhongZiMing
@@ -20,7 +20,8 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        CorePreferencesUtils.getLocale()?.let {
+        SPUtils.init(context)
+        SPUtils.getLocale()?.let {
             APPUtils.changLanguage(this, it)
         }
     }
@@ -31,7 +32,7 @@ class ExampleApplication : Application() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        CorePreferencesUtils.getLocale()?.let {
+        SPUtils.getLocale()?.let {
             APPUtils.changLanguage(this, it)
         }
     }

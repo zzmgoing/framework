@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.base.BaseFragment
-import com.zzming.core.extension.SIMPLE_NAME_TAG
-import com.zzming.core.extension.logError
 import com.zzming.core.widget.CustomBottomNavigationView
 
 /**
@@ -66,10 +64,8 @@ class LazyFragmentPagerAdapter(
      */
     fun bindViewPager(viewPager: ViewPager) {
         this.viewPager = viewPager
-        if (viewPager.adapter == null) {
-            viewPager.adapter = this
-        }
-        viewPager.addOnPageChangeListener(this)
+        this.viewPager?.adapter = this
+        this.viewPager?.addOnPageChangeListener(this)
     }
 
     /**
@@ -77,7 +73,7 @@ class LazyFragmentPagerAdapter(
      */
     fun bindBottomNavigationView(bottomNavigationView: CustomBottomNavigationView) {
         this.customBottomNavigationView = bottomNavigationView
-        bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        this.customBottomNavigationView?.setOnNavigationItemSelectedListener(this)
     }
 
     /**

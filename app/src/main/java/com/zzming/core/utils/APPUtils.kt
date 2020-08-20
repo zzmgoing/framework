@@ -20,10 +20,10 @@ object APPUtils {
      * attachBaseContext
      */
     fun attachBaseContext(newBase: Context?): Context? {
-        CorePreferencesUtils.init(newBase)
         var tempContext = newBase
         tempContext?.apply {
-            CorePreferencesUtils.getLocale(newBase)?.let {
+            SPUtils.init(this)
+            SPUtils.getLocale()?.let {
                 if (needUpdateLocale(this, it)) {
                     tempContext = LocalContextWrapper.wrap(this, it)
                 }

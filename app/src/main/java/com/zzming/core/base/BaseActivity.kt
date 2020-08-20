@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.ViewDataBinding
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.A_TAG
 import com.zzming.core.extension.logError

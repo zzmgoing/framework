@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
-import com.zzming.core.base.LocalContextWrapper
 import java.util.*
 
 
@@ -22,11 +21,8 @@ object APPUtils {
     fun attachBaseContext(newBase: Context?): Context? {
         var tempContext = newBase
         tempContext?.apply {
-            SPUtils.init(this)
-            SPUtils.getLocale()?.let {
-                if (needUpdateLocale(this, it)) {
-                    tempContext = LocalContextWrapper.wrap(this, it)
-                }
+            SPUtils.getLocale(this)?.let {
+                tempContext = changLanguage(this, it)
             }
         }
         return tempContext
@@ -35,29 +31,37 @@ object APPUtils {
     /**
      * 切换语言
      */
-    fun changLanguage(context: Context, locale: Locale) {
+    fun changLanguage(context: Context, locale: Locale): Context {
+        var tempContext = context
         if (!needUpdateLocale(context, locale)) {
-            return
+            return tempContext
         }
         val res: Resources = context.resources
         val configuration: Configuration = res.configuration
         when {
             BuildUtils.isAtLeast24Api() -> {
-                configuration.setLocale(locale)
+                val defaultList = LocaleList.getDefault()
+                val arrayOfLocale = arrayOfNulls<Locale>(defaultList.size() + 1)
+                arrayOfLocale[0] = locale
+                for (i in 0 until defaultList.size()) {
+                    arrayOfLocale[i + 1] = locale
+                }
                 val localeList = LocaleList(locale)
                 LocaleList.setDefault(localeList)
                 configuration.setLocales(localeList)
-                context.createConfigurationContext(configuration)
+                tempContext = context.createConfigurationContext(configuration)
             }
             BuildUtils.isAtLeast17Api() -> {
                 configuration.setLocale(locale)
-                context.createConfigurationContext(configuration)
+                tempContext = context.createConfigurationContext(configuration)
             }
             else -> {
                 configuration.locale = locale
                 res.updateConfiguration(configuration, res.displayMetrics)
             }
         }
+        SPUtils.saveLocale(tempContext, locale)
+        return tempContext
     }
 
     /**

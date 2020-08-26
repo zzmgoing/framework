@@ -1,6 +1,15 @@
 package com.zzming.core.extension
 
+import android.content.Context
 import android.content.SharedPreferences
+import com.zzming.core.utils.SPUtils
+
+/**
+ * 获取默认的SharedPreferences
+ */
+fun Context.corePreferences(): SharedPreferences{
+    return SPUtils.getPreferences(SPUtils.ZZM_CORE_LIBRARY_SP,this)
+}
 
 /**
  * putSharedString

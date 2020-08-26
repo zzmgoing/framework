@@ -20,20 +20,20 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-//        SPUtils.getLocale(context)?.apply {
-//            APPUtils.changLanguage(context,this)
-//        }
+        SPUtils.getLocale()?.let {
+            APPUtils.changLanguage(context,it)
+        }
     }
 
     override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(APPUtils.attachBaseContext(base?:context))
+        super.attachBaseContext(APPUtils.attachBaseContext(base))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-//        SPUtils.getLocale(context)?.apply {
-//            APPUtils.changLanguage(context,this)
-//        }
+        SPUtils.getLocale()?.let {
+            APPUtils.changLanguage(context,it)
+        }
     }
 
 }

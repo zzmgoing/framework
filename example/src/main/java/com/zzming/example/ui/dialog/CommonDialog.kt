@@ -25,12 +25,14 @@ object CommonDialog {
             setTitle(activity.getString(R.string.international_testing))
             setMessage(R.string.international_testing.localized(activity))
             setPositiveButton(R.string.change_language_chinese.localized(activity)) { _, _ ->
-                APPUtils.changLanguage(ExampleApplication.context,Locale.SIMPLIFIED_CHINESE)
-                ActivityCollector.recreateAll()
+                if(SPUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)){
+                    ActivityCollector.recreateAll()
+                }
             }
             setNegativeButton(R.string.change_language_english.localized(activity)) { _, _ ->
-                APPUtils.changLanguage(ExampleApplication.context,Locale.ENGLISH)
-                ActivityCollector.recreateAll()
+                if(SPUtils.saveLocale(Locale.ENGLISH)){
+                    ActivityCollector.recreateAll()
+                }
             }
         }.create().show()
     }

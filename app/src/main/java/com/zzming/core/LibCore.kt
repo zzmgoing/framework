@@ -7,6 +7,8 @@ import android.os.Handler
 import android.os.Looper
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.common.LibCoreConfig
+import com.zzming.core.utils.APPUtils
+import com.zzming.core.utils.SPUtils
 
 /**
  * @author ZhongZiMing
@@ -38,6 +40,9 @@ object LibCore : Application.ActivityLifecycleCallbacks {
             isInit = true
             context = application
             handler = Handler(Looper.getMainLooper())
+            SPUtils.init(context).getLocale()?.let {
+                APPUtils.changLanguage(context, it)
+            }
             registerActivityLifecycleCallbacks()
             LibCoreConfig.init()
         }

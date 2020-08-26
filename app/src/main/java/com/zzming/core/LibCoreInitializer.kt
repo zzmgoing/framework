@@ -9,11 +9,10 @@ import androidx.startup.Initializer
  * @time 2020/7/9 10:02
  * @description 初始化SDK
  **/
-class LibCoreInitializer : Initializer<LibCore> {
+class LibCoreInitializer : Initializer<Unit> {
 
-    override fun create(context: Context): LibCore {
+    override fun create(context: Context) {
         LibCore.init(context.applicationContext as Application)
-        return LibCore
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

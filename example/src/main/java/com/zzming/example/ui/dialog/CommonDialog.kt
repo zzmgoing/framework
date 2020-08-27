@@ -4,9 +4,7 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.extension.localized
-import com.zzming.core.utils.APPUtils
 import com.zzming.core.utils.SPUtils
-import com.zzming.example.ExampleApplication
 import com.zzming.example.R
 import java.util.*
 
@@ -25,14 +23,12 @@ object CommonDialog {
             setTitle(activity.getString(R.string.international_testing))
             setMessage(R.string.international_testing.localized(activity))
             setPositiveButton(R.string.change_language_chinese.localized(activity)) { _, _ ->
-                if(SPUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)){
-                    ActivityCollector.recreateAll()
-                }
+                SPUtils.saveLocale(Locale.SIMPLIFIED_CHINESE)
+                ActivityCollector.recreateAll()
             }
             setNegativeButton(R.string.change_language_english.localized(activity)) { _, _ ->
-                if(SPUtils.saveLocale(Locale.ENGLISH)){
-                    ActivityCollector.recreateAll()
-                }
+                SPUtils.saveLocale(Locale.ENGLISH)
+                ActivityCollector.recreateAll()
             }
         }.create().show()
     }

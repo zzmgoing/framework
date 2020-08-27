@@ -7,8 +7,8 @@ import com.zzming.core.utils.SPUtils
 /**
  * 获取默认的SharedPreferences
  */
-fun Context.corePreferences(): SharedPreferences{
-    return SPUtils.getPreferences(SPUtils.ZZM_CORE_LIBRARY_SP,this)
+fun Context.preferences(name: String = SPUtils.ZZM_CORE_LIBRARY_SP): SharedPreferences {
+    return SPUtils.getPreferences(name, this)
 }
 
 /**

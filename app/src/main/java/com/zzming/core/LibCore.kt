@@ -7,8 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.common.LibCoreConfig
-import com.zzming.core.utils.APPUtils
-import com.zzming.core.utils.SPUtils
+import com.zzming.core.utils.LanguageUtil
 
 /**
  * @author ZhongZiMing
@@ -40,10 +39,8 @@ object LibCore : Application.ActivityLifecycleCallbacks {
             isInit = true
             context = application
             handler = Handler(Looper.getMainLooper())
-            SPUtils.init(context).getLocale()?.let {
-                APPUtils.changLanguage(context, it)
-            }
             registerActivityLifecycleCallbacks()
+            LanguageUtil.changLanguage(context)
             LibCoreConfig.init()
         }
         return this
@@ -68,6 +65,7 @@ object LibCore : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
+        LanguageUtil.changLanguage(p0)
     }
 
     override fun onActivityStarted(p0: Activity) {

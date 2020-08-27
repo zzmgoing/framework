@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.zzming.core.LibCore
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.A_TAG
 import com.zzming.core.extension.logError
-import com.zzming.core.utils.APPUtils
+import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.ViewUtils
 
 /**
@@ -92,7 +93,7 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     }
 
     override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(APPUtils.attachBaseContext(newBase))
+        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase))
     }
 
     /**************生命周期****************/

@@ -3,6 +3,8 @@ package com.zzming.core.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.zzming.core.LibCore
+import com.zzming.core.extension.preferences
+import com.zzming.core.extension.putSharedString
 import java.util.*
 
 /**
@@ -16,36 +18,19 @@ object SPUtils {
 
     private const val LOCALE_KEY = "locale_key"
 
-    private var configPreferences: SharedPreferences? = null
-
-    /**
-     * 初始化
-     */
-    fun init(context: Context?): SPUtils {
-        if (configPreferences == null) {
-            configPreferences = context?.getSharedPreferences(ZZM_CORE_LIBRARY_SP, Context.MODE_PRIVATE)
-        }
-        return this
-    }
-
     /**
      * saveLocale
      */
-    fun saveLocale(locale: Locale): Boolean {
-        if(locale == getLocale()){
-            return false
-        }
+    fun saveLocale(locale: Locale, context: Context? = LibCore.context) {
         val json = GsonUtil.gson.toJson(locale)
-        configPreferences?.edit()?.putString(LOCALE_KEY, json)?.apply()
-        return true
+        context?.preferences()?.putSharedString(LOCALE_KEY, json)
     }
 
     /**
      * getLocale
      */
     fun getLocale(context: Context? = LibCore.context): Locale? {
-        init(context)
-        val json = configPreferences?.getString(LOCALE_KEY, null)
+        val json = context?.preferences()?.getString(LOCALE_KEY, null)
         return GsonUtil.json2Bean(json, Locale::class.java)
     }
 

@@ -3,8 +3,7 @@ package com.zzming.example
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import com.zzming.core.utils.APPUtils
-import com.zzming.core.utils.SPUtils
+import com.zzming.core.utils.LanguageUtil
 
 /**
  * @author ZhongZiMing
@@ -20,20 +19,16 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        SPUtils.getLocale()?.let {
-            APPUtils.changLanguage(context,it)
-        }
+        LanguageUtil.changLanguage(context)
     }
 
     override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(APPUtils.attachBaseContext(base))
+        super.attachBaseContext(LanguageUtil.attachBaseContext(base))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        SPUtils.getLocale()?.let {
-            APPUtils.changLanguage(context,it)
-        }
+        LanguageUtil.changLanguage(context)
     }
 
 }

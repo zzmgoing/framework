@@ -2,7 +2,6 @@ package com.zzming.example.ui.dialog
 
 import android.app.Activity
 import androidx.appcompat.app.AlertDialog
-import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.extension.localized
 import com.zzming.core.utils.APPUtils
 import com.zzming.core.utils.LanguageUtil

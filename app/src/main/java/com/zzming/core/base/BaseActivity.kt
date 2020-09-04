@@ -24,16 +24,10 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     var isActive: Boolean = false
 
     /**
-     * 当前Activity的实例
-     */
-    var activity: BaseActivity? = null
-
-    /**
      * onCreate
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity = this
         beforeContentView()
         initContentView()
         initViewModel()
@@ -64,7 +58,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
 
     override fun onStart() {
         super.onStart()
-
     }
 
     override fun onResume() {
@@ -83,7 +76,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        activity = null
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

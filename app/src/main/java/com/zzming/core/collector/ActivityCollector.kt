@@ -6,6 +6,7 @@ import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
 import java.lang.ref.WeakReference
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @author ZhongZiMing
@@ -122,6 +123,17 @@ object ActivityCollector {
                 }
             }
         }
+    }
+
+    /**
+     * 获取所有的Activity
+     */
+    fun getAllActivities(): ArrayList<Activity> {
+        val list = ArrayList<Activity>()
+        activities.forEach {
+            it?.get()?.let { activity -> list.add(activity) }
+        }
+        return list
     }
 
 }

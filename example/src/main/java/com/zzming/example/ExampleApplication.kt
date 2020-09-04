@@ -1,9 +1,9 @@
 package com.zzming.example
 
 import android.app.Application
-import android.content.Context
-import android.content.res.Configuration
-import com.zzming.core.utils.LanguageUtil
+import android.os.Process
+import com.zzming.core.LibCore
+import com.zzming.core.extension.logDebug
 
 /**
  * @author ZhongZiMing
@@ -19,16 +19,7 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        LanguageUtil.changLanguage(context)
-    }
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(LanguageUtil.attachBaseContext(base))
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        LanguageUtil.changLanguage(context)
+        logDebug(LibCore.TAG, "ExampleApplication初始化,进程ID:${Process.myPid()}")
     }
 
 }

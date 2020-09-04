@@ -27,7 +27,7 @@ object LibCoreConfig {
      */
     fun init() {
         isDebug = LibCore.context.getString(R.string.is_debug).toBoolean()
-        packageName = LibCore.context.applicationInfo?.packageName.toString()
+        packageName = LibCore.context.packageName
     }
 
 

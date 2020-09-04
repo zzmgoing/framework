@@ -1,6 +1,7 @@
 package com.zzming.example.ui
 
 import androidx.databinding.DataBindingUtil
+import com.zzming.core.LibCore
 import com.zzming.core.adapter.LazyFragmentPagerAdapter
 import com.zzming.core.base.BaseActivity
 import com.zzming.example.R
@@ -27,7 +28,7 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         val titles = arrayListOf(
-            getString(R.string.main_tab_home),
+            LibCore.context.getString(R.string.main_tab_home),
             getString(R.string.main_tab_function),
             getString(R.string.main_tab_mine)
         )

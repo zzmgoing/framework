@@ -5,9 +5,12 @@ import android.app.Application
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Process
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.common.LibCoreConfig
+import com.zzming.core.extension.logDebug
 import com.zzming.core.utils.LanguageUtil
+import com.zzming.core.utils.SPUtils
 
 /**
  * @author ZhongZiMing
@@ -15,6 +18,11 @@ import com.zzming.core.utils.LanguageUtil
  * @description 初始化入口
  **/
 object LibCore : Application.ActivityLifecycleCallbacks {
+
+    /**
+     * TAG
+     */
+    const val TAG = "LibCore"
 
     /**
      * 是否已经初始化
@@ -40,8 +48,10 @@ object LibCore : Application.ActivityLifecycleCallbacks {
             context = application
             handler = Handler(Looper.getMainLooper())
             registerActivityLifecycleCallbacks()
-            LanguageUtil.changLanguage(context)
+            LanguageUtil.context = context
+            LanguageUtil.changLanguage(SPUtils.getLocale(), context)
             LibCoreConfig.init()
+            logDebug(TAG, "LibCore初始化,进程ID:${Process.myPid()}")
         }
         return this
     }
@@ -65,7 +75,7 @@ object LibCore : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
-        LanguageUtil.changLanguage(p0)
+        LanguageUtil.changLanguage(SPUtils.getLocale(), p0)
     }
 
     override fun onActivityStarted(p0: Activity) {

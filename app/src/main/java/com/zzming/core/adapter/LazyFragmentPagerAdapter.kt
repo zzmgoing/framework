@@ -26,7 +26,7 @@ class LazyFragmentPagerAdapter(
     var currentPosition: Int = 0
 
     /**
-     * 点击时是否刷新数据
+     * 切换时是否刷新数据
      */
     var isRefresh = false
 

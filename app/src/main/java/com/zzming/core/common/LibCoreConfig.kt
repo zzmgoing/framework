@@ -14,13 +14,22 @@ object LibCoreConfig {
     /**
      * 是否是debug模式
      */
-    var isDebug by Delegates.notNull<Boolean>()
+    var isDebug = true
+
+    /**
+     * 是否开启日志
+     */
+    var isOpenLog = true
+
+    /**
+     * 是否加载默认loading
+     */
+    var isLoadDefaultLoading = true
 
     /**
      * 应用名称
      */
     lateinit var packageName: String
-
 
     /**
      * 初始化配置字段

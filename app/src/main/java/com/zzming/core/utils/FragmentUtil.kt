@@ -13,8 +13,6 @@ import com.zzming.core.extension.logError
  */
 class FragmentUtil(private val fragmentManager: FragmentManager, private val layoutContentId: Int) {
 
-    private val TAG = "FragmentUtil"
-
     private var currentPosition: Int = 0
 
     private val mFragments: SparseArray<Fragment> = SparseArray()
@@ -100,7 +98,7 @@ class FragmentUtil(private val fragmentManager: FragmentManager, private val lay
             val constructor = aClass.getConstructor()
             constructor.newInstance() as Fragment
         }catch (e: ClassNotFoundException){
-            logError(TAG,"未找到路径为 $fragmentTag 的Fragment，请检查路径是否正确。",e)
+            logError("未找到路径为 $fragmentTag 的Fragment，请检查路径是否正确。",e)
             null
         }
     }

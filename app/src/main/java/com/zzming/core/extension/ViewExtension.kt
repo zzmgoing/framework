@@ -2,11 +2,13 @@ package com.zzming.core.extension
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zzming.core.LibCore
+import com.zzming.core.collector.LoadingCollector
 
 
 /**
@@ -78,4 +80,43 @@ fun String.localized(context: Context? = LibCore.context): String {
  */
 fun Int.localized(context: Context? = LibCore.context): String {
     return context?.getString(this) ?: ""
+}
+
+/**
+ * Activity是否存活
+ */
+fun Activity?.isAlive(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        this != null && !isFinishing && !isDestroyed
+    } else {
+        this != null && !isFinishing
+    }
+}
+
+/**
+ * showLoading
+ */
+fun Activity.showLoading() {
+    LoadingCollector.showLoading(this)
+}
+
+/**
+ * showLoading
+ */
+fun Activity.hideLoading() {
+    LoadingCollector.hideLoading(this)
+}
+
+/**
+ * showLoading
+ */
+fun Fragment.showLoading() {
+    LoadingCollector.showLoading(activity)
+}
+
+/**
+ * showLoading
+ */
+fun Fragment.hideLoading() {
+    LoadingCollector.hideLoading(activity)
 }

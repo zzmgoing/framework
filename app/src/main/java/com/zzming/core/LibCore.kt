@@ -7,7 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Process
 import com.zzming.core.collector.ActivityCollector
+import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.LibCoreConfig
+import com.zzming.core.dialog.DefaultLoadingDialog
 import com.zzming.core.extension.logDebug
 import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.SPUtils
@@ -76,6 +78,9 @@ object LibCore : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
         LanguageUtil.changLanguage(SPUtils.getLocale(), p0)
+        if(LibCoreConfig.isLoadDefaultLoading){
+            LoadingCollector.addLoading(DefaultLoadingDialog(p0))
+        }
     }
 
     override fun onActivityStarted(p0: Activity) {

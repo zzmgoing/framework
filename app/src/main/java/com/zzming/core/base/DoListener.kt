@@ -5,7 +5,7 @@ package com.zzming.core.base
  * @time 2020/8/4 19:19
  * @description 做爱做的事
  **/
-interface DoThingListener {
+interface DoListener {
 
     /**
      * 做爱做的事

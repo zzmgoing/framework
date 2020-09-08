@@ -9,7 +9,7 @@ import com.zzming.core.utils.ViewUtils
  * @time 2020/7/23 10:01
  * @description BasePager
  **/
-class BasePager(lifecycleOwner: LifecycleOwner, rootView: View) : FullLifecycleObserver {
+class BasePager(private val lifecycleOwner: LifecycleOwner, rootView: View) : FullLifecycleObserver {
 
     constructor(lifecycleOwner: LifecycleOwner, layoutId: Int) : this(
         lifecycleOwner,
@@ -36,6 +36,7 @@ class BasePager(lifecycleOwner: LifecycleOwner, rootView: View) : FullLifecycleO
     }
 
     override fun onDestroy() {
+        lifecycleOwner.lifecycle.removeObserver(this)
     }
 
 

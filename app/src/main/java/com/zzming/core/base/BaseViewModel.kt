@@ -6,12 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.zzming.core.bean.PageInfo
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.logError
-import com.zzming.core.net.RetrofitUtils
-import com.zzming.core.service.ApiService
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
 /**

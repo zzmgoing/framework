@@ -1,6 +1,7 @@
 package com.zzming.example.ui.fragment
 
 import com.zzming.core.base.BaseFragment
+import com.zzming.core.extension.showLoading
 import com.zzming.example.R
 import com.zzming.example.ui.dialog.CommonDialog
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -10,7 +11,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @time 2020/8/3
  * @description
  **/
-class HomeFragment: BaseFragment() {
+class HomeFragment : BaseFragment() {
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
@@ -18,6 +20,9 @@ class HomeFragment: BaseFragment() {
     override fun initView() {
         test_language.setOnClickListener {
             CommonDialog.showLanguage(baseActivity)
+        }
+        test_loading.setOnClickListener {
+            showLoading()
         }
     }
 

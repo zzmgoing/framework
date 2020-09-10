@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
  * @time 2020/8/10 10:01
  * @description 网络请求配置
  **/
-object HttpConfig {
+object LibHttpConfig {
 
     /**
      * BASE_URL

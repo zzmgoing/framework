@@ -2,9 +2,11 @@ package com.zzming.example
 
 import android.app.Application
 import android.os.Process
-import com.zzming.core.LibCore
-import com.zzming.core.base.ViewConfig
-import com.zzming.core.common.LibCoreConfig
+import com.zzming.core.collector.LoadingCollector
+import com.zzming.core.common.LibConfig
+import com.zzming.core.common.LibViewConfig
+import com.zzming.core.dialog.DefaultLoadingDialog
+import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
 import com.zzming.core.utils.ViewUtils
 
@@ -22,9 +24,18 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        LibCoreConfig.isLoadDefaultLoading = true
-        ViewConfig.INSTANCE.defaultLoadingColor = ViewUtils.getColor(R.color.colorAccent)
-        logDebug(LibCore.TAG, "ExampleApplication初始化,进程ID:${Process.myPid()}")
+
+        LibConfig.apply {
+            isOpenLog = true
+        }
+
+        LibViewConfig.apply {
+            loadLoadingDialog = {
+                LoadingCollector.addLoading(DefaultLoadingDialog(it,ViewUtils.getColor(R.color.colorAccent)))
+            }
+        }
+
+        logDebug(SIMPLE_NAME_TAG, "ExampleApplication初始化,进程ID:${Process.myPid()}")
     }
 
 }

@@ -28,10 +28,7 @@ object LoadingCollector {
         val tag = activity.SIMPLE_NAME_TAG
         if (!loadingViewMap.containsKey(tag)) {
             if (activity is AppCompatActivity) {
-                LoadingLifecycleObserver(activity).apply {
-                    init()
-                    this.tag = tag
-                }
+                LoadingLifecycleObserver(activity, tag)
             }
             loadingViewMap[tag] = loadingDialogListener
         }
@@ -62,15 +59,12 @@ object LoadingCollector {
     /**
      * SimpleLifecycleObserver
      */
-    class LoadingLifecycleObserver(lifecycleOwner: LifecycleOwner) : SimpleLifecycleObserver(lifecycleOwner) {
-
-        var tag: String? = null
+    class LoadingLifecycleObserver(lifecycleOwner: LifecycleOwner, private val tag: String) :
+        SimpleLifecycleObserver(lifecycleOwner) {
 
         override fun onDestroy() {
             super.onDestroy()
-            tag?.apply {
-                loadingViewMap.remove(this)
-            }
+            loadingViewMap.remove(tag)
         }
 
     }

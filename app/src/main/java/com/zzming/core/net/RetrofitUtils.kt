@@ -28,7 +28,7 @@ object RetrofitUtils {
      */
     var baseUrl: String? = null
         get() = if (field == null) {
-            HttpConfig.BASE_URL ?: ""
+            LibHttpConfig.BASE_URL ?: ""
         } else {
             field
         }
@@ -54,7 +54,7 @@ object RetrofitUtils {
      */
     private fun defaultRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(HttpConfig.BASE_URL ?: "")
+            .baseUrl(LibHttpConfig.BASE_URL ?: "")
             .client(defaultHttpClient())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
@@ -65,7 +65,7 @@ object RetrofitUtils {
      * OkHttpClient
      */
     private fun defaultHttpClient(): OkHttpClient {
-        return HttpConfig.httpClient ?: OkHttpClient.Builder()
+        return LibHttpConfig.httpClient ?: OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
             .addInterceptor(LogInterceptor())
             .connectTimeout(1, TimeUnit.MINUTES)

@@ -24,14 +24,14 @@
             android:text="@string/international_testing" />
 
         <TextView
-            android:id="@+id/test_loading"
+            android:id="@+id/get_request"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
             android:background="@color/colorAccent"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_24sp"
-            android:text="Loading"
+            android:text="Get Request"
             android:layout_marginTop="@dimen/dimen_10dp"/>
 
     </LinearLayout>

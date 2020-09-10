@@ -5,8 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.zzming.core.LibCore
 import com.zzming.core.collector.LoadingCollector
 
@@ -45,7 +43,7 @@ fun runOnMainThread(runnable: () -> Unit) {
 /**
  * 显示土司
  */
-fun showToast(msg: String) {
+fun Any.showToast(msg: String) {
     if ("main" == Thread.currentThread().name) {
         Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
     } else {
@@ -53,15 +51,6 @@ fun showToast(msg: String) {
             Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
         }
     }
-}
-
-/**
- * 设置LayoutManager
- */
-fun RecyclerView.bindLinearLayoutManager(context: Context) {
-    val layoutManager = LinearLayoutManager(context)
-    layoutManager.orientation = LinearLayoutManager.VERTICAL
-    this.layoutManager = layoutManager
 }
 
 /**
@@ -101,7 +90,7 @@ fun Activity.showLoading() {
 }
 
 /**
- * showLoading
+ * hideLoading
  */
 fun Activity.hideLoading() {
     LoadingCollector.hideLoading(this)
@@ -115,7 +104,7 @@ fun Fragment.showLoading() {
 }
 
 /**
- * showLoading
+ * hideLoading
  */
 fun Fragment.hideLoading() {
     LoadingCollector.hideLoading(activity)

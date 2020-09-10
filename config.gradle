@@ -1,5 +1,4 @@
 rootProject.ext {
-    _isDebug = true
     _applicationId = "com.zzming.example"
     _compileSdkVersion = 30
     _buildToolsVersion = "30.0.1"

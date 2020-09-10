@@ -11,7 +11,7 @@ import okhttp3.Response
 class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
-        HttpConfig.commonHeaders?.let {
+        LibHttpConfig.commonHeaders?.let {
             for ((key, value) in it) {
                 builder.addHeader(key, value)
             }

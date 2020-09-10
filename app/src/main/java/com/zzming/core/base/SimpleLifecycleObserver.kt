@@ -10,9 +10,8 @@ import androidx.lifecycle.LifecycleOwner
 open class SimpleLifecycleObserver(private val lifecycleOwner: LifecycleOwner) :
     FullLifecycleObserver {
 
-    fun init(): SimpleLifecycleObserver {
+    init {
         lifecycleOwner.lifecycle.addObserver(this)
-        return this
     }
 
     override fun onCreate() {}

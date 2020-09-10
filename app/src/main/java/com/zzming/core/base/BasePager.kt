@@ -1,7 +1,10 @@
 package com.zzming.core.base
 
+import android.app.Activity
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
+import androidx.appcompat.app.AppCompatActivity
+import com.zzming.core.collector.LoadingCollector
+import com.zzming.core.dialog.LoadingDialogListener
 import com.zzming.core.utils.ViewUtils
 
 /**
@@ -9,15 +12,15 @@ import com.zzming.core.utils.ViewUtils
  * @time 2020/7/23 10:01
  * @description BasePager
  **/
-class BasePager(private val lifecycleOwner: LifecycleOwner, rootView: View) : FullLifecycleObserver {
+abstract class BasePager(private val activity: AppCompatActivity, private val rootView: View) : FullLifecycleObserver,LoadingDialogListener {
 
-    constructor(lifecycleOwner: LifecycleOwner, layoutId: Int) : this(
-        lifecycleOwner,
+    constructor(activity: AppCompatActivity, layoutId: Int) : this(
+        activity,
         ViewUtils.createView(layoutId)
     )
 
     init {
-        lifecycleOwner.lifecycle.addObserver(this)
+        activity.lifecycle.addObserver(this)
     }
 
     override fun onCreate() {
@@ -36,7 +39,19 @@ class BasePager(private val lifecycleOwner: LifecycleOwner, rootView: View) : Fu
     }
 
     override fun onDestroy() {
-        lifecycleOwner.lifecycle.removeObserver(this)
+        activity.lifecycle.removeObserver(this)
+    }
+
+    override fun showLoading() {
+        LoadingCollector.showLoading(activity)
+    }
+
+    override fun hideLoading() {
+        LoadingCollector.hideLoading(activity)
+    }
+
+    override fun bindActivity(): Activity {
+        return activity
     }
 
 

@@ -7,8 +7,12 @@ import com.zzming.core.extension.showToast
 import com.zzming.core.net.HttpCallback
 import com.zzming.core.net.HttpUtils
 import com.zzming.example.R
+import com.zzming.example.bean.BannerBean
+import com.zzming.example.bean.Data
 import com.zzming.example.ui.dialog.CommonDialog
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @author ZhongZiMing
@@ -17,8 +21,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
  **/
 class HomeFragment : BaseFragment() {
 
-    companion object{
-        const val TEST_GET_URL = "https://apis.zzming.cn/search_apk_info.php?packageName=com.abit.bmtc"
+    companion object {
+        const val TEST_GET_URL = "https://www.wanandroid.com/banner/json"
     }
 
     override fun getLayoutId(): Int {
@@ -30,18 +34,30 @@ class HomeFragment : BaseFragment() {
             CommonDialog.showLanguage(baseActivity)
         }
         get_request.setOnClickListener {
-            showLoading()
-            HttpUtils.get(TEST_GET_URL,object : HttpCallback<String>(){
-                override fun onSuccess(t: String) {
-                    showToast(t)
-                }
-
-                override fun onFinish() {
-                    hideLoading()
-                }
-            })
+//            getRequest()
+            getRequestSync()
         }
     }
 
+    private fun getRequest() {
+        GlobalScope.launch {
+            showLoading()
+            showToast(HttpUtils.get(TEST_GET_URL))
+            hideLoading()
+        }
+    }
+
+    private fun getRequestSync() {
+        showLoading()
+        HttpUtils.get(TEST_GET_URL, object : HttpCallback<BannerBean>() {
+            override fun onSuccess(t: BannerBean) {
+                showToast(t.toString())
+            }
+
+            override fun onFinish() {
+                hideLoading()
+            }
+        })
+    }
 
 }

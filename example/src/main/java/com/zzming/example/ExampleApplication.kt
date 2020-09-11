@@ -31,7 +31,9 @@ class ExampleApplication : Application() {
 
         LibViewConfig.apply {
             loadLoadingDialog = {
-                LoadingCollector.addLoading(DefaultLoadingDialog(it,ViewUtils.getColor(R.color.colorAccent)))
+                LoadingCollector.addLoading(DefaultLoadingDialog(it).apply {
+                    loadingBarColor = ViewUtils.getColor(R.color.colorAccent)
+                })
             }
         }
 

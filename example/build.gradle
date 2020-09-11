@@ -42,5 +42,5 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':app')
+    implementation project(path: ':library')
 }

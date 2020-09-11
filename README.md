@@ -6,7 +6,7 @@
 - minSdkVersion: 16
 - targetSdkVersion: 30
 
-本库会依赖常用的第三方库，一般为项目基本会用到的，比如网络请求，权限，刷新加载等，尽量不会依赖多余的库。
+本库会依赖常用的第三方库，一般为项目基本会用到的，比如网络请求，刷新加载等，尽量不会依赖多余的库。
 
 依赖库：
 
@@ -17,20 +17,13 @@ api "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 //LiveData KTX  
 api "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"  
 //APP Startup  
-api "androidx.startup:startup-runtime:1.0.0-alpha01"  
-//retrofit  
-api 'com.squareup.retrofit2:retrofit:2.9.0'  
-api 'com.squareup.retrofit2:converter-gson:2.9.0'  
-api 'com.squareup.retrofit2:converter-scalars:2.9.0'  
-//Glide  
-api 'com.github.bumptech.glide:glide:4.11.0'  
-kapt 'com.github.bumptech.glide:compiler:4.11.0'  
+api "androidx.startup:startup-runtime:1.0.0-alpha03"  
+//https://github.com/square/okhttp  
+api "com.squareup.okhttp3:okhttp:4.8.1"  
+//https://github.com/google/gson  
+api "com.google.code.gson:gson:2.8.6"  
 //BaseRecyclerViewAdapterHelper  
 api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'  
 //smart:refresh-layout  
 api 'com.scwang.smart:refresh-layout-kernel:2.0.1'  
 api 'com.scwang.smart:refresh-header-classics:2.0.1'  
-//permissionx  
-api 'com.permissionx.guolindev:permissionx:1.3.0'  
-//autosize  
-api 'me.jessyan:autosize:1.2.1'  

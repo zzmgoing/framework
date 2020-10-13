@@ -8,11 +8,8 @@ import com.zzming.core.net.HttpCallback
 import com.zzming.core.net.HttpUtils
 import com.zzming.example.R
 import com.zzming.example.bean.BannerBean
-import com.zzming.example.bean.Data
 import com.zzming.example.ui.dialog.CommonDialog
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /**
  * @author ZhongZiMing
@@ -34,16 +31,7 @@ class HomeFragment : BaseFragment() {
             CommonDialog.showLanguage(baseActivity)
         }
         get_request.setOnClickListener {
-//            getRequest()
             getRequestSync()
-        }
-    }
-
-    private fun getRequest() {
-        GlobalScope.launch {
-            showLoading()
-            showToast(HttpUtils.get(TEST_GET_URL))
-            hideLoading()
         }
     }
 

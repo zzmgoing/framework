@@ -19,15 +19,18 @@ abstract class BaseFragment : Fragment(), ViewListener {
     protected lateinit var baseActivity: BaseActivity
 
     /**
+     * rootView
+     */
+    protected lateinit var rootView: View
+
+    /**
      * 是否已经加载过数据
      */
     var isLoadData = false
 
     /**
-     * rootView
+     * onCreateView
      */
-    lateinit var rootView: View
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,15 +40,20 @@ abstract class BaseFragment : Fragment(), ViewListener {
         return onCreateView(view)
     }
 
+    /**
+     * onViewCreated
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
         initView()
     }
 
+    /**
+     * onActivityCreated
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        baseActivity = activity as BaseActivity
+        baseActivity = requireActivity() as BaseActivity
     }
 
     /**
@@ -57,11 +65,6 @@ abstract class BaseFragment : Fragment(), ViewListener {
      * 初始化view
      */
     abstract fun initView()
-
-    /**
-     * 初始化ViewModel
-     */
-    open fun initViewModel() {}
 
     /**
      * 加载数据

@@ -15,18 +15,15 @@ import java.util.concurrent.TimeUnit
  **/
 object HttpUtils {
 
+    /**
+     * JSON_TYPE
+     */
     private val JSON_TYPE = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     /**
      * OkHttpClient
      */
-    private var okHttpClient: OkHttpClient? = null
-        get() = if (field == null) {
-            field = defaultHttpClient()
-            field
-        } else {
-            field
-        }
+    private var okHttpClient = defaultHttpClient()
 
     /**
      * get同步
@@ -41,7 +38,7 @@ object HttpUtils {
             addHeader(this, headers)
             get()
         }.build()
-        return okHttpClient?.newCall(request)?.execute()?.body?.string()
+        return okHttpClient.newCall(request).execute().body?.string()
     }
 
     /**
@@ -65,7 +62,23 @@ object HttpUtils {
             addHeader(this, headers)
             get()
         }.build()
-        okHttpClient?.newCall(request)?.enqueue(callback)
+        okHttpClient.newCall(request).enqueue(callback)
+    }
+
+    /**
+     * post
+     */
+    fun postJson(
+        url: String,
+        params: HashMap<String, String>? = null,
+        headers: HashMap<String, String>? = null
+    ): String? {
+        val request = Request.Builder().apply {
+            url(url)
+            addHeader(this, headers)
+            post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
+        }.build()
+        return okHttpClient.newCall(request).execute().body?.string()
     }
 
     /**
@@ -82,7 +95,7 @@ object HttpUtils {
             addHeader(this, headers)
             post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
         }.build()
-        okHttpClient?.newCall(request)?.enqueue(callback)
+        okHttpClient.newCall(request).enqueue(callback)
     }
 
     /**

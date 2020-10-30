@@ -30,7 +30,6 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
         super.onCreate(savedInstanceState)
         beforeContentView()
         initContentView()
-        initViewModel()
         initView()
     }
 
@@ -50,45 +49,56 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     abstract fun initView()
 
     /**
-     * 初始化ViewModel
+     * onStart
      */
-    open fun initViewModel() {}
-
-    /**************生命周期****************/
-
     override fun onStart() {
         super.onStart()
     }
 
+    /**
+     * onResume
+     */
     override fun onResume() {
         super.onResume()
         isActive = true
     }
 
+    /**
+     * onPause
+     */
     override fun onPause() {
         super.onPause()
         isActive = false
     }
 
+    /**
+     * onStop
+     */
     override fun onStop() {
         super.onStop()
     }
 
+    /**
+     * onDestroy
+     */
     override fun onDestroy() {
         super.onDestroy()
     }
 
+    /**
+     * dispatchTouchEvent
+     */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         ViewUtils.hieKeyboard(currentFocus, ev)
         return super.dispatchTouchEvent(ev)
     }
 
+    /**
+     * attachBaseContext
+     */
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(LanguageUtil.attachBaseContext(newBase!!))
     }
-
-    /**************生命周期****************/
-
 
     /**
      * Loading

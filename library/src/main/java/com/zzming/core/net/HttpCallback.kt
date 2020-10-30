@@ -39,15 +39,10 @@ abstract class HttpCallback<T> : Callback {
          */
         const val FAIL_STATUS_PARSE_BEAN = 3
 
-        /**
-         * 成功
-         */
-        const val SUCCESS = 666
-
     }
 
     override fun onFailure(call: Call, e: IOException) {
-        onFail(FAIL_STATUS_NET)
+        onFail(FAIL_STATUS_NET, e)
         onFinish()
     }
 
@@ -67,18 +62,18 @@ abstract class HttpCallback<T> : Callback {
                         if (bean != null) {
                             onSuccess(bean)
                         } else {
-                            onFail(FAIL_STATUS_PARSE_BEAN)
+                            onFail(FAIL_STATUS_PARSE_BEAN, Exception("JSON解析异常：$json"))
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        onFail(FAIL_STATUS_PARSE_BEAN)
+                        onFail(FAIL_STATUS_PARSE_BEAN, ex)
                     }
                 }
             } else {
-                onFail(FAIL_STATUS_NO_BODY)
+                onFail(FAIL_STATUS_NO_BODY, Exception("服务器无返回数据"))
             }
         } else {
-            onFail(FAIL_STATUS_RESPONSE)
+            onFail(FAIL_STATUS_RESPONSE, Exception("服务器请求错误，错误码：${response.code}"))
         }
         onFinish()
     }
@@ -93,7 +88,8 @@ abstract class HttpCallback<T> : Callback {
      * 失败
      */
     @MainThread
-    open fun onFail(status: Int) {
+    open fun onFail(status: Int, ex: Exception) {
+        ex.printStackTrace()
     }
 
     /**

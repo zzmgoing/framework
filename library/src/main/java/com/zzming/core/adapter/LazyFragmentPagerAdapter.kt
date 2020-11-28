@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.base.BaseFragment
-import com.zzming.core.widget.CustomBottomNavigationView
 
 /**
  * @author ZhongZiMing
@@ -43,7 +42,7 @@ class LazyFragmentPagerAdapter(
     /**
      * CustomBottomNavigationView
      */
-    var customBottomNavigationView: CustomBottomNavigationView? = null
+    var bottomNavigationView: BottomNavigationView? = null
 
     /**
      * getItem
@@ -71,9 +70,9 @@ class LazyFragmentPagerAdapter(
     /**
      * 绑定bottomNavigationView
      */
-    fun bindBottomNavigationView(bottomNavigationView: CustomBottomNavigationView) {
-        this.customBottomNavigationView = bottomNavigationView
-        this.customBottomNavigationView?.setOnNavigationItemSelectedListener(this)
+    fun bindBottomNavigationView(bottomNavigationView: BottomNavigationView) {
+        this.bottomNavigationView = bottomNavigationView
+        this.bottomNavigationView?.setOnNavigationItemSelectedListener(this)
     }
 
     /**
@@ -81,7 +80,7 @@ class LazyFragmentPagerAdapter(
      */
     fun bindViewPagerAndBottomNavigationView(
         viewPager: ViewPager,
-        bottomNavigationView: CustomBottomNavigationView
+        bottomNavigationView: BottomNavigationView
     ) {
         bindViewPager(viewPager)
         bindBottomNavigationView(bottomNavigationView)
@@ -89,7 +88,7 @@ class LazyFragmentPagerAdapter(
 
     override fun onPageSelected(position: Int) {
         refreshFragment(position)
-        customBottomNavigationView?.let {
+        bottomNavigationView?.let {
             if (it.selectedItemId != position) {
                 it.selectedItemId = position
             }
@@ -105,7 +104,7 @@ class LazyFragmentPagerAdapter(
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         viewPager?.let {
             if (it.currentItem != item.itemId) {
-                it.currentItem = item.itemId
+                it.setCurrentItem(item.itemId,false)
             }
         }
         return true
@@ -129,6 +128,7 @@ class LazyFragmentPagerAdapter(
         } else {
             if (!currentFragment.isLoadData) {
                 currentFragment.onRefresh()
+                currentFragment.isLoadData = true
             }
         }
     }

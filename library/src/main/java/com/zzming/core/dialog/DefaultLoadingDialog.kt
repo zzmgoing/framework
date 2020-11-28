@@ -9,9 +9,10 @@ import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.core.widget.ContentLoadingProgressBar
 import com.zzming.core.R
+import com.zzming.core.databinding.CoreCommonDialogLoadingBinding
 import com.zzming.core.extension.isAlive
 import com.zzming.core.extension.runOnMainThread
-import kotlinx.android.synthetic.main.core_common_dialog_loading.*
+import com.zzming.core.utils.ViewUtils
 
 /**
  * @author ZhongZiMing
@@ -23,6 +24,8 @@ class DefaultLoadingDialog(
     @StyleRes themeResId: Int = R.style.Default_Loading_Dialog
 ) : Dialog(context, themeResId), LoadingDialogListener {
 
+    private lateinit var binding: CoreCommonDialogLoadingBinding
+
     var loadingBar: ContentLoadingProgressBar? = null
 
     private val activity by lazy {
@@ -31,8 +34,10 @@ class DefaultLoadingDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.core_common_dialog_loading)
-        loadingBar = common_loading_bar
+        val view = ViewUtils.createView(R.layout.core_common_dialog_loading)
+        binding = CoreCommonDialogLoadingBinding.bind(view)
+        setContentView(binding.root)
+        loadingBar = binding.commonLoadingBar
         loadingBarColor?.let { loadingBarColor = it }
         loadingBarDrawable?.let { loadingBarDrawable = it }
     }
@@ -80,14 +85,14 @@ class DefaultLoadingDialog(
 
     override fun show() {
         super.show()
-        common_loading_bar.post {
-            common_loading_bar.show()
+        binding.commonLoadingBar.post {
+            binding.commonLoadingBar.show()
         }
     }
 
     override fun dismiss() {
         super.dismiss()
-        common_loading_bar.hide()
+        binding.commonLoadingBar.hide()
     }
 
     override fun bindActivity(): Activity {

@@ -1,12 +1,13 @@
 package com.zzming.example.ui.fragment
 
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
 import com.zzming.example.R
+import com.zzming.example.databinding.FragmentHomeBinding
 import com.zzming.example.ui.dialog.CommonDialog
 import com.zzming.example.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * @author ZhongZiMing
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @description
  **/
 class HomeFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentHomeBinding
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity()).get(HomeViewModel::class.java).apply {
@@ -27,14 +30,21 @@ class HomeFragment : BaseFragment() {
         return R.layout.fragment_home
     }
 
+    override fun onCreateView(view: View): View {
+        binding = FragmentHomeBinding.bind(view)
+        return binding.root
+    }
+
     override fun initView() {
-        test_language.setOnClickListener {
+        binding.testLanguage.setOnClickListener {
             CommonDialog.showLanguage(baseActivity)
         }
-        get_request.setOnClickListener {
+        binding.getRequest.setOnClickListener {
             viewModel.getBanner()
         }
     }
 
+    override fun onRefresh() {
+    }
 
 }

@@ -24,7 +24,7 @@ object LibCore : Application.ActivityLifecycleCallbacks {
     /**
      * 是否已经初始化
      */
-    private var isInit = false
+    private var init = false
 
     /**
      * 全局上下文
@@ -40,28 +40,20 @@ object LibCore : Application.ActivityLifecycleCallbacks {
      * 初始化
      */
     fun init(application: Application): LibCore {
-        if (!isInit) {
-            isInit = true
-            context = application
-            handler = Handler(Looper.getMainLooper())
-            LibConfig.init()
-            registerActivityLifecycleCallbacks()
-            LanguageUtil.context = context
-            LanguageUtil.changLanguage(SPUtils.getLocale(), context)
-            logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
+        if(init){
+            return this
         }
-        return this
-    }
-
-    /**
-     * 注册Activity生命周期回调
-     */
-    private fun registerActivityLifecycleCallbacks() {
+        init = true
+        context = application
+        handler = Handler(Looper.getMainLooper())
+        LibConfig.init()
+        LanguageUtil.apply {
+            this.context = application
+            changLanguage(SPUtils.getLocale())
+        }
         context.registerActivityLifecycleCallbacks(this)
-    }
-
-    fun unregisterActivityLifecycleCallbacks() {
-        context.unregisterActivityLifecycleCallbacks(this)
+        logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
+        return this
     }
 
     override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {

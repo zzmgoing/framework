@@ -1,5 +1,6 @@
 package com.zzming.core.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,24 +37,29 @@ abstract class BaseFragment : Fragment(), ViewListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(getLayoutId(), container, false)
-        return onCreateView(view)
-    }
-
-    /**
-     * onViewCreated
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        rootView = onCreateView(inflater.inflate(getLayoutId(), container, false))
+        isLoadData = false
         initView()
+        return rootView
     }
 
     /**
-     * onActivityCreated
+     * onAttach
      */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         baseActivity = requireActivity() as BaseActivity
+    }
+
+    /**
+     * onResume
+     */
+    override fun onResume() {
+        super.onResume()
+        if(!isLoadData){
+            onRefresh()
+            isLoadData = true
+        }
     }
 
     /**
@@ -70,7 +76,6 @@ abstract class BaseFragment : Fragment(), ViewListener {
      * 加载数据
      */
     open fun onRefresh() {
-        isLoadData = true
     }
 
     /**

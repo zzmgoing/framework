@@ -5,8 +5,10 @@ import android.content.Context
 import android.os.Build
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
 import com.zzming.core.collector.LoadingCollector
+import com.zzming.core.utils.ViewUtils
 
 
 /**
@@ -110,4 +112,17 @@ fun Fragment.showLoading() {
  */
 fun Fragment.hideLoading() {
     LoadingCollector.hideLoading(activity)
+}
+
+/**
+ * BottomNavigationView绑定titles和icons
+ */
+fun BottomNavigationView.bind(titles: ArrayList<String>, icons: ArrayList<Int>? = null) {
+    itemIconTintList = null
+    for (i in titles.indices) {
+        val item = menu.add(0, i, i, titles[i])
+        if (!icons.isNullOrEmpty()) {
+            item.icon = ViewUtils.getDrawable(icons[i])
+        }
+    }
 }

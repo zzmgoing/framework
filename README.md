@@ -1,4 +1,4 @@
-# 使用JetPack框架搭建的基础库
+# 学习使用JetPack框架的Demo
 
 - kotlin-version: 1.4.21
 - gradle-tools: 4.1.1

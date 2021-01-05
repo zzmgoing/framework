@@ -20,11 +20,6 @@ abstract class BaseFragment : Fragment(), ViewListener {
     protected lateinit var baseActivity: BaseActivity
 
     /**
-     * rootView
-     */
-    protected lateinit var rootView: View
-
-    /**
      * 是否已经加载过数据
      */
     var isLoadData = false
@@ -37,7 +32,7 @@ abstract class BaseFragment : Fragment(), ViewListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = onCreateView(inflater.inflate(getLayoutId(), container, false))
+        val rootView = onCreateView(inflater.inflate(getLayoutId(), container, false))
         isLoadData = false
         initView()
         return rootView
@@ -82,7 +77,6 @@ abstract class BaseFragment : Fragment(), ViewListener {
      * 初始化View
      */
     open fun onCreateView(view: View): View {
-        this.rootView = view
         return view
     }
 

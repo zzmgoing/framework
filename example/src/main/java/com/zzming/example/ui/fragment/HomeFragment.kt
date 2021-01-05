@@ -1,7 +1,9 @@
 package com.zzming.example.ui.fragment
 
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
 import com.zzming.example.R
@@ -19,10 +21,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity()).get(HomeViewModel::class.java).apply {
-            bannerLiveData.observe(requireActivity(), {
-                showToast(it.toString())
-            })
+        ViewModelProvider(this).get(HomeViewModel::class.java).apply {
+            bannerLiveData.observe(this@HomeFragment, Observer { showToast(it.toString()) })
         }
     }
 

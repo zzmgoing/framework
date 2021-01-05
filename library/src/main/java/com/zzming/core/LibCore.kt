@@ -47,10 +47,8 @@ object LibCore : Application.ActivityLifecycleCallbacks {
         context = application
         handler = Handler(Looper.getMainLooper())
         LibConfig.init()
-        LanguageUtil.apply {
-            this.context = application
-            changLanguage(SPUtils.getLocale())
-        }
+        LanguageUtil.context = application
+        LanguageUtil.changLanguage(SPUtils.getLocale())
         context.registerActivityLifecycleCallbacks(this)
         logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
         return this

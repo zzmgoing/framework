@@ -10,7 +10,7 @@ import com.zzming.core.room.table.Config
  * @time 2020/11/26
  * @description AppDatabase
  **/
-@Database(entities = [Config::class], version = 1)
+@Database(entities = [Config::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun configDao(): ConfigDao
 }

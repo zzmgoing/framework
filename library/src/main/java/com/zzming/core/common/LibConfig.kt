@@ -18,7 +18,7 @@ object LibConfig {
     /**
      * 是否开启日志
      */
-    var isOpenLog = false
+    var isOpenLog = BuildConfig.DEBUG
 
     /**
      * 应用名称

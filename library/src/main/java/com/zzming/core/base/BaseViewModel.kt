@@ -10,7 +10,7 @@ import com.zzming.core.common.Constant
  * @time 2020/6/6 15:16
  * @description BaseViewModel
  **/
-open class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     /**
      * 加载中的状态

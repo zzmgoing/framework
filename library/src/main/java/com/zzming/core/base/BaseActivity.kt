@@ -7,7 +7,9 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.A_TAG
+import com.zzming.core.extension.hideLoading
 import com.zzming.core.extension.logError
+import com.zzming.core.extension.showLoading
 import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.ViewUtils
 
@@ -101,17 +103,21 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
     }
 
     /**
-     * Loading
+     * changeLoadState
      */
-    override fun showLoadingState(type: Int) {
-
-    }
-
-    /**
-     * LoadMore
-     */
-    override fun showLoadMoreState(type: Int) {
-
+    override fun changeLoadState(type: String, status: Int) {
+        when (type) {
+            Constant.LOAD_DEFAULT -> {
+                when (status) {
+                    LoadStatus.LOADING.value -> {
+                        showLoading()
+                    }
+                    LoadStatus.LOAD_FINISH.value -> {
+                        hideLoading()
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -138,9 +144,10 @@ abstract class BaseActivity : AppCompatActivity(), ViewListener {
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (Constant.PAGE_REQUEST_CODE == requestCode && Constant.PAGE_RESULT_CODE == resultCode) {
-            val rootTag = data?.getStringExtra(Constant.PAGE_ROOT_TAG)
-            if (!rootTag.isNullOrEmpty() && A_TAG != rootTag) {
-                onBackPressed()
+            data?.getStringExtra(Constant.PAGE_ROOT_TAG)?.let {
+                if (it.isNotEmpty() && A_TAG != it) {
+                    onBackPressed()
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

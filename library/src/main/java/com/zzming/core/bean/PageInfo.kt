@@ -17,20 +17,24 @@ class PageInfo {
      */
     var PAGE_SIZE = 20
 
+    /**
+     * 是否是第一页
+     */
+    val isFirstPage
+        get() = page == 0
+
+    /**
+     * 下一页
+     */
     fun nextPage() {
         page++
     }
 
+    /**
+     * 重置
+     */
     fun reset() {
         page = 0
-    }
-
-    fun isFirstPage(): Boolean {
-        return page == 0
-    }
-
-    fun setPageSize(size: Int){
-        PAGE_SIZE = size
     }
 
 }

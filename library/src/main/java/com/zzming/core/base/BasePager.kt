@@ -12,18 +12,16 @@ import com.zzming.core.utils.ViewUtils
  * @time 2020/7/23 10:01
  * @description BasePager
  **/
-abstract class BasePager(private val activity: AppCompatActivity, private val rootView: View) : FullLifecycleObserver,LoadingDialogListener {
+abstract class BasePager(private val activity: AppCompatActivity, private val rootView: View) :
+    FullLifecycleObserver, LoadingDialogListener {
 
     constructor(activity: AppCompatActivity, layoutId: Int) : this(
         activity,
         ViewUtils.createView(layoutId)
     )
 
-    init {
-        activity.lifecycle.addObserver(this)
-    }
-
     override fun onCreate() {
+        activity.lifecycle.addObserver(this)
     }
 
     override fun onStart() {

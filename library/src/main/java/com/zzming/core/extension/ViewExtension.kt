@@ -3,12 +3,16 @@ package com.zzming.core.extension
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.os.Looper
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
 import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.utils.ViewUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 /**
@@ -40,6 +44,9 @@ val Any.SIMPLE_NAME_TAG: String
  */
 fun runOnMainThread(runnable: () -> Unit) {
     LibCore.handler.post(runnable)
+//    GlobalScope.launch(Dispatchers.Main) {
+//        runnable.invoke()
+//    }
 }
 
 /**
@@ -47,7 +54,7 @@ fun runOnMainThread(runnable: () -> Unit) {
  */
 fun Any.showToast(msg: String?) {
     msg?.apply {
-        if ("main" == Thread.currentThread().name) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
         } else {
             runOnMainThread {

@@ -1,5 +1,6 @@
 package com.zzming.core.base
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zzming.core.bean.PageInfo
@@ -13,14 +14,38 @@ import com.zzming.core.common.Constant
 abstract class BaseViewModel : ViewModel() {
 
     /**
-     * 加载中的状态
+     * 数据状态同步管理
      */
-    val loadingState = MutableLiveData<Int>()
+    val loadStatusMap = HashMap<String, MutableLiveData<Int>>()
 
     /**
-     * 列表页面加载更多的状态
+     * 注册数据状态
      */
-    val loadMoreState = MutableLiveData<Int>()
+    fun registerLoad(type: String = Constant.LOAD_DEFAULT): MutableLiveData<Int>? {
+        if (!loadStatusMap.containsKey(type)) {
+            loadStatusMap[type] = MutableLiveData<Int>()
+        }
+        return loadStatusMap[type]
+    }
+
+    /**
+     * 解除数据状态
+     */
+    fun unRegisterLoad(type: String = Constant.LOAD_DEFAULT) {
+        if (loadStatusMap.containsKey(type)) {
+            loadStatusMap.remove(type)
+        }
+    }
+
+    /**
+     * 通知数据状态变化
+     */
+    @MainThread
+    fun notifyLoadStatus(type: String, status: Int) {
+        loadStatusMap[type]?.let {
+            it.value = status
+        }
+    }
 
     /**
      * 列表加载页数
@@ -39,18 +64,6 @@ abstract class BaseViewModel : ViewModel() {
      */
     open fun loadMore() {
 
-    }
-
-    /**
-     * 错误处理
-     */
-    open fun requestFail() {
-        if (loadingState.value == Constant.LOADING) {
-            loadingState.value = Constant.FAIL
-        }
-        if (loadMoreState.value == Constant.LOADING) {
-            loadMoreState.value = Constant.FAIL
-        }
     }
 
 }

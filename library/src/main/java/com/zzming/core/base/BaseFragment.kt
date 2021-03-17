@@ -51,7 +51,7 @@ abstract class BaseFragment : Fragment(), ViewListener {
      */
     override fun onResume() {
         super.onResume()
-        if(!isLoadData){
+        if (!isLoadData) {
             onRefresh()
             isLoadData = true
         }
@@ -81,17 +81,10 @@ abstract class BaseFragment : Fragment(), ViewListener {
     }
 
     /**
-     * Loading
+     * changeLoadState
      */
-    override fun showLoadingState(type: Int) {
-        baseActivity.showLoadingState(type)
-    }
-
-    /**
-     * LoadMore
-     */
-    override fun showLoadMoreState(type: Int) {
-        baseActivity.showLoadMoreState(type)
+    override fun changeLoadState(type: String, status: Int) {
+        baseActivity.changeLoadState(type, status)
     }
 
     /**

@@ -35,11 +35,9 @@ class Constant {
         const val PAGE_RESULT_CODE = 607
 
         /**
-         *  刷新加载
+         *  数据加载类型
          */
-        const val LOADING = 0
-        const val SUCCESS = 1
-        const val FAIL = 2
+        const val LOAD_DEFAULT = "load_default"
 
         /**
          *  h5页面title

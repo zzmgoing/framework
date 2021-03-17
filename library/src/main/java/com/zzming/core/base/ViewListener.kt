@@ -10,18 +10,9 @@ import android.os.Bundle
 interface ViewListener {
 
     /**
-     * 0刷新中
-     * 1刷新成功
-     * 2刷新失败
+     * 加载状态改变回调
      */
-    fun showLoadingState(type: Int)
-
-    /**
-     * 0加载中
-     * 1加载成功
-     * 2加载失败
-     */
-    fun showLoadMoreState(type: Int)
+    fun changeLoadState(type: String, status: Int)
 
     /**
      * Activity跳转

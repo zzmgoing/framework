@@ -2,12 +2,13 @@ package com.zzming.core.extension
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.zzming.core.factory.DataStoreFactory
 import com.zzming.core.utils.SPUtils
 
 /**
  * 获取默认的SharedPreferences
  */
-fun Context.preferences(name: String = SPUtils.ZZM_CORE_LIBRARY_SP): SharedPreferences {
+fun Context.preferences(name: String = SPUtils.DEFAULT_SP_NAME): SharedPreferences {
     return SPUtils.getPreferences(name, this)
 }
 

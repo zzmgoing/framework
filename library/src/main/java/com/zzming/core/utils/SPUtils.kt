@@ -14,7 +14,7 @@ import java.util.*
  **/
 object SPUtils {
 
-    const val ZZM_CORE_LIBRARY_SP = "zzm_core_library_sp"
+    const val DEFAULT_SP_NAME = "zzm_core_library_sp"
 
     private const val LOCALE_KEY = "locale_key"
 

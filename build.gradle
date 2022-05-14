@@ -3,15 +3,15 @@
 apply from: 'config.gradle'
 
 buildscript {
-    ext.kotlin_version = "1.4.30"
+    ext.kotlin_version = "1.6.10"
     repositories {
         mavenLocal()
         google()
-        jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -22,8 +22,11 @@ allprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
     }
 }
 

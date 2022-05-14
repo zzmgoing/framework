@@ -9,7 +9,6 @@ def ext = rootProject.ext
 
 android {
     compileSdkVersion ext._compileSdkVersion
-    buildToolsVersion ext._buildToolsVersion
 
     defaultConfig {
         applicationId ext._applicationId
@@ -19,7 +18,6 @@ android {
         versionName ext._versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {

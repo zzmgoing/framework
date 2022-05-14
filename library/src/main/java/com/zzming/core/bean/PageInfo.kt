@@ -15,7 +15,7 @@ class PageInfo {
     /**
      * 加载页数
      */
-    var PAGE_SIZE = 20
+    var PAGE_SIZE = 10
 
     /**
      * 是否是第一页

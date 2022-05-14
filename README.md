@@ -1,7 +1,7 @@
-# 学习使用JetPack框架的Demo
+# 一些基础库，满足基本的开发需求
 
-- kotlin-version: 1.4.21
-- gradle-tools: 4.1.2
-- compileSdkVersion: 30
+- kotlin-version: 1.4.32
+- gradle-tools: 1.6.10
+- compileSdkVersion: 32
 - minSdkVersion: 16
 - targetSdkVersion: 30

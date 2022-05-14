@@ -1,6 +1,6 @@
 rootProject.ext {
     _applicationId = "com.zzming.example"
-    _compileSdkVersion = 30
+    _compileSdkVersion = 32
     _buildToolsVersion = "30.0.1"
     _minSdkVersion = 16
     _targetSdkVersion = 30

@@ -1,6 +1,8 @@
 package com.zzming.example.ui.fragment
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.zzming.core.base.BaseFragment
 import com.zzming.example.R
 import com.zzming.example.databinding.FragmentFunctionBinding
@@ -14,12 +16,8 @@ class FunctionFragment: BaseFragment() {
 
     private lateinit var binding: FragmentFunctionBinding
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_function
-    }
-
-    override fun onCreateView(view: View): View {
-        binding = FragmentFunctionBinding.bind(view)
+    override fun getContentView(inflater: LayoutInflater, container: ViewGroup?): View {
+        binding = FragmentFunctionBinding.inflate(inflater, container, false)
         return binding.root
     }
 

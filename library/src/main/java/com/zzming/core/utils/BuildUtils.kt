@@ -18,6 +18,13 @@ class BuildUtils {
         }
 
         /**
+         * Android 9.0
+         */
+        fun isAtLeast28Api(): Boolean {
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+        }
+
+        /**
          * Android 8.0
          */
         fun isAtLeast26Api(): Boolean {
@@ -36,6 +43,13 @@ class BuildUtils {
          */
         fun isAtLeast23Api(): Boolean {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        }
+
+        /**
+         * Android 5.0
+         */
+        fun isAtLeast21Api(): Boolean {
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         }
 
         /**

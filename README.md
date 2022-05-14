@@ -4,4 +4,4 @@
 - gradle-tools: 7.2.0
 - compileSdkVersion: 32
 - minSdkVersion: 16
-- targetSdkVersion: 30
+- targetSdkVersion: 32

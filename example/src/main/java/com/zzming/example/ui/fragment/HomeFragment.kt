@@ -1,12 +1,12 @@
 package com.zzming.example.ui.fragment
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
-import com.zzming.example.R
 import com.zzming.example.databinding.FragmentHomeBinding
 import com.zzming.example.ui.dialog.CommonDialog
 import com.zzming.example.viewmodel.HomeViewModel
@@ -26,12 +26,8 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_home
-    }
-
-    override fun onCreateView(view: View): View {
-        binding = FragmentHomeBinding.bind(view)
+    override fun getContentView(inflater: LayoutInflater, container: ViewGroup?): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 

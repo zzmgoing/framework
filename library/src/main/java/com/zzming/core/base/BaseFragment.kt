@@ -12,12 +12,12 @@ import androidx.fragment.app.Fragment
  * @time 2020/6/8 17:02
  * @description Fragment基类
  **/
-abstract class BaseFragment : Fragment(), ViewListener {
+abstract class BaseFragment : Fragment() {
 
     /**
      * activity
      */
-    protected lateinit var baseActivity: BaseActivity
+    lateinit var baseActivity: BaseActivity
 
     /**
      * 是否已经加载过数据
@@ -32,7 +32,7 @@ abstract class BaseFragment : Fragment(), ViewListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = onCreateView(inflater.inflate(getLayoutId(), container, false))
+        val rootView = getContentView(inflater, container)
         isLoadData = false
         initView()
         return rootView
@@ -58,9 +58,9 @@ abstract class BaseFragment : Fragment(), ViewListener {
     }
 
     /**
-     * 布局ID
+     * 初始化View
      */
-    abstract fun getLayoutId(): Int
+    abstract fun getContentView(inflater: LayoutInflater, container: ViewGroup?): View
 
     /**
      * 初始化view
@@ -72,26 +72,4 @@ abstract class BaseFragment : Fragment(), ViewListener {
      */
     open fun onRefresh() {
     }
-
-    /**
-     * 初始化View
-     */
-    open fun onCreateView(view: View): View {
-        return view
-    }
-
-    /**
-     * changeLoadState
-     */
-    override fun changeLoadState(type: String, status: Int) {
-        baseActivity.changeLoadState(type, status)
-    }
-
-    /**
-     * startActivity
-     */
-    override fun startActivity(toTag: String, rootTag: String?, bundle: Bundle?, type: String?) {
-        baseActivity.startActivity(toTag, rootTag, bundle, type)
-    }
-
 }

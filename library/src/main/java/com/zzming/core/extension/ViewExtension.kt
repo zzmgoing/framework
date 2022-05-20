@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Looper
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -139,14 +141,20 @@ fun BottomNavigationView.bind(titles: ArrayList<String>, icons: ArrayList<Int>? 
     }
 }
 
+/**
+ * 全屏
+ */
 fun AppCompatActivity.fullscreen() {
     WindowCompat.setDecorFitsSystemWindows(window,false)
-    ViewCompat.getWindowInsetsController(window.decorView)?.let {
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
         it.hide(WindowInsetsCompat.Type.systemBars())
         it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }
 
+/**
+ * 透明状态栏
+ */
 fun AppCompatActivity.transparentStatusBar() {
     WindowCompat.setDecorFitsSystemWindows(window,false)
     window.apply {
@@ -162,4 +170,20 @@ fun AppCompatActivity.transparentStatusBar() {
         it.isAppearanceLightStatusBars = true
         it.isAppearanceLightNavigationBars = true
     }
+}
+
+/**
+ * dp2px
+ */
+fun Any.dp2px(dp: Float): Int {
+    val displayMetrics: DisplayMetrics = LibCore.context.resources.displayMetrics
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics).toInt()
+}
+
+/**
+ * px2dp
+ */
+fun Any.px2dp(px: Int): Float {
+    val density: Float = LibCore.context.resources.displayMetrics.density
+    return (px / density)
 }

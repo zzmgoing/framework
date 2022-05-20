@@ -1,6 +1,5 @@
 <resources>
 
-
     <style name="Default.Loading.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

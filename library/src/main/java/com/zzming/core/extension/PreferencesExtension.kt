@@ -2,7 +2,6 @@ package com.zzming.core.extension
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.zzming.core.factory.DataStoreFactory
 import com.zzming.core.utils.SPUtils
 
 /**

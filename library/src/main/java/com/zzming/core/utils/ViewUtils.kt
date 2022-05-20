@@ -119,6 +119,20 @@ class ViewUtils {
             LibCore.context.startActivity(intent)
         }
 
+        fun getScreenWidth(): Int {
+            return LibCore.context.resources.displayMetrics.widthPixels
+        }
+
+        fun getScreenHeight(): Int {
+            return LibCore.context.resources.displayMetrics.heightPixels
+        }
+
+        fun getColorWithAlpha(alpha: Float, baseColor: Int): Int {
+            val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
+            val rgb = 0x00ffffff and baseColor
+            return a + rgb
+        }
+
     }
 
 }

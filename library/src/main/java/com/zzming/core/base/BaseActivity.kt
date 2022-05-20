@@ -23,11 +23,17 @@ abstract class BaseActivity : AppCompatActivity() {
      * onCreate
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        beforeOnCreate()
         super.onCreate(savedInstanceState)
         beforeContentView()
         initContentView()
         initView()
     }
+
+    /**
+     * 调用onCreate之前
+     */
+    open fun beforeOnCreate() {}
 
     /**
      * 绑定view之前

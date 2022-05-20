@@ -6,7 +6,6 @@ import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @author ZhongZiMing
@@ -29,7 +28,7 @@ object ActivityCollector {
      * 允许重复打开的Activity，避免点击或回调打开多个相同页面
      * 比如H5页面，允许同时打开多个
      */
-    private val repeatActivities = arrayOf("CcpConfig.H5Activity")
+    private val repeatActivities = HashSet<String>()
 
     /**
      * 检查是否为重复页面，true则表明当前栈顶已有相同Activity
@@ -38,8 +37,8 @@ object ActivityCollector {
      * false 表明不打开相同栈顶页面，比如不重复打开登录页面
      */
     fun checkRepeatActivity(activity: Activity): Boolean {
-        return if (this.weakRefActivity?.get()?.A_TAG == activity.A_TAG) {
-            Arrays.binarySearch(repeatActivities, activity.A_TAG) > 0
+        return if (activity.A_TAG == this.weakRefActivity?.get()?.A_TAG) {
+            repeatActivities.contains(activity.A_TAG)
         } else {
             false
         }

@@ -4,6 +4,7 @@ import com.zzming.core.LibCore
 import com.zzming.core.adapter.LazyFragmentPagerAdapter
 import com.zzming.core.base.BaseActivity
 import com.zzming.core.extension.bind
+import com.zzming.core.extension.transparentStatusBar
 import com.zzming.example.R
 import com.zzming.example.databinding.ActivityMainBinding
 import com.zzming.example.ui.fragment.FunctionFragment
@@ -22,6 +23,10 @@ class MainActivity : BaseActivity() {
     private val fragments = arrayListOf(HomeFragment(), FunctionFragment(), MineFragment())
 
     private val adapter = LazyFragmentPagerAdapter(fragments, supportFragmentManager)
+
+    override fun beforeContentView() {
+        transparentStatusBar()
+    }
 
     override fun initContentView() {
         binding = ActivityMainBinding.inflate(layoutInflater)

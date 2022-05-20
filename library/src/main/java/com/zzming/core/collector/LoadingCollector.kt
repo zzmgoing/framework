@@ -1,9 +1,8 @@
 package com.zzming.core.collector
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.zzming.core.base.SimpleLifecycleObserver
 import com.zzming.core.dialog.LoadingDialogListener
 import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.isAlive
@@ -13,7 +12,7 @@ import com.zzming.core.extension.isAlive
  * @time 2020/9/8 11:07
  * @description
  **/
-object LoadingCollector {
+object LoadingCollector : DefaultLifecycleObserver {
 
     /**
      * loadingViewSet
@@ -25,13 +24,10 @@ object LoadingCollector {
      */
     fun addLoading(loadingDialogListener: LoadingDialogListener) {
         val activity = loadingDialogListener.bindActivity()
-        val tag = activity.SIMPLE_NAME_TAG
-        if (!loadingViewMap.containsKey(tag)) {
-            if (activity is AppCompatActivity) {
-                LoadingLifecycleObserver(activity, tag)
-            }
-            loadingViewMap[tag] = loadingDialogListener
+        if (activity is LifecycleOwner) {
+            activity.lifecycle.addObserver(this)
         }
+        loadingViewMap[activity.SIMPLE_NAME_TAG] = loadingDialogListener
     }
 
     /**
@@ -57,16 +53,20 @@ object LoadingCollector {
     }
 
     /**
-     * SimpleLifecycleObserver
+     * removeLoading
      */
-    class LoadingLifecycleObserver(lifecycleOwner: LifecycleOwner, private val tag: String) :
-        SimpleLifecycleObserver(lifecycleOwner) {
-
-        override fun onDestroy() {
-            super.onDestroy()
-            loadingViewMap.remove(tag)
+    private fun removeLoading(owner: LifecycleOwner) {
+        val iterator = loadingViewMap.iterator()
+        while (iterator.hasNext()) {
+            val dialog = iterator.next().value
+            if (owner == dialog.bindActivity()) {
+                iterator.remove()
+            }
         }
+    }
 
+    override fun onDestroy(owner: LifecycleOwner) {
+        removeLoading(owner)
     }
 
 }

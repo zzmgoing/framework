@@ -59,7 +59,7 @@ fun runOnMainThread(runnable: () -> Unit) {
 /**
  * 显示土司
  */
-fun Any.showToast(msg: String?) {
+fun showToast(msg: String?) {
     msg?.apply {
         if (Looper.getMainLooper() == Looper.myLooper()) {
             Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
@@ -175,7 +175,7 @@ fun AppCompatActivity.transparentStatusBar() {
 /**
  * dp2px
  */
-fun Any.dp2px(dp: Float): Int {
+fun dp2px(dp: Float): Int {
     val displayMetrics: DisplayMetrics = LibCore.context.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics).toInt()
 }
@@ -183,7 +183,7 @@ fun Any.dp2px(dp: Float): Int {
 /**
  * px2dp
  */
-fun Any.px2dp(px: Int): Float {
+fun px2dp(px: Int): Float {
     val density: Float = LibCore.context.resources.displayMetrics.density
     return (px / density)
 }

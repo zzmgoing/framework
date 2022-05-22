@@ -33,8 +33,12 @@ object HttpUtils {
         params: HashMap<String, String>? = null,
         headers: HashMap<String, String>? = null
     ): String? {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return null
+        }
         val request = Request.Builder().apply {
-            url(createUrl(url, params))
+            url(createUrl(finalUrl, params))
             addHeader(this, headers)
             get()
         }.build()
@@ -57,8 +61,12 @@ object HttpUtils {
         headers: HashMap<String, String>? = null,
         callback: HttpCallback<*>
     ) {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return
+        }
         val request = Request.Builder().apply {
-            url(createUrl(url, params))
+            url(createUrl(finalUrl, params))
             addHeader(this, headers)
             get()
         }.build()
@@ -73,8 +81,12 @@ object HttpUtils {
         params: HashMap<String, String>? = null,
         headers: HashMap<String, String>? = null
     ): String? {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return null
+        }
         val request = Request.Builder().apply {
-            url(url)
+            url(finalUrl)
             addHeader(this, headers)
             post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
         }.build()
@@ -87,11 +99,34 @@ object HttpUtils {
     fun postJson(
         url: String,
         params: HashMap<String, String>? = null,
+        callback: HttpCallback<*>
+    ) {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return
+        }
+        val request = Request.Builder().apply {
+            url(finalUrl)
+            post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
+        }.build()
+        okHttpClient.newCall(request).enqueue(callback)
+    }
+
+    /**
+     * post
+     */
+    fun postJson(
+        url: String,
+        params: HashMap<String, String>? = null,
         headers: HashMap<String, String>? = null,
         callback: HttpCallback<*>
     ) {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return
+        }
         val request = Request.Builder().apply {
-            url(url)
+            url(finalUrl)
             addHeader(this, headers)
             post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
         }.build()
@@ -109,6 +144,22 @@ object HttpUtils {
             }
             url + sb.toString().substring(0, sb.toString().length - 1)
         } ?: url
+    }
+
+    private fun getUrl(url: String): String {
+        if (!LibHttpConfig.BASE_URL.isNullOrEmpty() &&
+            !url.startsWith("http")
+        ) {
+            return "${LibHttpConfig.BASE_URL}${url}"
+        }
+        return url
+    }
+
+    private fun checkUrl(url: String): Boolean {
+        if (!url.startsWith("http")) {
+            return false
+        }
+        return true
     }
 
     /**

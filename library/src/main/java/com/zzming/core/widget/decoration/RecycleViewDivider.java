@@ -1,4 +1,4 @@
-package com.zzming.core.widget;
+package com.zzming.core.widget.decoration;
 
 import android.content.Context;
 import android.content.res.TypedArray;

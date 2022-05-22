@@ -42,6 +42,12 @@ fun logDebug(tag: String?, msg: String?) {
     }
 }
 
+fun logError(tag: String?, msg: String?) {
+    if (LibConfig.isOpenLog) {
+        Log.e(tag, msg.toString(), null)
+    }
+}
+
 fun logError(msg: String?, error: Throwable? = null) {
     if (LibConfig.isOpenLog) {
         Log.e(LibConfig.packageName, msg.toString(), error)

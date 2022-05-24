@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_f7f7f7"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen_10dp">
+        android:orientation="vertical">
+
+        <com.zzming.core.widget.CommonTitleBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:fix_status_bar="true"
+            app:hide_back_icon="false"
+            app:left_icon_src="@drawable/main_tab_home_selected"
+            app:right_icon1_src="@drawable/main_tab_function_selected"
+            app:right_icon2_src="@drawable/main_tab_function_unselected"
+            app:right_icon3_src="@drawable/main_tab_mine_selected"
+            app:title="这是标题"
+            app:title_color="@color/red_fa5645"
+            app:title_location="CENTER" />
 
         <TextView
             android:id="@+id/test_language"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@color/colorAccent"
             android:gravity="center"
+            android:text="@string/international_testing"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_24sp"
-            android:text="@string/international_testing" />
+            android:textSize="@dimen/dimen_24sp" />
 
         <TextView
             android:id="@+id/get_request"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_24sp"
             android:text="Get Request"
-            android:layout_marginTop="@dimen/dimen_10dp"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_24sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

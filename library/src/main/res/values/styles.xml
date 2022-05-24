@@ -10,4 +10,51 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <declare-styleable name="labels_view">
+        <attr name="selectType" format="enum">
+            <enum name="NONE" value="1" />
+            <enum name="SINGLE" value="2" />
+            <enum name="SINGLE_IRREVOCABLY" value="3" />
+            <enum name="MULTI" value="4" />
+        </attr>
+        <attr name="maxSelect" format="integer" />
+        <attr name="maxLines" format="integer" />
+        <attr name="labelTextColor" format="reference|color" />
+        <attr name="labelTextSize" format="integer" />
+        <attr name="labelTextPaddingLeft" format="dimension" />
+        <attr name="labelTextMinWidth" format="dimension" />
+        <attr name="labelTextPaddingTop" format="dimension" />
+        <attr name="labelTextPaddingRight" format="dimension" />
+        <attr name="labelTextPaddingBottom" format="dimension" />
+        <attr name="lineMargin" format="dimension" />
+        <attr name="wordMargin" format="dimension" />
+        <attr name="labelBackground" format="reference|color" />
+        <attr name="labelTextBackground" format="color" />
+        <attr name="labelSelectedBackground" format="color" />
+        <attr name="labelStrokeColor" format="color" />
+        <attr name="labelSelectedTextColor" format="color" />
+        <attr name="labelDefaultTextColor" format="color" />
+        <attr name="labelSelectedStrokeColor" format="color" />
+        <attr name="labelStrokeWidth" format="dimension" />
+        <attr name="labelRoundRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonTitleBar">
+        <attr name="title" format="string" />
+        <attr name="title_size" format="dimension|float" />
+        <attr name="title_color" format="color" />
+        <attr name="title_location" format="enum">
+            <enum name="CENTER" value="1" />
+            <enum name="LEFT" value="2" />
+        </attr>
+        <attr name="left_icon_width" format="dimension|float" />
+        <attr name="right_icon_width" format="dimension|float" />
+        <attr name="left_icon_src" format="reference|color" />
+        <attr name="right_icon1_src" format="reference|color" />
+        <attr name="right_icon2_src" format="reference|color" />
+        <attr name="right_icon3_src" format="reference|color" />
+        <attr name="fix_status_bar" format="boolean" />
+        <attr name="hide_back_icon" format="boolean" />
+    </declare-styleable>
+
 </resources>

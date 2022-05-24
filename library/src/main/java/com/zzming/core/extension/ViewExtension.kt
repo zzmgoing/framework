@@ -145,7 +145,7 @@ fun BottomNavigationView.bind(titles: ArrayList<String>, icons: ArrayList<Int>? 
  * 全屏
  */
 fun AppCompatActivity.fullscreen() {
-    WindowCompat.setDecorFitsSystemWindows(window,false)
+    WindowCompat.setDecorFitsSystemWindows(window, false)
     ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
         it.hide(WindowInsetsCompat.Type.systemBars())
         it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -153,23 +153,70 @@ fun AppCompatActivity.fullscreen() {
 }
 
 /**
+ * 退出全屏
+ */
+fun AppCompatActivity.exitFullscreen() {
+    WindowCompat.setDecorFitsSystemWindows(window, true)
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
+        it.show(WindowInsetsCompat.Type.systemBars())
+    }
+}
+
+/**
  * 透明状态栏
  */
 fun AppCompatActivity.transparentStatusBar() {
-    WindowCompat.setDecorFitsSystemWindows(window,false)
+    setStatusBarColor()
+}
+
+/**
+ * 设置状态栏颜色
+ */
+fun AppCompatActivity.setStatusBarColor(color: Int = Color.TRANSPARENT) {
+    WindowCompat.setDecorFitsSystemWindows(window, false)
     window.apply {
         if (BuildUtils.isAtLeast21Api()) {
-            statusBarColor = Color.TRANSPARENT
-            navigationBarColor = Color.TRANSPARENT
+            statusBarColor = color
+            navigationBarColor = color
         }
         if (BuildUtils.isAtLeast28Api()) {
-            navigationBarDividerColor = Color.TRANSPARENT
+            navigationBarDividerColor = color
         }
     }
-    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
-        it.isAppearanceLightStatusBars = true
-        it.isAppearanceLightNavigationBars = true
+    if (color == Color.TRANSPARENT) {
+        statusBarFontDark()
     }
+}
+
+/**
+ * 状态栏黑色或白色
+ */
+fun AppCompatActivity.statusBarFontDark(isDark: Boolean = true) {
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
+        it.isAppearanceLightStatusBars = isDark
+        it.isAppearanceLightNavigationBars = isDark
+    }
+}
+
+/**
+ * 是否显示状态栏
+ */
+fun AppCompatActivity.isShowStatusBar(isShow: Boolean = true) {
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
+        if (isShow) {
+            it.show(WindowInsetsCompat.Type.systemBars())
+        } else {
+            it.hide(WindowInsetsCompat.Type.systemBars())
+        }
+    }
+}
+
+/**
+ * 是否显示状态栏
+ */
+fun AppCompatActivity.getStatusBarHeight(): Int {
+    val compat = ViewCompat.getRootWindowInsets(findViewById<FrameLayout>(android.R.id.content))
+    return compat?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
 }
 
 /**

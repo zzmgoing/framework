@@ -55,6 +55,13 @@ object HttpUtils {
     /**
      * get异步
      */
+    fun get(url: String, params: HashMap<String, String>, callback: HttpCallback<*>) {
+        get(url, params, null, callback)
+    }
+
+    /**
+     * get异步
+     */
     fun get(
         url: String,
         params: HashMap<String, String>? = null,

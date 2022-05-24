@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.zzming.core.extension.hideLoading
+import com.zzming.core.extension.showLoading
 
 /**
  * @author ZhongZiMing
@@ -71,5 +73,18 @@ abstract class BaseFragment : Fragment() {
      * 加载数据
      */
     open fun onRefresh() {
+    }
+
+    /**
+     * 綁定BaseViewModel，目前只有loading
+     */
+    fun registerViewModel(viewModel: BaseViewModel) {
+        viewModel.loading.observe(this) {
+            if (it) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        }
     }
 }

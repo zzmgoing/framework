@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.zzming.core.extension.hideLoading
+import com.zzming.core.extension.showLoading
 import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.ViewUtils
 
@@ -100,6 +102,19 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(LanguageUtil.attachBaseContext(newBase!!))
+    }
+
+    /**
+     * 綁定BaseViewModel，目前只有loading
+     */
+    fun registerViewModel(viewModel: BaseViewModel) {
+        viewModel.loading.observe(this) {
+            if (it) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        }
     }
 
 }

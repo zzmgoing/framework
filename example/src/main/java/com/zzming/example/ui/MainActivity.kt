@@ -1,5 +1,6 @@
 package com.zzming.example.ui
 
+import androidx.viewpager.widget.ViewPager
 import com.zzming.core.LibCore
 import com.zzming.core.adapter.LazyFragmentPagerAdapter
 import com.zzming.core.base.BaseActivity
@@ -16,7 +17,7 @@ import com.zzming.example.ui.fragment.MineFragment
  * @time 2020/8/3
  * @description
  **/
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -24,7 +25,7 @@ class MainActivity : BaseActivity() {
 
     private val adapter = LazyFragmentPagerAdapter(fragments, supportFragmentManager)
 
-    override fun beforeContentView() {
+    override fun beforeOnCreate() {
         transparentStatusBar()
     }
 
@@ -46,6 +47,17 @@ class MainActivity : BaseActivity() {
         )
         adapter.bindViewPagerAndBottomNavigationView(binding.mainViewPager, binding.mainBottomTab)
         binding.mainBottomTab.bind(titles, icons)
+        binding.mainViewPager.addOnPageChangeListener(this)
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    }
+
+    override fun onPageSelected(position: Int) {
+
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
     }
 
 }

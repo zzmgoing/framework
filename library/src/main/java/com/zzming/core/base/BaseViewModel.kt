@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
  * @time 2022/5/24
  * @description
  **/
-class BaseViewModel : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
     /**
      * ture 显示loading

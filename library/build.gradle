@@ -5,14 +5,12 @@ plugins {
     id 'kotlin-kapt'
 }
 
-def ext = rootProject.ext
-
 android {
-    compileSdkVersion ext._compileSdkVersion
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion ext._minSdkVersion
-        targetSdkVersion ext._targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 32
 
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

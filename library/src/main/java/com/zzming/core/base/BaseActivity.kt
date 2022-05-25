@@ -4,8 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.zzming.core.extension.hideLoading
-import com.zzming.core.extension.showLoading
+import androidx.lifecycle.Observer
 import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.ViewUtils
 
@@ -14,7 +13,12 @@ import com.zzming.core.utils.ViewUtils
  * @time 2020/6/5 18:57
  * @description Activity基类
  **/
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), Observer<Any> {
+
+    /**
+     * BaseViewModel
+     */
+    lateinit var viewModel: T
 
     /**
      * 判断当前Activity是否在前台
@@ -28,7 +32,9 @@ abstract class BaseActivity : AppCompatActivity() {
         beforeOnCreate()
         super.onCreate(savedInstanceState)
         beforeContentView()
-        initContentView()
+        createContentView()
+        initViewModel()
+        registerViewModel()
         initView()
     }
 
@@ -43,21 +49,26 @@ abstract class BaseActivity : AppCompatActivity() {
     open fun beforeContentView() {}
 
     /**
+     * 初始化ViewModel
+     */
+    private fun initViewModel() {
+        viewModel = createViewModel()
+    }
+
+    /**
+     * 初始化ViewModel
+     */
+    abstract fun createViewModel(): T
+
+    /**
      * 绑定view
      */
-    abstract fun initContentView()
+    abstract fun createContentView()
 
     /**
      * 初始化view
      */
     abstract fun initView()
-
-    /**
-     * onStart
-     */
-    override fun onStart() {
-        super.onStart()
-    }
 
     /**
      * onResume
@@ -76,20 +87,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     /**
-     * onStop
-     */
-    override fun onStop() {
-        super.onStop()
-    }
-
-    /**
-     * onDestroy
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    /**
      * dispatchTouchEvent
      */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -105,16 +102,17 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     /**
-     * 綁定BaseViewModel，目前只有loading
+     * BaseViewModel
      */
-    fun registerViewModel(viewModel: BaseViewModel) {
-        viewModel.loading.observe(this) {
-            if (it) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
-        }
+    open fun registerViewModel() {
+        viewModel.observer.observe(this, this)
+    }
+
+    /**
+     * 来自ViewModel的消息
+     */
+    override fun onChanged(t: Any?) {
+
     }
 
 }

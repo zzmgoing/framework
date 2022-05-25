@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModel
 open class BaseViewModel : ViewModel() {
 
     /**
-     * ture 显示loading
-     * false 隐藏loading
+     * 通知事务
      */
-    val loading = MutableLiveData<Boolean>()
-
+    val observer = MutableLiveData<Any>()
 }

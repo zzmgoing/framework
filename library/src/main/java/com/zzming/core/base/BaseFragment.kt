@@ -6,20 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.zzming.core.extension.hideLoading
-import com.zzming.core.extension.showLoading
+import androidx.lifecycle.Observer
 
 /**
  * @author ZhongZiMing
  * @time 2020/6/8 17:02
  * @description Fragment基类
  **/
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<T : BaseViewModel> : Fragment(), Observer<Any> {
 
     /**
      * activity
      */
-    lateinit var baseActivity: BaseActivity
+    lateinit var baseActivity: BaseActivity<*>
+
+    /**
+     * BaseViewModel
+     */
+    lateinit var viewModel: T
 
     /**
      * 是否已经加载过数据
@@ -34,8 +38,10 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = getContentView(inflater, container)
+        val rootView = createContentView(inflater, container)
         isLoadData = false
+        initViewModel()
+        registerViewModel()
         initView()
         return rootView
     }
@@ -45,7 +51,7 @@ abstract class BaseFragment : Fragment() {
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        baseActivity = requireActivity() as BaseActivity
+        baseActivity = requireActivity() as BaseActivity<*>
     }
 
     /**
@@ -62,12 +68,24 @@ abstract class BaseFragment : Fragment() {
     /**
      * 初始化View
      */
-    abstract fun getContentView(inflater: LayoutInflater, container: ViewGroup?): View
+    abstract fun createContentView(inflater: LayoutInflater, container: ViewGroup?): View
 
     /**
      * 初始化view
      */
     abstract fun initView()
+
+    /**
+     * 初始化ViewModel
+     */
+    private fun initViewModel() {
+        viewModel = createViewModel()
+    }
+
+    /**
+     * 初始化ViewModel
+     */
+    abstract fun createViewModel(): T
 
     /**
      * 加载数据
@@ -78,13 +96,14 @@ abstract class BaseFragment : Fragment() {
     /**
      * 綁定BaseViewModel，目前只有loading
      */
-    fun registerViewModel(viewModel: BaseViewModel) {
-        viewModel.loading.observe(this) {
-            if (it) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
-        }
+    open fun registerViewModel() {
+        viewModel.observer.observe(viewLifecycleOwner, this)
+    }
+
+    /**
+     * 接收消息
+     */
+    override fun onChanged(t: Any?) {
+
     }
 }

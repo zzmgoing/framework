@@ -3,7 +3,6 @@ package com.zzming.core.extension
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -51,9 +50,6 @@ val Any.SIMPLE_NAME_TAG: String
  */
 fun runOnMainThread(runnable: () -> Unit) {
     LibCore.handler.post(runnable)
-//    GlobalScope.launch(Dispatchers.Main) {
-//        runnable.invoke()
-//    }
 }
 
 /**
@@ -93,11 +89,7 @@ fun Int.localized(context: Context? = LibCore.context): String {
  * Activity是否存活
  */
 fun Activity?.isAlive(): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        this != null && !isFinishing && !isDestroyed
-    } else {
-        this != null && !isFinishing
-    }
+    return this != null && !isFinishing && !isDestroyed
 }
 
 /**
@@ -234,3 +226,15 @@ fun px2dp(px: Int): Float {
     val density: Float = LibCore.context.resources.displayMetrics.density
     return (px / density)
 }
+
+/**
+ * screenWidth
+ */
+val screenWidth: Int
+    get() = LibCore.context.resources.displayMetrics.widthPixels
+
+/**
+ * screenHeight
+ */
+val screenHeight: Int
+    get() = LibCore.context.resources.displayMetrics.heightPixels

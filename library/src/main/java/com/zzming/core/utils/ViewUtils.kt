@@ -1,7 +1,6 @@
 package com.zzming.core.utils
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -13,7 +12,6 @@ import android.widget.EditText
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import com.zzming.core.LibCore
-import com.zzming.core.base.BaseActivity
 import com.zzming.core.extension.logError
 
 /**
@@ -108,15 +106,6 @@ class ViewUtils {
                 loadAnimation
             }
             view.startAnimation(animation)
-        }
-
-        /**
-         * 返回到之前的Activity
-         */
-        fun goBackActivity(back: BaseActivity, intent: Intent? = null) {
-            val backIntent = intent ?: Intent()
-            backIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            LibCore.context.startActivity(intent)
         }
 
         fun getScreenWidth(): Int {

@@ -1,11 +1,11 @@
 package com.zzming.core.adapter
 
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.zzming.core.base.BaseFragment
 
 /**
  * @author ZhongZiMing
@@ -13,7 +13,7 @@ import com.zzming.core.base.BaseFragment
  * @description
  **/
 class LazyFragmentPagerAdapter(
-    private val fragments: List<BaseFragment>,
+    private val fragments: List<Fragment>,
     fm: FragmentManager,
     behavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) : FragmentPagerAdapter(fm, behavior),
@@ -32,7 +32,7 @@ class LazyFragmentPagerAdapter(
     /**
      * currentFragment
      */
-    private lateinit var currentFragment: BaseFragment
+    private lateinit var currentFragment: Fragment
 
     /**
      * ViewPager
@@ -47,7 +47,7 @@ class LazyFragmentPagerAdapter(
     /**
      * getItem
      */
-    override fun getItem(position: Int): BaseFragment {
+    override fun getItem(position: Int): Fragment {
         return fragments[position]
     }
 
@@ -104,7 +104,7 @@ class LazyFragmentPagerAdapter(
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         viewPager?.let {
             if (it.currentItem != item.itemId) {
-                it.setCurrentItem(item.itemId,false)
+                it.setCurrentItem(item.itemId, false)
             }
         }
         return true
@@ -116,21 +116,6 @@ class LazyFragmentPagerAdapter(
     private fun refreshFragment(position: Int) {
         currentPosition = position
         currentFragment = fragments[position]
-        loadFragmentData()
-    }
-
-    /**
-     * 加载fragment数据
-     */
-    private fun loadFragmentData() {
-        if (isRefresh) {
-            currentFragment.onRefresh()
-        } else {
-            if (!currentFragment.isLoadData) {
-                currentFragment.onRefresh()
-                currentFragment.isLoadData = true
-            }
-        }
     }
 
 }

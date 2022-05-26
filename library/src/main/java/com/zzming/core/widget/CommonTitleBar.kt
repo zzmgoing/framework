@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.zzming.core.R
+import com.zzming.core.base.DoThing
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.databinding.CoreCommonTitleBarBinding
 import com.zzming.core.extension.dp2px
@@ -170,6 +171,46 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
                 binding.titleBarBack.visibility = View.GONE
             } else {
                 binding.titleBarBack.visibility = View.VISIBLE
+            }
+        }
+
+    var leftIconClickListener: (() -> Unit?)? = null
+        set(value) {
+            field = value
+            if (leftIconDrawable != null && binding.titleBarLeftLayout.childCount > 1) {
+                binding.titleBarRightLayout.getChildAt(1).setOnClickListener {
+                    value?.invoke()
+                }
+            }
+        }
+
+    var rightIcon1ClickListener: (() -> Unit?)? = null
+        set(value) {
+            field = value
+            if (rightIcon1Drawable != null && binding.titleBarRightLayout.childCount > 0) {
+                binding.titleBarRightLayout.getChildAt(0).setOnClickListener {
+                    value?.invoke()
+                }
+            }
+        }
+
+    var rightIcon2ClickListener: (() -> Unit?)? = null
+        set(value) {
+            field = value
+            if (rightIcon2Drawable != null && binding.titleBarRightLayout.childCount > 1) {
+                binding.titleBarRightLayout.getChildAt(1).setOnClickListener {
+                    value?.invoke()
+                }
+            }
+        }
+
+    var rightIcon3ClickListener: (() -> Unit?)? = null
+        set(value) {
+            field = value
+            if (rightIcon3Drawable != null && binding.titleBarRightLayout.childCount > 2) {
+                binding.titleBarRightLayout.getChildAt(2).setOnClickListener {
+                    value?.invoke()
+                }
             }
         }
 

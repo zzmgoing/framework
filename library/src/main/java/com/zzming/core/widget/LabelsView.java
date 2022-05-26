@@ -111,39 +111,39 @@ public class LabelsView extends ViewGroup implements View.OnClickListener {
 
     private void getAttrs(Context context, AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.labels_view);
-            int type = mTypedArray.getInt(R.styleable.labels_view_selectType, 1);
+            TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.LabelsView);
+            int type = mTypedArray.getInt(R.styleable.LabelsView_selectType, 1);
             mSelectType = SelectType.get(type);
-            mMaxSelect = mTypedArray.getInteger(R.styleable.labels_view_maxSelect, 0);
-            mMaxLines = mTypedArray.getInteger(R.styleable.labels_view_maxLines, 0);
-            mTextColor = mTypedArray.getColorStateList(R.styleable.labels_view_labelTextColor);
-            mTextSize = mTypedArray.getInteger(R.styleable.labels_view_labelTextSize, 14);
+            mMaxSelect = mTypedArray.getInteger(R.styleable.LabelsView_maxSelect, 0);
+            mMaxLines = mTypedArray.getInteger(R.styleable.LabelsView_maxLines, 0);
+            mTextColor = mTypedArray.getColorStateList(R.styleable.LabelsView_labelTextColor);
+            mTextSize = mTypedArray.getInteger(R.styleable.LabelsView_labelTextSize, 14);
             mTextPaddingLeft = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingLeft, 0);
+                    R.styleable.LabelsView_labelTextPaddingLeft, 0);
             mTextMinWidth = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextMinWidth, 0);
+                    R.styleable.LabelsView_labelTextMinWidth, 0);
             mTextPaddingTop = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingTop, 0);
+                    R.styleable.LabelsView_labelTextPaddingTop, 0);
             mTextPaddingRight = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingRight, 0);
+                    R.styleable.LabelsView_labelTextPaddingRight, 0);
             mTextPaddingBottom = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingBottom, 0);
-            mLineMargin = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_lineMargin, 0);
-            mWordMargin = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_wordMargin, 0);
-            int labelBgResId = mTypedArray.getResourceId(R.styleable.labels_view_labelBackground, 0);
-            mBackground = mTypedArray.getColor(R.styleable.labels_view_labelTextBackground, 0);
-            mSelectedBackground = mTypedArray.getColor(R.styleable.labels_view_labelSelectedBackground, 0);
-            mStrokeColor = mTypedArray.getColor(R.styleable.labels_view_labelStrokeColor, 0);
-            mSelectedStrokeColor = mTypedArray.getColor(R.styleable.labels_view_labelSelectedStrokeColor, 0);
-            mStrokeWidth = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelStrokeWidth, 0);
-            mRoundRadius = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelRoundRadius, 0);
-            mSelectedTextColor = mTypedArray.getColor(R.styleable.labels_view_labelSelectedTextColor, 0);
-            mDefaultTextColor = mTypedArray.getColor(R.styleable.labels_view_labelDefaultTextColor, 0);
+                    R.styleable.LabelsView_labelTextPaddingBottom, 0);
+            mLineMargin = mTypedArray.getDimensionPixelOffset(R.styleable.LabelsView_lineMargin, 0);
+            mWordMargin = mTypedArray.getDimensionPixelOffset(R.styleable.LabelsView_wordMargin, 0);
+            int labelBgResId = mTypedArray.getResourceId(R.styleable.LabelsView_labelBackground, 0);
+            mBackground = mTypedArray.getColor(R.styleable.LabelsView_labelTextBackground, 0);
+            mSelectedBackground = mTypedArray.getColor(R.styleable.LabelsView_labelSelectedBackground, 0);
+            mStrokeColor = mTypedArray.getColor(R.styleable.LabelsView_labelStrokeColor, 0);
+            mSelectedStrokeColor = mTypedArray.getColor(R.styleable.LabelsView_labelSelectedStrokeColor, 0);
+            mStrokeWidth = mTypedArray.getDimensionPixelOffset(R.styleable.LabelsView_labelStrokeWidth, 0);
+            mRoundRadius = mTypedArray.getDimensionPixelOffset(R.styleable.LabelsView_labelRoundRadius, 0);
+            mSelectedTextColor = mTypedArray.getColor(R.styleable.LabelsView_labelSelectedTextColor, 0);
+            mDefaultTextColor = mTypedArray.getColor(R.styleable.LabelsView_labelDefaultTextColor, 0);
 
             if (labelBgResId != 0) {
                 mLabelBg = getResources().getDrawable(labelBgResId);
             }
-            int labelBgColor = mTypedArray.getColor(R.styleable.labels_view_labelBackground, 0);
+            int labelBgColor = mTypedArray.getColor(R.styleable.LabelsView_labelBackground, 0);
             if (labelBgColor != 0) {
                 mLabelBg = new ColorDrawable(labelBgColor);
             }

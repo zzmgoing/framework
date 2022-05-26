@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.zzming.core.extension.checkLoading
 import com.zzming.core.utils.LanguageUtil
 import com.zzming.core.utils.ViewUtils
 
@@ -112,7 +113,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(), Observer<A
      * 来自ViewModel的消息
      */
     override fun onChanged(t: Any?) {
-
+        checkLoading(t)
     }
 
 }

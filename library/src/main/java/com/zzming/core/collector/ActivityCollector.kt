@@ -94,6 +94,13 @@ object ActivityCollector {
     }
 
     /**
+     * 销毁当前Activity
+     */
+    fun finishActivity() {
+        weakRefActivity?.get()?.finish()
+    }
+
+    /**
      * 清除所有Activity
      */
     fun finishAll() {

@@ -495,7 +495,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener {
         }
     }
 
-    private void innerClearAllSelect() {
+    public void innerClearAllSelect() {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             setLabelSelect((TextView) getChildAt(i), false);
@@ -527,6 +527,21 @@ public class LabelsView extends ViewGroup implements View.OnClickListener {
             int[] ps = new int[size];
             for (int i = 0; i < size; i++) {
                 ps[i] = positions.get(i);
+            }
+            setSelects(ps);
+        }
+    }
+
+    /**
+     * 设置选中label
+     *
+     */
+    public void setAllSelects() {
+        if (getLabels() != null) {
+            int size = getLabels().size();
+            int[] ps = new int[size];
+            for (int i = 0; i < size; i++) {
+                ps[i] = i;
             }
             setSelects(ps);
         }

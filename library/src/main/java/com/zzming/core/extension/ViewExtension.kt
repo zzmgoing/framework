@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
 import com.zzming.core.collector.LoadingCollector
+import com.zzming.core.common.Constant
 import com.zzming.core.utils.BuildUtils
 import com.zzming.core.utils.ViewUtils
 
@@ -120,6 +121,26 @@ fun Fragment.hideLoading() {
     LoadingCollector.hideLoading(activity)
 }
 
+fun Activity.checkLoading(any: Any?) {
+    any?.let {
+        if (it == Constant.SHOW_LOADING) {
+            showLoading()
+        } else if (it == Constant.HIDE_LOADING) {
+            hideLoading()
+        }
+    }
+}
+
+fun Fragment.checkLoading(any: Any?) {
+    any?.let {
+        if (it == Constant.SHOW_LOADING) {
+            showLoading()
+        } else if (it == Constant.HIDE_LOADING) {
+            hideLoading()
+        }
+    }
+}
+
 /**
  * BottomNavigationView绑定titles和icons
  */
@@ -159,6 +180,7 @@ fun AppCompatActivity.exitFullscreen() {
  */
 fun AppCompatActivity.transparentStatusBar() {
     setStatusBarColor()
+    statusBarFontDark()
 }
 
 /**
@@ -174,9 +196,6 @@ fun AppCompatActivity.setStatusBarColor(color: Int = Color.TRANSPARENT) {
         if (BuildUtils.isAtLeast28Api()) {
             navigationBarDividerColor = color
         }
-    }
-    if (color == Color.TRANSPARENT) {
-        statusBarFontDark()
     }
 }
 

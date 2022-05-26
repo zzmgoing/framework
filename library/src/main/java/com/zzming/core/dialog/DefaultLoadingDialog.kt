@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.core.widget.ContentLoadingProgressBar
 import com.zzming.core.R
+import com.zzming.core.base.BaseActivity
 import com.zzming.core.databinding.CoreCommonDialogLoadingBinding
 import com.zzming.core.extension.isAlive
 import com.zzming.core.extension.runOnMainThread
@@ -68,7 +69,12 @@ class DefaultLoadingDialog(
         }
 
     override fun showLoading() {
-        if (activity.isAlive()) {
+        val isAlive = if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).isActive
+        } else {
+            activity.isAlive()
+        }
+        if (isAlive) {
             runOnMainThread {
                 show()
             }
@@ -76,7 +82,12 @@ class DefaultLoadingDialog(
     }
 
     override fun hideLoading() {
-        if (activity.isAlive()) {
+        val isAlive = if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).isActive
+        } else {
+            activity.isAlive()
+        }
+        if (isAlive && isShowing) {
             runOnMainThread {
                 dismiss()
             }
@@ -85,14 +96,20 @@ class DefaultLoadingDialog(
 
     override fun show() {
         super.show()
-        binding.commonLoadingBar.post {
-            binding.commonLoadingBar.show()
+        try {
+            binding.commonLoadingBar.post {
+                binding.commonLoadingBar.show()
+            }
+        } catch (e: Exception) {
         }
     }
 
     override fun dismiss() {
         super.dismiss()
-        binding.commonLoadingBar.hide()
+        try {
+            binding.commonLoadingBar.hide()
+        } catch (e: Exception) {
+        }
     }
 
     override fun bindActivity(): Activity {

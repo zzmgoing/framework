@@ -10,9 +10,14 @@ class Constant {
     companion object {
 
         /**
-         *  数据加载类型
+         *  显示loading
          */
-        const val LOAD_DEFAULT = "load_default"
+        const val SHOW_LOADING = "show_loading"
+
+        /**
+         *  隐藏loading
+         */
+        const val HIDE_LOADING = "hide_loading"
 
         /**
          *  h5页面title

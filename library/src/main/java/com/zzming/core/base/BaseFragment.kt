@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.zzming.core.extension.checkLoading
 
 /**
  * @author ZhongZiMing
@@ -104,6 +105,6 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), Observer<Any> {
      * 接收消息
      */
     override fun onChanged(t: Any?) {
-
+        checkLoading(t)
     }
 }

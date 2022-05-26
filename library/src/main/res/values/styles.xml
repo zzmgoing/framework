@@ -49,6 +49,7 @@
         </attr>
         <attr name="left_icon_width" format="dimension|float" />
         <attr name="right_icon_width" format="dimension|float" />
+        <attr name="back_icon_src" format="reference|color" />
         <attr name="left_icon_src" format="reference|color" />
         <attr name="right_icon1_src" format="reference|color" />
         <attr name="right_icon2_src" format="reference|color" />

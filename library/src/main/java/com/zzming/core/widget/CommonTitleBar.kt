@@ -85,6 +85,14 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
         }
 
+    private var backIconDrawable: Drawable? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                binding.titleBarBack.setImageDrawable(value)
+            }
+        }
+
     private var leftIconDrawable: Drawable? = null
         set(value) {
             field = value
@@ -182,6 +190,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleSize = types.getDimension(R.styleable.CommonTitleBar_title_size, 18f)
         titleColor = types.getColor(R.styleable.CommonTitleBar_title_color, Color.BLACK)
         titleLocation = types.getInt(R.styleable.CommonTitleBar_title_location, 1)
+        backIconDrawable = types.getDrawable(R.styleable.CommonTitleBar_back_icon_src)
         leftIconDrawable = types.getDrawable(R.styleable.CommonTitleBar_left_icon_src)
         rightIcon1Drawable = types.getDrawable(R.styleable.CommonTitleBar_right_icon1_src)
         rightIcon2Drawable = types.getDrawable(R.styleable.CommonTitleBar_right_icon2_src)

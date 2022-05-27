@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
 import com.zzming.core.collector.LoadingCollector
@@ -231,6 +235,37 @@ fun AppCompatActivity.getStatusBarHeight(): Int {
 }
 
 /**
+ * 显示键盘
+ */
+fun AppCompatActivity.showKeyBoard() {
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))
+        ?.show(WindowInsetsCompat.Type.ime())
+}
+
+/**
+ * 隐藏键盘
+ */
+fun AppCompatActivity.hideKeyBoard() {
+    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))
+        ?.hide(WindowInsetsCompat.Type.ime())
+}
+
+/**
+ * 显示键盘
+ */
+fun EditText.showKeyBoard() {
+    isEnabled = true
+    isFocusable = true
+    isFocusableInTouchMode = true
+    requestFocus()
+    context.getSystemService(Context.INPUT_METHOD_SERVICE).let {
+        it as InputMethodManager
+        setSelection(text?.length ?: 0)
+        it.showSoftInput(this, 0)
+    }
+}
+
+/**
  * dp2px
  */
 fun dp2px(dp: Float): Int {
@@ -257,3 +292,14 @@ val screenWidth: Int
  */
 val screenHeight: Int
     get() = LibCore.context.resources.displayMetrics.heightPixels
+
+/**
+ * 设置间距
+ */
+fun RecyclerView.spaceDriver(space: Float = 10f, color: Int = Color.TRANSPARENT) {
+    context.dividerBuilder()
+        .size(dp2px(space))
+        .color(color)
+        .build()
+        .addTo(this)
+}

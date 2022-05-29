@@ -94,7 +94,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
         }
 
-    private var leftIconDrawable: Drawable? = null
+    var leftIconDrawable: Drawable? = null
         set(value) {
             field = value
             if (value != null) {
@@ -102,7 +102,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
         }
 
-    private var rightIcon1Drawable: Drawable? = null
+    var rightIcon1Drawable: Drawable? = null
         set(value) {
             field = value
             if (value != null) {
@@ -110,7 +110,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
         }
 
-    private var rightIcon2Drawable: Drawable? = null
+    var rightIcon2Drawable: Drawable? = null
         set(value) {
             field = value
             if (value != null) {
@@ -118,7 +118,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
         }
 
-    private var rightIcon3Drawable: Drawable? = null
+    var rightIcon3Drawable: Drawable? = null
         set(value) {
             field = value
             if (value != null) {
@@ -178,7 +178,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         set(value) {
             field = value
             if (leftIconDrawable != null && binding.titleBarLeftLayout.childCount > 1) {
-                binding.titleBarRightLayout.getChildAt(1).setOnClickListener {
+                binding.titleBarLeftLayout.getChildAt(1).setOnClickListener {
                     value?.invoke()
                 }
             }

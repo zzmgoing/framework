@@ -31,19 +31,10 @@ import com.just.agentweb.WebViewClient;
  * source code  https://github.com/Justson/AgentWeb
  */
 
-public abstract class BaseAgentWebActivity extends AppCompatActivity {
+public abstract class BaseAgentWebActivity<T extends BaseViewModel> extends BaseActivity<T> {
 
     protected AgentWeb mAgentWeb;
-    private AgentWebUIControllerImplBase mAgentWebUIController;
     private ErrorLayoutEntity mErrorLayoutEntity;
-    private MiddlewareWebChromeBase mMiddleWareWebChrome;
-    private MiddlewareWebClientBase mMiddleWareWebClient;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -78,8 +69,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
                 .createAgentWeb()
                 .ready()
                 .go(getUrl());
-
-
     }
 
 
@@ -90,11 +79,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
         }
         return mErrorLayoutEntity;
     }
-
-    protected AgentWeb getAgentWeb() {
-        return this.mAgentWeb;
-    }
-
 
     protected static class ErrorLayoutEntity {
         private int layoutRes = com.just.agentweb.R.layout.agentweb_error_page;
@@ -117,7 +101,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (mAgentWeb != null && mAgentWeb.handleKeyEvent(keyCode, event)) {
             return true;
         }
@@ -130,7 +113,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
             mAgentWeb.getWebLifeCycle().onPause();
         }
         super.onPause();
-
     }
 
     @Override
@@ -142,19 +124,12 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    @Override
     protected void onDestroy() {
         if (mAgentWeb != null) {
             mAgentWeb.getWebLifeCycle().onDestroy();
         }
         super.onDestroy();
     }
-
 
     protected
     @Nullable
@@ -189,7 +164,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
         return null;
     }
 
-
     protected @Nullable
     WebView getWebView() {
         return null;
@@ -217,7 +191,7 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
 
     protected @NonNull
     MiddlewareWebChromeBase getMiddleWareWebChrome() {
-        return this.mMiddleWareWebChrome = new MiddlewareWebChromeBase() {
+        return new MiddlewareWebChromeBase() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
@@ -232,7 +206,6 @@ public abstract class BaseAgentWebActivity extends AppCompatActivity {
 
     protected @NonNull
     MiddlewareWebClientBase getMiddleWareWebClient() {
-        return this.mMiddleWareWebClient = new MiddlewareWebClientBase() {
-        };
+        return new MiddlewareWebClientBase() {};
     }
 }

@@ -115,14 +115,14 @@ fun Activity.hideLoading() {
  * showLoading
  */
 fun Fragment.showLoading() {
-    LoadingCollector.showLoading(activity)
+    LoadingCollector.showLoading(requireActivity())
 }
 
 /**
  * hideLoading
  */
 fun Fragment.hideLoading() {
-    LoadingCollector.hideLoading(activity)
+    LoadingCollector.hideLoading(requireActivity())
 }
 
 fun Activity.checkLoading(any: Any?) {
@@ -292,6 +292,13 @@ val screenWidth: Int
  */
 val screenHeight: Int
     get() = LibCore.context.resources.displayMetrics.heightPixels
+
+/**
+ * 设置间距
+ */
+fun RecyclerView.spaceDriver(space: Float = 10f) {
+    spaceDriver(space, Color.TRANSPARENT)
+}
 
 /**
  * 设置间距

@@ -1,12 +1,17 @@
 package com.zzming.core.net
 
+import androidx.lifecycle.MutableLiveData
 import com.zzming.core.common.LibHttpConfig
 import com.zzming.core.utils.JsonUtil
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import java.util.concurrent.TimeUnit
+
 
 /**
  * @author ZhongZiMing
@@ -21,9 +26,21 @@ object HttpUtils {
     private val JSON_TYPE = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     /**
+     * FILE_TYPE
+     */
+    private val FILE_TYPE = "image/*".toMediaTypeOrNull()
+
+    /**
      * OkHttpClient
      */
     private var okHttpClient = defaultHttpClient()
+
+    /**
+     * 是否展示loading
+     */
+    fun isShowLoading(observer: MutableLiveData<Any>) {
+
+    }
 
     /**
      * get同步
@@ -136,6 +153,42 @@ object HttpUtils {
             url(finalUrl)
             addHeader(this, headers)
             post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
+        }.build()
+        okHttpClient.newCall(request).enqueue(callback)
+    }
+
+    /**
+     * postFile
+     */
+    fun postFile(
+        url: String,
+        file: File,
+        callback: HttpCallback<*>
+    ) {
+        postFile(url, file, callback)
+    }
+
+    /**
+     * postFile
+     */
+    fun postFile(
+        url: String,
+        file: File,
+        urlParams: HashMap<String, String>? = null,
+        fileName: String = "file",
+        callback: HttpCallback<*>
+    ) {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return
+        }
+        val body = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(fileName, file.name, file.asRequestBody(FILE_TYPE))
+            .build()
+        val request = Request.Builder().apply {
+            url(createUrl(finalUrl, urlParams))
+            post(body)
         }.build()
         okHttpClient.newCall(request).enqueue(callback)
     }

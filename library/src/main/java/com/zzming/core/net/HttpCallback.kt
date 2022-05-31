@@ -1,6 +1,8 @@
 package com.zzming.core.net
 
-import androidx.annotation.MainThread
+import androidx.lifecycle.MutableLiveData
+import com.zzming.core.common.Constant
+import com.zzming.core.extension.runOnMainThread
 import com.zzming.core.utils.JsonUtil
 import okhttp3.Call
 import okhttp3.Callback
@@ -16,6 +18,14 @@ import java.lang.reflect.Type
  * @description 网络请求回调
  **/
 abstract class HttpCallback<T> : Callback {
+
+    var viewModelObserver: MutableLiveData<Any>? = null
+
+    constructor()
+
+    constructor(observer: MutableLiveData<Any>) {
+        this.viewModelObserver = observer
+    }
 
     companion object {
 
@@ -39,11 +49,23 @@ abstract class HttpCallback<T> : Callback {
          */
         const val FAIL_STATUS_PARSE_BEAN = 3
 
+        /**
+         * 需要登录
+         */
+        const val FAIL_STATUS_NEED_LOGIN = 4
+
+        /**
+         * 服务端数据异常
+         */
+        const val FAIL_STATUS_SERVICE_ERROR = 5
+
     }
 
     override fun onFailure(call: Call, e: IOException) {
-        onFail(FAIL_STATUS_NET, e)
-        onFinish()
+        runOnMainThread {
+            onFail(FAIL_STATUS_NET, e)
+            onFinish()
+        }
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -53,41 +75,53 @@ abstract class HttpCallback<T> : Callback {
             val json = body?.string()
             if (body != null && !json.isNullOrEmpty()) {
                 if (JsonUtil.getClassType(javaClass, 0) == String::class.java) {
-                    onSuccess(json as T)
+                    runOnMainThread {
+                        onSuccess(json as T)
+                    }
                 } else {
                     try {
                         val type: Type = javaClass.genericSuperclass
                         val types: Array<Type> = (type as ParameterizedType).actualTypeArguments
                         val bean = JsonUtil.gson.fromJson<T>(json, types[0])
                         if (bean != null) {
-                            onSuccess(bean)
+                            runOnMainThread {
+                                onSuccess(bean)
+                            }
                         } else {
-                            onFail(FAIL_STATUS_PARSE_BEAN, Exception("JSON解析异常：$json"))
+                            runOnMainThread {
+                                onFail(FAIL_STATUS_PARSE_BEAN, Exception("JSON解析异常：$json"))
+                            }
                         }
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        onFail(FAIL_STATUS_PARSE_BEAN, ex)
+                        runOnMainThread {
+                            onFail(FAIL_STATUS_PARSE_BEAN, ex)
+                        }
                     }
                 }
             } else {
-                onFail(FAIL_STATUS_NO_BODY, Exception("服务器无返回数据"))
+                runOnMainThread {
+                    onFail(FAIL_STATUS_NO_BODY, Exception("服务器无返回数据"))
+                }
             }
         } else {
-            onFail(FAIL_STATUS_RESPONSE, Exception("服务器请求错误，错误码：${response.code}"))
+            runOnMainThread {
+                onFail(FAIL_STATUS_RESPONSE, Exception("服务器请求错误，错误码：${response.code}"))
+            }
         }
-        onFinish()
+        runOnMainThread {
+            onFinish()
+        }
     }
 
     /**
      * 成功
      */
-    @MainThread
     abstract fun onSuccess(t: T)
 
     /**
      * 失败
      */
-    @MainThread
     open fun onFail(status: Int, ex: Exception) {
         ex.printStackTrace()
     }
@@ -95,8 +129,8 @@ abstract class HttpCallback<T> : Callback {
     /**
      * 结束
      */
-    @MainThread
     open fun onFinish() {
+        viewModelObserver?.value = Constant.HIDE_LOADING
     }
 
 }

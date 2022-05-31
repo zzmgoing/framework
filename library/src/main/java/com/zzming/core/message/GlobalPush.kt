@@ -3,6 +3,9 @@ package com.zzming.core.message
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.zzming.core.base.DoListener
+import com.zzming.core.extension.SIMPLE_NAME_TAG
+import com.zzming.core.extension.logDebug
+import com.zzming.core.extension.runOnMainThread
 
 /**
  * @author ZhongZiMing
@@ -11,39 +14,53 @@ import com.zzming.core.base.DoListener
  **/
 object GlobalPush : DefaultLifecycleObserver {
 
-    private val message = HashMap<String, HashMap<LifecycleOwner, DoListener>>()
+    private val message = HashMap<LifecycleOwner, MutableSet<DoListener>>()
+
+    private val messageListener = HashMap<String, MutableSet<DoListener>>()
 
     /**
      * 注册消息
      */
-    fun register(key: String, lifecycleOwner: LifecycleOwner, listener: DoListener) {
-        if (message[key] == null) {
-            message[key] = HashMap()
+    fun register(owner: LifecycleOwner, key: String, listener: DoListener) {
+        if (!message.containsKey(owner)) {
+            message[owner] = hashSetOf(listener)
+        } else {
+            message[owner]?.add(listener)
         }
-        message[key]?.set(lifecycleOwner, listener)
-        lifecycleOwner.lifecycle.addObserver(this)
+        if (!messageListener.containsKey(key)) {
+            messageListener[key] = hashSetOf(listener)
+        } else {
+            messageListener[key]?.add(listener)
+        }
+        owner.lifecycle.addObserver(this)
+        logDebug(SIMPLE_NAME_TAG,"${owner.SIMPLE_NAME_TAG}注册${key}消息成功")
     }
 
     /**
      * 分发消息
      */
     fun dispatchMessage(key: String, obj: Any? = null) {
-        if (message[key].isNullOrEmpty()) {
-            return
-        }
-        val queue = message[key]
-        for (item in queue!!.iterator()) {
-            item.value.doThing(obj)
+        messageListener[key]?.let { set ->
+            set.forEach {
+                runOnMainThread {
+                    it.doThing(obj)
+                    logDebug(SIMPLE_NAME_TAG,"分发${key}消息成功")
+                }
+            }
         }
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        for (queue in message) {
-            val iterator = queue.value.iterator()
+        if (!message.containsKey(owner)) {
+            return
+        }
+        val removeListeners = message.remove(owner) ?: return
+        for (listeners in messageListener) {
+            val iterator = listeners.value.iterator()
             while (iterator.hasNext()) {
-                if (iterator.next().key == owner) {
-                    owner.lifecycle.removeObserver(this)
+                if (removeListeners.contains(iterator.next())) {
                     iterator.remove()
+                    logDebug(SIMPLE_NAME_TAG,"${owner.SIMPLE_NAME_TAG}取消注册${listeners.key}消息成功")
                 }
             }
         }

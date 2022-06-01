@@ -31,6 +31,9 @@
         android:text="标题"
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_18dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:maxEms="12"
         android:textStyle="bold" />
 
     <LinearLayout

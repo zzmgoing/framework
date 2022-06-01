@@ -18,6 +18,11 @@ class PageInfo {
     var PAGE_SIZE = 10
 
     /**
+     * 总条数
+     */
+    var TOTAL_COUNT = 0
+
+    /**
      * 是否是第一页
      */
     val isFirstPage
@@ -35,6 +40,13 @@ class PageInfo {
      */
     fun reset() {
         page = 0
+    }
+
+    /**
+     * 是否有下一页
+     */
+    fun hasNextPage(): Boolean {
+        return page < TOTAL_COUNT / PAGE_SIZE
     }
 
 }

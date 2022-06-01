@@ -1,7 +1,6 @@
 package com.zzming.core.base;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebSettingsImpl;
@@ -50,7 +48,7 @@ public abstract class BaseAgentWebActivity<T extends BaseViewModel> extends Base
 
     protected void buildAgentWeb() {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
-        mAgentWeb = AgentWeb.with(this)
+        AgentWeb.PreAgentWeb preAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(getAgentWebParent(), new ViewGroup.LayoutParams(-1, -1))
                 .useDefaultIndicator(getIndicatorColor(), getIndicatorHeight())
                 .setWebChromeClient(getWebChromeClient())
@@ -67,8 +65,12 @@ public abstract class BaseAgentWebActivity<T extends BaseViewModel> extends Base
                 .setMainFrameErrorView(mErrorLayoutEntity.layoutRes, mErrorLayoutEntity.reloadId)
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
                 .createAgentWeb()
-                .ready()
-                .go(getUrl());
+                .ready();
+        if (TextUtils.isEmpty(getUrl())) {
+            mAgentWeb = preAgentWeb.get();
+        } else {
+            mAgentWeb = preAgentWeb.go(getUrl());
+        }
     }
 
 
@@ -206,6 +208,7 @@ public abstract class BaseAgentWebActivity<T extends BaseViewModel> extends Base
 
     protected @NonNull
     MiddlewareWebClientBase getMiddleWareWebClient() {
-        return new MiddlewareWebClientBase() {};
+        return new MiddlewareWebClientBase() {
+        };
     }
 }

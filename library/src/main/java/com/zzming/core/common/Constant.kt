@@ -29,6 +29,11 @@ class Constant {
          */
         const val PARAMS_H5_URL = "params_h5_url"
 
+        /**
+         *  h5页面富文本
+         */
+        const val PARAMS_H5_HTML_CONTENT = "params_h5_html_content"
+
     }
 
 }

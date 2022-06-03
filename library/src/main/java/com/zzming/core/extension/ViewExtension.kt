@@ -296,6 +296,13 @@ val screenHeight: Int
 /**
  * 设置间距
  */
+fun RecyclerView.spaceDriver() {
+    spaceDriver(10f, Color.TRANSPARENT)
+}
+
+/**
+ * 设置间距
+ */
 fun RecyclerView.spaceDriver(space: Float = 10f) {
     spaceDriver(space, Color.TRANSPARENT)
 }

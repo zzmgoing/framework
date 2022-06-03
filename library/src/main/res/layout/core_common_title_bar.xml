@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/title_bar_back"
-            android:layout_width="@dimen/dimen_32dp"
+            android:layout_width="@dimen/dimen_44dp"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dimen_16dp"
             android:src="@drawable/core_icon_back_black" />

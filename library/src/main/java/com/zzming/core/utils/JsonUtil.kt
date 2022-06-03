@@ -1,6 +1,7 @@
 package com.zzming.core.utils
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -24,6 +25,11 @@ object JsonUtil {
         return if (params[index] !is Class<*>) {
             Any::class.java
         } else params[index] as Class<Any>
+    }
+
+    fun <T> fromJsonToList(json: String): ArrayList<T> {
+        val listType = object : TypeToken<ArrayList<T?>?>() {}.type
+        return gson.fromJson(json, listType)
     }
 
 }

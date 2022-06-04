@@ -165,7 +165,7 @@ object HttpUtils {
         file: File,
         callback: HttpCallback<*>
     ) {
-        postFile(url, file, callback)
+        postFile(url, file, null, "file", callback)
     }
 
     /**

@@ -317,3 +317,10 @@ fun RecyclerView.spaceDriver(space: Float = 10f, color: Int = Color.TRANSPARENT)
         .build()
         .addTo(this)
 }
+
+fun String?.phoneFormat(): String? {
+    if (this == null || this.length != 11) {
+        return this
+    }
+    return substring(0, 4) + "****" + substring(8, 11)
+}

@@ -86,7 +86,7 @@ object PermissionUtils {
             Manifest.permission.ACCESS_FINE_LOCATION
         ).request { a, _, _ ->
             if (a) {
-                location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                 listener.invoke(true)
             } else {
                 listener.invoke(false)

@@ -2,14 +2,10 @@ package com.zzming.core.utils
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.location.Location
-import android.location.LocationManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionMediator
 import com.permissionx.guolindev.PermissionX
-import com.zzming.core.LibCore
 import com.zzming.core.base.DoThingWithParams
 
 /**
@@ -18,12 +14,6 @@ import com.zzming.core.base.DoThingWithParams
  * @description
  **/
 object PermissionUtils {
-
-    var location: Location? = null
-
-    private val locationManager by lazy {
-        LibCore.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
 
     /**
      * 获取存储权限
@@ -86,8 +76,7 @@ object PermissionUtils {
             Manifest.permission.ACCESS_FINE_LOCATION
         ).request { a, _, _ ->
             if (a) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                listener.invoke(true)
+                LocationUtils.requestLocation(listener)
             } else {
                 listener.invoke(false)
             }

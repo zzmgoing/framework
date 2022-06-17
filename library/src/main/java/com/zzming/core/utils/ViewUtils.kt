@@ -1,6 +1,7 @@
 package com.zzming.core.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -57,6 +58,13 @@ class ViewUtils {
          */
         fun getColor(@ColorRes id: Int): Int {
             return ContextCompat.getColor(LibCore.context, id)
+        }
+
+        /**
+         * 得到StateList
+         */
+        fun getColorStateList(@ColorRes id: Int): ColorStateList? {
+            return ContextCompat.getColorStateList(LibCore.context, id)
         }
 
         /**

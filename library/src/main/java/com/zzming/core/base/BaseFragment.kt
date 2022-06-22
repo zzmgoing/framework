@@ -39,12 +39,15 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(), Observer<Any> {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = createContentView(inflater, container)
+        return createContentView(inflater, container)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         isLoadData = false
         initViewModel()
         registerViewModel()
         initView()
-        return rootView
     }
 
     /**

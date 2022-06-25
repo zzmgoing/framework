@@ -32,4 +32,9 @@ object JsonUtil {
         return gson.fromJson(json, listType)
     }
 
+    fun fromJsonToMap(json: String): HashMap<String, String> {
+        val mapType = object : TypeToken<HashMap<String, String>>() {}.type
+        return gson.fromJson(json, mapType)
+    }
+
 }

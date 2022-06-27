@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StyleRes
 import androidx.core.widget.ContentLoadingProgressBar
 import com.zzming.core.R
@@ -14,6 +15,8 @@ import com.zzming.core.databinding.CoreCommonDialogLoadingBinding
 import com.zzming.core.extension.isAlive
 import com.zzming.core.extension.runOnMainThread
 import com.zzming.core.utils.ViewUtils
+import pl.droidsonroids.gif.GifDrawable
+import pl.droidsonroids.gif.GifImageView
 
 /**
  * @author ZhongZiMing
@@ -22,12 +25,17 @@ import com.zzming.core.utils.ViewUtils
  **/
 class DefaultLoadingDialog(
     context: Context,
+    private val gifResource: Int? = null,
     @StyleRes themeResId: Int = R.style.Default_Loading_Dialog
 ) : Dialog(context, themeResId), LoadingDialogListener {
 
     private lateinit var binding: CoreCommonDialogLoadingBinding
 
     var loadingBar: ContentLoadingProgressBar? = null
+
+    var loadingImage: GifImageView? = null
+
+    var gifDrawable: GifDrawable? = null
 
     private val activity by lazy {
         context as Activity
@@ -39,8 +47,16 @@ class DefaultLoadingDialog(
         binding = CoreCommonDialogLoadingBinding.bind(view)
         setContentView(binding.root)
         loadingBar = binding.commonLoadingBar
+        loadingImage = binding.commonLoadingImage
         loadingBarColor?.let { loadingBarColor = it }
         loadingBarDrawable?.let { loadingBarDrawable = it }
+        gifResource?.let {
+            loadingBar?.visibility = View.GONE
+            loadingImage?.visibility = View.VISIBLE
+            loadingImage?.setImageResource(it)
+            gifDrawable = loadingImage?.drawable as GifDrawable
+            gifDrawable?.stop()
+        }
     }
 
     /**
@@ -96,24 +112,46 @@ class DefaultLoadingDialog(
 
     override fun show() {
         super.show()
+        showImage()
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        hideImage()
+    }
+
+    override fun bindActivity(): Activity {
+        return activity
+    }
+
+    private fun showImage() {
         try {
-            binding.commonLoadingBar.post {
-                binding.commonLoadingBar.show()
+            if (gifDrawable != null) {
+                loadingImage?.post {
+                    gifDrawable?.start()
+                }
+            } else {
+                loadingBar?.post {
+                    binding.commonLoadingBar.show()
+                }
             }
         } catch (e: Exception) {
         }
     }
 
-    override fun dismiss() {
-        super.dismiss()
+    private fun hideImage() {
         try {
-            binding.commonLoadingBar.hide()
+            if (gifDrawable != null) {
+                loadingImage?.post {
+                    gifDrawable?.stop()
+                }
+            } else {
+                loadingBar?.post {
+                    binding.commonLoadingBar.hide()
+                }
+            }
         } catch (e: Exception) {
         }
-    }
-
-    override fun bindActivity(): Activity {
-        return activity
     }
 
 }

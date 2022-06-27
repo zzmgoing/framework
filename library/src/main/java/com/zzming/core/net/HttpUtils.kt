@@ -1,6 +1,5 @@
 package com.zzming.core.net
 
-import androidx.lifecycle.MutableLiveData
 import com.zzming.core.common.LibHttpConfig
 import com.zzming.core.utils.JsonUtil
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -34,13 +33,6 @@ object HttpUtils {
      * OkHttpClient
      */
     private var okHttpClient = defaultHttpClient()
-
-    /**
-     * 是否展示loading
-     */
-    fun isShowLoading(observer: MutableLiveData<Any>) {
-
-    }
 
     /**
      * get同步

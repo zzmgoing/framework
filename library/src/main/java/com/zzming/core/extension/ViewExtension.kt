@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
+import com.zzming.core.R
 import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.Constant
 import com.zzming.core.utils.BuildUtils
@@ -63,10 +65,19 @@ fun runOnMainThread(runnable: () -> Unit) {
 fun showToast(msg: String?) {
     msg?.apply {
         if (Looper.getMainLooper() == Looper.myLooper()) {
-            Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
+            Toast(LibCore.context).apply {
+                val layout = ViewUtils.createView(R.layout.core_default_toast)
+                layout.findViewById<TextView>(R.id.toast_str).text = msg
+                view = layout
+            }.show()
         } else {
             runOnMainThread {
-                Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(LibCore.context, msg, Toast.LENGTH_SHORT).show()
+                Toast(LibCore.context).apply {
+                    val layout = ViewUtils.createView(R.layout.core_default_toast)
+                    layout.findViewById<TextView>(R.id.toast_str).text = msg
+                    view = layout
+                }.show()
             }
         }
     }

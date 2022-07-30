@@ -32,7 +32,7 @@ object HttpUtils {
     /**
      * OkHttpClient
      */
-    private var okHttpClient = defaultHttpClient()
+    var okHttpClient = defaultHttpClient()
 
     /**
      * get同步
@@ -231,7 +231,6 @@ object HttpUtils {
     private fun defaultHttpClient(): OkHttpClient {
         return LibHttpConfig.httpClient ?: OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
-            .addInterceptor(LogInterceptor())
             .connectTimeout(1, TimeUnit.MINUTES)
             .callTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)

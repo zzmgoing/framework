@@ -27,3 +27,10 @@ fun String?.tryToInt(): String? {
         return this
     }
 }
+
+fun String?.phoneFormat(): String? {
+    if (this == null || this.length != 11) {
+        return this
+    }
+    return substring(0, 3) + "****" + substring(7, 11)
+}

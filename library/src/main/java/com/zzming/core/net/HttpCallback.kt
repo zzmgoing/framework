@@ -1,6 +1,7 @@
 package com.zzming.core.net
 
-import androidx.lifecycle.MutableLiveData
+import com.jeremyliao.liveeventbus.LiveEventBus
+import com.zzming.core.base.AnyEvent
 import com.zzming.core.common.Constant
 import com.zzming.core.extension.runOnMainThread
 import com.zzming.core.utils.JsonUtil
@@ -18,14 +19,6 @@ import java.lang.reflect.Type
  * @description 网络请求回调
  **/
 abstract class HttpCallback<T> : Callback {
-
-    var viewModelObserver: MutableLiveData<Any>? = null
-
-    constructor()
-
-    constructor(observer: MutableLiveData<Any>) {
-        this.viewModelObserver = observer
-    }
 
     companion object {
 
@@ -130,7 +123,7 @@ abstract class HttpCallback<T> : Callback {
      * 结束
      */
     open fun onFinish() {
-        viewModelObserver?.value = Constant.HIDE_LOADING
+        LiveEventBus.get(AnyEvent::class.java).post(AnyEvent(Constant.HIDE_LOADING))
     }
 
 }

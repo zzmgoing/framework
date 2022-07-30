@@ -1,6 +1,7 @@
 package com.zzming.core.common
 
 import android.app.Activity
+import com.zzming.core.dialog.LoadingDialogListener
 
 /**
  * @author ZhongZiMing
@@ -12,6 +13,6 @@ object LibViewConfig {
     /**
      * 加载loading
      */
-    var loadLoadingDialog: (activity: Activity) -> Unit = {}
+    var loadLoadingDialog: ((activity: Activity) -> LoadingDialogListener?)? = null
 
 }

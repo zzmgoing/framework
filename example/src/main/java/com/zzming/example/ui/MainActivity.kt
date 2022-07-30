@@ -1,11 +1,13 @@
 package com.zzming.example.ui
 
-import androidx.viewpager.widget.ViewPager
+import android.os.Bundle
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gyf.immersionbar.ktx.immersionBar
 import com.zzming.core.LibCore
-import com.zzming.core.adapter.LazyFragmentPagerAdapter
+import com.zzming.core.adapter.makeFragmentStateAdapter
 import com.zzming.core.base.BaseActivity
 import com.zzming.core.extension.bind
-import com.zzming.core.extension.transparentStatusBar
 import com.zzming.example.R
 import com.zzming.example.databinding.ActivityMainBinding
 import com.zzming.example.ui.fragment.FunctionFragment
@@ -17,24 +19,25 @@ import com.zzming.example.ui.fragment.MineFragment
  * @time 2020/8/3
  * @description
  **/
-class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     private val fragments = arrayListOf(HomeFragment(), FunctionFragment(), MineFragment())
 
-    private val adapter = LazyFragmentPagerAdapter(fragments, supportFragmentManager)
+    private val fragmentAdapter = makeFragmentStateAdapter(fragments)
 
-    override fun beforeOnCreate() {
-        transparentStatusBar()
-    }
-
-    override fun initContentView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initView()
     }
 
-    override fun initView() {
+    private fun initView() {
+        immersionBar {
+            transparentStatusBar()
+        }
         val titles = arrayListOf(
             LibCore.context.getString(R.string.main_tab_home),
             getString(R.string.main_tab_function),
@@ -45,19 +48,29 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.drawable.main_tab_function_selector,
             R.drawable.main_tab_mine_selector
         )
-        adapter.bindViewPagerAndBottomNavigationView(binding.mainViewPager, binding.mainBottomTab)
-        binding.mainBottomTab.bind(titles, icons)
-        binding.mainViewPager.addOnPageChangeListener(this)
+        binding.mainBottomTab.apply {
+            bind(titles, icons)
+            setOnItemReselectedListener {
+                binding.mainViewPager.currentItem = it.itemId
+            }
+        }
+        binding.mainViewPager.apply {
+            adapter = fragmentAdapter
+            registerOnPageChangeCallback(MainOnPageChangeCallback(binding.mainBottomTab))
+        }
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-    }
+    class MainOnPageChangeCallback(private val navigation: BottomNavigationView): ViewPager2.OnPageChangeCallback() {
 
-    override fun onPageSelected(position: Int) {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            navigation.let {
+                if (it.selectedItemId != position) {
+                    it.selectedItemId = position
+                }
+            }
+        }
 
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
     }
 
 }

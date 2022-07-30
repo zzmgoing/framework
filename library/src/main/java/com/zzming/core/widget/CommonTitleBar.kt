@@ -11,12 +11,11 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.gyf.immersionbar.ktx.statusBarHeight
 import com.zzming.core.R
-import com.zzming.core.base.DoThing
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.databinding.CoreCommonTitleBarBinding
 import com.zzming.core.extension.dp2px
-import com.zzming.core.extension.getStatusBarHeight
 
 /**
  * @author ZhongZiMing
@@ -155,7 +154,7 @@ class CommonTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             if (value) {
                 ActivityCollector.weakRefActivity?.get()?.let {
                     if (it is AppCompatActivity) {
-                        setPadding(0, it.getStatusBarHeight(), 0, 0)
+                        setPadding(0, it.statusBarHeight, 0, 0)
                     }
                 }
             }

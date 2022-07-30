@@ -22,9 +22,4 @@ enum class LoadStatus(val value: Int) {
      */
     LOAD_FAIL(2),
 
-    /**
-     * 加载完成
-     */
-    LOAD_FINISH(3),
-
 }

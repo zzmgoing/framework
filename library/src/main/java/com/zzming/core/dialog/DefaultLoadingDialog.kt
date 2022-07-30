@@ -85,8 +85,8 @@ class DefaultLoadingDialog(
         }
 
     override fun showLoading() {
-        val isAlive = if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).isActive
+        val isAlive = if (activity is BaseActivity) {
+            (activity as BaseActivity).isActive
         } else {
             activity.isAlive()
         }
@@ -98,8 +98,8 @@ class DefaultLoadingDialog(
     }
 
     override fun hideLoading() {
-        val isAlive = if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).isActive
+        val isAlive = if (activity is BaseActivity) {
+            (activity as BaseActivity).isActive
         } else {
             activity.isAlive()
         }
@@ -118,10 +118,6 @@ class DefaultLoadingDialog(
     override fun dismiss() {
         super.dismiss()
         hideImage()
-    }
-
-    override fun bindActivity(): Activity {
-        return activity
     }
 
     private fun showImage() {

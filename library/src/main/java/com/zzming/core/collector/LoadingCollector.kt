@@ -1,6 +1,7 @@
 package com.zzming.core.collector
 
-import android.app.Activity
+import android.app.Dialog
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.zzming.core.dialog.LoadingDialogListener
@@ -23,17 +24,20 @@ object LoadingCollector : DefaultLifecycleObserver {
      * addLoading
      */
     fun addLoading(loadingDialogListener: LoadingDialogListener) {
-        val activity = loadingDialogListener.bindActivity()
-        if (activity is LifecycleOwner) {
-            activity.lifecycle.addObserver(this)
+        if (loadingDialogListener is Dialog) {
+            val dialog = loadingDialogListener as Dialog
+            if (dialog.context is ComponentActivity) {
+                val activity = dialog.context as ComponentActivity
+                activity.lifecycle.addObserver(this)
+                loadingViewMap[activity.SIMPLE_NAME_TAG] = loadingDialogListener
+            }
         }
-        loadingViewMap[activity.SIMPLE_NAME_TAG] = loadingDialogListener
     }
 
     /**
      * showLoading
      */
-    fun showLoading(activity: Activity?) {
+    fun showLoading(activity: ComponentActivity?) {
         if (!activity.isAlive()) {
             loadingViewMap.remove(activity?.SIMPLE_NAME_TAG)
             return
@@ -44,7 +48,7 @@ object LoadingCollector : DefaultLifecycleObserver {
     /**
      * hideLoading
      */
-    fun hideLoading(activity: Activity?) {
+    fun hideLoading(activity: ComponentActivity?) {
         if (!activity.isAlive()) {
             loadingViewMap.remove(activity?.SIMPLE_NAME_TAG)
             return
@@ -52,16 +56,9 @@ object LoadingCollector : DefaultLifecycleObserver {
         loadingViewMap[activity?.SIMPLE_NAME_TAG]?.hideLoading()
     }
 
-    /**
-     * removeLoading
-     */
-    private fun removeLoading(owner: LifecycleOwner) {
-        val iterator = loadingViewMap.iterator()
-        while (iterator.hasNext()) {
-            val dialog = iterator.next().value
-            if (owner == dialog.bindActivity()) {
-                iterator.remove()
-            }
+    override fun onPause(owner: LifecycleOwner) {
+        if (owner is ComponentActivity) {
+            loadingViewMap[owner.SIMPLE_NAME_TAG]?.hideLoading()
         }
     }
 
@@ -69,4 +66,12 @@ object LoadingCollector : DefaultLifecycleObserver {
         removeLoading(owner)
     }
 
+    /**
+     * removeLoading
+     */
+    private fun removeLoading(owner: LifecycleOwner) {
+        if (owner is ComponentActivity) {
+            loadingViewMap.remove(owner.SIMPLE_NAME_TAG)
+        }
+    }
 }

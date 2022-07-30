@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Process
 import com.zzming.core.collector.ActivityCollector
-import com.zzming.core.common.LibConfig
+import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.LibViewConfig
 import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
@@ -40,13 +40,12 @@ object LibCore : Application.ActivityLifecycleCallbacks {
      * 初始化
      */
     fun init(application: Application): LibCore {
-        if(init){
+        if (init) {
             return this
         }
         init = true
         context = application
         handler = Handler(Looper.getMainLooper())
-        LibConfig.init()
         LanguageUtil.context = application
         LanguageUtil.changLanguage(SPUtils.getLocale())
         context.registerActivityLifecycleCallbacks(this)
@@ -63,7 +62,9 @@ object LibCore : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
         LanguageUtil.changLanguage(SPUtils.getLocale(), p0)
-        LibViewConfig.loadLoadingDialog.invoke(p0)
+        LibViewConfig.loadLoadingDialog?.invoke(p0)?.let {
+            LoadingCollector.addLoading(it)
+        }
     }
 
     override fun onActivityStarted(p0: Activity) {

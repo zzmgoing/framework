@@ -29,7 +29,7 @@ import com.just.agentweb.WebViewClient;
  * source code  https://github.com/Justson/AgentWeb
  */
 
-public abstract class BaseAgentWebActivity<T extends BaseViewModel> extends BaseActivity<T> {
+public abstract class BaseAgentWebActivity extends BaseActivity {
 
     protected AgentWeb mAgentWeb;
     private ErrorLayoutEntity mErrorLayoutEntity;

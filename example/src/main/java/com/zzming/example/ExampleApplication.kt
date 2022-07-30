@@ -2,7 +2,6 @@ package com.zzming.example
 
 import android.app.Application
 import android.os.Process
-import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.LibConfig
 import com.zzming.core.common.LibViewConfig
 import com.zzming.core.dialog.DefaultLoadingDialog
@@ -31,9 +30,9 @@ class ExampleApplication : Application() {
 
         LibViewConfig.apply {
             loadLoadingDialog = {
-                LoadingCollector.addLoading(DefaultLoadingDialog(it).apply {
+                DefaultLoadingDialog(it).apply {
                     loadingBarColor = ViewUtils.getColor(R.color.colorAccent)
-                })
+                }
             }
         }
 

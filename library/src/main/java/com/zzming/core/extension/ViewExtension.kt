@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -22,6 +23,7 @@ import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zzming.core.LibCore
 import com.zzming.core.R
+import com.zzming.core.base.AnyEvent
 import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.Constant
 import com.zzming.core.utils.BuildUtils
@@ -111,14 +113,14 @@ fun Activity?.isAlive(): Boolean {
 /**
  * showLoading
  */
-fun Activity.showLoading() {
+fun ComponentActivity.showLoading() {
     LoadingCollector.showLoading(this)
 }
 
 /**
  * hideLoading
  */
-fun Activity.hideLoading() {
+fun ComponentActivity.hideLoading() {
     LoadingCollector.hideLoading(this)
 }
 
@@ -126,31 +128,31 @@ fun Activity.hideLoading() {
  * showLoading
  */
 fun Fragment.showLoading() {
-    LoadingCollector.showLoading(requireActivity())
+    activity?.let { LoadingCollector.showLoading(it) }
 }
 
 /**
  * hideLoading
  */
 fun Fragment.hideLoading() {
-    LoadingCollector.hideLoading(requireActivity())
+    activity?.let { LoadingCollector.hideLoading(it) }
 }
 
-fun Activity.checkLoading(any: Any?) {
+fun ComponentActivity.checkLoading(any: AnyEvent?) {
     any?.let {
-        if (it == Constant.SHOW_LOADING) {
+        if (it.key == Constant.SHOW_LOADING) {
             showLoading()
-        } else if (it == Constant.HIDE_LOADING) {
+        } else if (it.key == Constant.HIDE_LOADING) {
             hideLoading()
         }
     }
 }
 
-fun Fragment.checkLoading(any: Any?) {
+fun Fragment.checkLoading(any: AnyEvent?) {
     any?.let {
-        if (it == Constant.SHOW_LOADING) {
+        if (it.key == Constant.SHOW_LOADING) {
             showLoading()
-        } else if (it == Constant.HIDE_LOADING) {
+        } else if (it.key == Constant.HIDE_LOADING) {
             hideLoading()
         }
     }
@@ -167,82 +169,6 @@ fun BottomNavigationView.bind(titles: ArrayList<String>, icons: ArrayList<Int>? 
             item.icon = ViewUtils.getDrawable(icons[i])
         }
     }
-}
-
-/**
- * 全屏
- */
-fun AppCompatActivity.fullscreen() {
-    WindowCompat.setDecorFitsSystemWindows(window, false)
-    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
-        it.hide(WindowInsetsCompat.Type.systemBars())
-        it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-    }
-}
-
-/**
- * 退出全屏
- */
-fun AppCompatActivity.exitFullscreen() {
-    WindowCompat.setDecorFitsSystemWindows(window, true)
-    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
-        it.show(WindowInsetsCompat.Type.systemBars())
-    }
-}
-
-/**
- * 透明状态栏
- */
-fun AppCompatActivity.transparentStatusBar() {
-    setStatusBarColor()
-    statusBarFontDark()
-}
-
-/**
- * 设置状态栏颜色
- */
-fun AppCompatActivity.setStatusBarColor(color: Int = Color.TRANSPARENT) {
-    WindowCompat.setDecorFitsSystemWindows(window, false)
-    window.apply {
-        if (BuildUtils.isAtLeast21Api()) {
-            statusBarColor = color
-            navigationBarColor = color
-        }
-        if (BuildUtils.isAtLeast28Api()) {
-            navigationBarDividerColor = color
-        }
-    }
-}
-
-/**
- * 状态栏黑色或白色
- */
-fun AppCompatActivity.statusBarFontDark(isDark: Boolean = true) {
-    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
-        it.isAppearanceLightStatusBars = isDark
-        it.isAppearanceLightNavigationBars = isDark
-    }
-}
-
-/**
- * 是否显示状态栏
- */
-fun AppCompatActivity.isShowStatusBar(isShow: Boolean = true) {
-    ViewCompat.getWindowInsetsController(findViewById<FrameLayout>(android.R.id.content))?.let {
-        if (isShow) {
-            it.show(WindowInsetsCompat.Type.systemBars())
-        } else {
-            it.hide(WindowInsetsCompat.Type.systemBars())
-        }
-    }
-}
-
-/**
- * 是否显示状态栏
- */
-fun AppCompatActivity.getStatusBarHeight(): Int {
-    val compat = ViewCompat.getRootWindowInsets(findViewById<FrameLayout>(android.R.id.content))
-    return compat?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
 }
 
 /**
@@ -279,7 +205,7 @@ fun EditText.showKeyBoard() {
 /**
  * dp2px
  */
-fun dp2px(dp: Float): Int {
+fun Any?.dp2px(dp: Float): Int {
     val displayMetrics: DisplayMetrics = LibCore.context.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics).toInt()
 }
@@ -287,7 +213,7 @@ fun dp2px(dp: Float): Int {
 /**
  * px2dp
  */
-fun px2dp(px: Int): Float {
+fun Any?.px2dp(px: Int): Float {
     val density: Float = LibCore.context.resources.displayMetrics.density
     return (px / density)
 }
@@ -327,11 +253,4 @@ fun RecyclerView.spaceDriver(space: Float = 10f, color: Int = Color.TRANSPARENT)
         .color(color)
         .build()
         .addTo(this)
-}
-
-fun String?.phoneFormat(): String? {
-    if (this == null || this.length != 11) {
-        return this
-    }
-    return substring(0, 3) + "****" + substring(7, 11)
 }

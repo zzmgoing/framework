@@ -37,6 +37,7 @@ class MainActivity : BaseActivity() {
     private fun initView() {
         immersionBar {
             transparentStatusBar()
+            statusBarDarkFont(true)
         }
         val titles = arrayListOf(
             LibCore.context.getString(R.string.main_tab_home),
@@ -50,8 +51,9 @@ class MainActivity : BaseActivity() {
         )
         binding.mainBottomTab.apply {
             bind(titles, icons)
-            setOnItemReselectedListener {
+            setOnItemSelectedListener {
                 binding.mainViewPager.currentItem = it.itemId
+                true
             }
         }
         binding.mainViewPager.apply {

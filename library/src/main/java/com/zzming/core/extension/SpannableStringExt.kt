@@ -15,7 +15,9 @@ import com.zzming.core.LibCore
 fun TextView.buildSpannableString(init: DslSpannableStringBuilder.() -> Unit) {
     val spanStringBuilderImpl = DslSpannableStringBuilderImpl()
     spanStringBuilderImpl.init()
-    movementMethod = LinkMovementMethod.getInstance()
+    if (spanStringBuilderImpl.isClickable) {
+        movementMethod = LinkMovementMethod.getInstance()
+    }
     text = spanStringBuilderImpl.build()
 }
 

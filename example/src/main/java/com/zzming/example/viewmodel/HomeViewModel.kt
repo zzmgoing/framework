@@ -3,6 +3,7 @@ package com.zzming.example.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zzming.core.base.BaseViewModel
 import com.zzming.core.net.HttpUtils
 import com.zzming.core.net.get
 import com.zzming.core.utils.JsonUtil
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
  * @time 2020/10/29
  * @description
  **/
-class HomeViewModel : ViewModel() {
+class HomeViewModel : BaseViewModel() {
 
     /**
      * banner
@@ -28,7 +29,7 @@ class HomeViewModel : ViewModel() {
      */
     fun getBanner() {
         viewModelScope.launch(Dispatchers.IO) {
-            HttpUtils.okHttpClient.get(UrlConstants.BANNER, BannerBean::class.java) {
+            get(UrlConstants.BANNER, BannerBean::class.java) {
                 onSuccess {
                     bannerLiveData.value = it
                 }

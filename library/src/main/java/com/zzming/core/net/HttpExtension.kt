@@ -74,7 +74,7 @@ interface DslHttpBuilder<T> {
     fun setBody(body: RequestBody)
     fun onSuccess(action: ((t: T) -> Unit))
     fun onFail(action: ((msg: String?) -> Unit))
-    fun onFinish(action: (() -> Unit))
+    fun onFinish(action: ((result: Result<T>) -> Unit))
 }
 
 class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHttpRequestBuilder {
@@ -155,7 +155,7 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
                     val t = Gson().fromJson(bodyString, clazz)
                     runOnMainThread {
                         httpBuilderImpl.onSuccess?.invoke(t)
-                        httpBuilderImpl.onFinish?.invoke()
+                        httpBuilderImpl.onFinish?.invoke(Result.success(t))
                     }
                 } catch (ex: JsonSyntaxException) {
                     ex.printStackTrace()
@@ -174,7 +174,7 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         logError(okHttpClient.SIMPLE_NAME_TAG, msg ?: "Error")
         runOnMainThread {
             httpBuilderImpl.onFail?.invoke(msg)
-            httpBuilderImpl.onFinish?.invoke()
+            httpBuilderImpl.onFinish?.invoke(Result.error(msg))
         }
     }
 
@@ -212,7 +212,7 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
     var requestBody: RequestBody? = null
     var onSuccess: ((t: T) -> Unit)? = null
     var onFail: ((msg: String?) -> Unit)? = null
-    var onFinish: (() -> Unit)? = null
+    var onFinish: ((result: Result<T>) -> Unit)? = null
 
 
     override fun setHeaders(headers: HashMap<String, String>) {
@@ -239,7 +239,7 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
         this.onFail = action
     }
 
-    override fun onFinish(action: (() -> Unit)) {
+    override fun onFinish(action: (result: Result<T>) -> Unit) {
         this.onFinish = action
     }
 

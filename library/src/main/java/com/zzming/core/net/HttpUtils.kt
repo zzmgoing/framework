@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -32,7 +33,7 @@ object HttpUtils {
     /**
      * OkHttpClient
      */
-    var okHttpClient = defaultHttpClient()
+    val okHttpClient by lazy { defaultHttpClient() }
 
     /**
      * get同步
@@ -231,6 +232,7 @@ object HttpUtils {
     private fun defaultHttpClient(): OkHttpClient {
         return LibHttpConfig.httpClient ?: OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
+            .addInterceptor(HttpLoggingInterceptor())
             .connectTimeout(1, TimeUnit.MINUTES)
             .callTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)

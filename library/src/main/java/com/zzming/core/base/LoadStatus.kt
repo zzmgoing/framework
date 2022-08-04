@@ -15,11 +15,11 @@ enum class LoadStatus(val value: Int) {
     /**
      * 加载成功
      */
-    LOAD_SUCCESS(1),
+    SUCCESS(1),
 
     /**
      * 加载失败
      */
-    LOAD_FAIL(2),
+    FAIL(2),
 
 }

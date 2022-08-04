@@ -1,6 +1,7 @@
 package com.zzming.core.extension
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Looper
@@ -29,6 +30,9 @@ import com.zzming.core.common.Constant
 import com.zzming.core.utils.BuildUtils
 import com.zzming.core.utils.ViewUtils
 
+
+val Any?.appContext: Application
+    get() = LibCore.context
 
 /**
  *  Activity tag

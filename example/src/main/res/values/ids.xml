@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="recycler_pre_loader_enable" type="id"/>
 
 </resources>

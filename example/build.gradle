@@ -44,4 +44,6 @@ android {
 
 dependencies {
     implementation project(path: ':library')
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
+    api 'com.google.android:flexbox:2.0.1'
 }

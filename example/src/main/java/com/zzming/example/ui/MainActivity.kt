@@ -10,9 +10,9 @@ import com.zzming.core.base.BaseActivity
 import com.zzming.core.extension.bind
 import com.zzming.example.R
 import com.zzming.example.databinding.ActivityMainBinding
-import com.zzming.example.ui.fragment.FunctionFragment
-import com.zzming.example.ui.fragment.HomeFragment
-import com.zzming.example.ui.fragment.MineFragment
+import com.zzming.example.ui.fragment.function.FunctionFragment
+import com.zzming.example.ui.fragment.home.HomeFragment
+import com.zzming.example.ui.fragment.mine.MineFragment
 
 /**
  * @author ZhongZiMing

@@ -2,7 +2,10 @@ package com.zzming.core.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.zzming.core.net.*
+import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import java.io.File
 
@@ -13,10 +16,9 @@ import java.io.File
  **/
 open class BaseViewModel : ViewModel() {
 
-    /**
-     * 通知事务
-     */
     val observer = MutableLiveData<Any>()
+
+    val ioScope = viewModelScope.coroutineContext + Dispatchers.IO
 
     private val okHttpClient by lazy {
         HttpUtils.okHttpClient

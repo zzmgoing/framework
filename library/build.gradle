@@ -50,13 +50,13 @@ dependencies {
     api 'com.google.android.material:material:1.6.1'
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
     api 'androidx.recyclerview:recyclerview:1.2.1'
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     api "androidx.startup:startup-runtime:1.1.1"
-    api "androidx.room:room-runtime:2.4.2"
-    kapt "androidx.room:room-compiler:2.4.2"
-    api "androidx.room:room-ktx:2.4.2"
+    api "androidx.room:room-runtime:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+    api "androidx.room:room-ktx:2.4.3"
     api "com.squareup.okhttp3:okhttp:4.10.0-RC1"
     api 'com.squareup.okhttp3:logging-interceptor:4.10.0-RC1'
     api 'com.google.code.gson:gson:2.9.0'
@@ -72,6 +72,10 @@ dependencies {
     api 'io.github.youth5201314:banner:2.2.2'
     api 'com.github.bumptech.glide:glide:4.13.2'
     kapt 'com.github.bumptech.glide:compiler:4.13.2'
+    api ("com.github.bumptech.glide:recyclerview-integration:4.13.2") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
     api 'io.github.csdn-mobile:RoundView:1.7.1'
     api 'com.github.fondesa:recycler-view-divider:3.5.0'
     api 'com.guolindev.permissionx:permissionx:1.6.4'

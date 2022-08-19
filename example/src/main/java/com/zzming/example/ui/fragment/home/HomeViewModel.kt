@@ -1,12 +1,8 @@
-package com.zzming.example.viewmodel
+package com.zzming.example.ui.fragment.home
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zzming.core.base.BaseViewModel
-import com.zzming.core.net.HttpUtils
-import com.zzming.core.net.get
-import com.zzming.core.utils.JsonUtil
 import com.zzming.example.bean.BannerBean
 import com.zzming.example.common.UrlConstants
 import kotlinx.coroutines.Dispatchers

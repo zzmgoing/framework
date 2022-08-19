@@ -1,4 +1,4 @@
-package com.zzming.example.ui.fragment
+package com.zzming.example.ui.fragment.function
 
 import android.os.Bundle
 import android.view.LayoutInflater

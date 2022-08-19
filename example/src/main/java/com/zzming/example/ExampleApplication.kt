@@ -1,7 +1,11 @@
 package com.zzming.example
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Process
+import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
 import com.zzming.core.common.LibConfig
 import com.zzming.core.common.LibViewConfig
 import com.zzming.core.dialog.DefaultLoadingDialog
@@ -35,6 +39,8 @@ class ExampleApplication : Application() {
                 }
             }
         }
+
+        Glide.init(this, GlideBuilder().setLogLevel(Log.DEBUG))
 
         logDebug(SIMPLE_NAME_TAG, "ExampleApplication初始化,进程ID:${Process.myPid()}")
     }

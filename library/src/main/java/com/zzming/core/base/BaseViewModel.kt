@@ -28,16 +28,16 @@ open class BaseViewModel : ViewModel() {
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ) {
-        okHttpClient.get(url, clazz, method)
+    ): Result<T> {
+        return okHttpClient.get(url, clazz, method)
     }
 
     suspend fun <T> post(
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ) {
-        okHttpClient.post(url, clazz, method)
+    ): Result<T> {
+        return okHttpClient.post(url, clazz, method)
     }
 
     suspend fun <T> postFile(
@@ -46,8 +46,8 @@ open class BaseViewModel : ViewModel() {
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ) {
-        okHttpClient.postFile(url, clazz, file, fileName, method)
+    ): Result<T> {
+        return okHttpClient.postFile(url, clazz, file, fileName, method)
     }
 
 }

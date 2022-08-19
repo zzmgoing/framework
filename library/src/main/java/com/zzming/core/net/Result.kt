@@ -17,8 +17,8 @@ data class Result<out T>(val status: LoadStatus, val data: T?, val message: Stri
             return Result(LoadStatus.FAIL, data, msg)
         }
 
-        fun <T> loading(data: T? = null): Result<T> {
-            return Result(LoadStatus.LOADING, data, null)
+        fun <T> loading(): Result<T> {
+            return Result(LoadStatus.LOADING, null, null)
         }
     }
 

@@ -20,18 +20,18 @@ suspend fun <T> OkHttpClient.get(
     url: String,
     clazz: Class<T>,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-) {
+): Result<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
-    httpRequestBuilderImpl.get(url, clazz, method)
+    return httpRequestBuilderImpl.get(url, clazz, method)
 }
 
 suspend fun <T> OkHttpClient.post(
     url: String,
     clazz: Class<T>,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-) {
+): Result<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
-    httpRequestBuilderImpl.post(url, clazz, method)
+    return httpRequestBuilderImpl.post(url, clazz, method)
 }
 
 suspend fun <T> OkHttpClient.postFile(
@@ -40,9 +40,9 @@ suspend fun <T> OkHttpClient.postFile(
     file: File,
     fileName: String?,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-) {
+): Result<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
-    httpRequestBuilderImpl.postFile(url, clazz, file, fileName, method)
+    return httpRequestBuilderImpl.postFile(url, clazz, file, fileName, method)
 }
 
 interface DslHttpRequestBuilder {
@@ -50,13 +50,13 @@ interface DslHttpRequestBuilder {
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    )
+    ): Result<T>
 
     suspend fun <T> post(
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    )
+    ): Result<T>
 
     suspend fun <T> postFile(
         url: String,
@@ -64,7 +64,7 @@ interface DslHttpRequestBuilder {
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    )
+    ): Result<T>
 }
 
 interface DslHttpBuilder<T> {
@@ -91,35 +91,35 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ) {
+    ): Result<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return
+            return Result.error("The url is wrong")
         }
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
-        request(clazz, httpBuilderImpl)
+        return request(clazz, httpBuilderImpl)
     }
 
     override suspend fun <T> post(
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ) {
+    ): Result<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return
+            return Result.error("The url is wrong")
         }
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
         requestBuilder.post(Gson().toJson(httpBuilderImpl.paramsMap ?: "").toRequestBody(JSON_TYPE))
-        request(clazz, httpBuilderImpl)
+        return request(clazz, httpBuilderImpl)
     }
 
     override suspend fun <T> postFile(
@@ -128,13 +128,13 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ) {
+    ): Result<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return
+            return Result.error("The url is wrong")
         }
         val body = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
@@ -143,20 +143,21 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
             .post(body)
-        request(clazz, httpBuilderImpl)
+        return request(clazz, httpBuilderImpl)
     }
 
-    private fun <T> request(clazz: Class<T>, httpBuilderImpl: DslHttpBuilderImpl<T>) {
+    private fun <T> request(clazz: Class<T>, httpBuilderImpl: DslHttpBuilderImpl<T>): Result<T> {
         try {
             val response = okHttpClient.newCall(build()).execute()
             val bodyString = response.body?.string()
-            if (response.isSuccessful && !bodyString.isNullOrEmpty()) {
+            return if (response.isSuccessful && !bodyString.isNullOrEmpty()) {
                 try {
                     val t = Gson().fromJson(bodyString, clazz)
                     runOnMainThread {
                         httpBuilderImpl.onSuccess?.invoke(t)
                         httpBuilderImpl.onFinish?.invoke(Result.success(t))
                     }
+                    Result.success(t)
                 } catch (ex: JsonSyntaxException) {
                     ex.printStackTrace()
                     error(httpBuilderImpl, "JSON parsing exception")
@@ -166,16 +167,17 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
             }
         } catch (ex: IOException) {
             ex.printStackTrace()
-            error(httpBuilderImpl, "The network is wrong")
+            return error(httpBuilderImpl, "The network is wrong")
         }
     }
 
-    private fun <T> error(httpBuilderImpl: DslHttpBuilderImpl<T>, msg: String?) {
+    private fun <T> error(httpBuilderImpl: DslHttpBuilderImpl<T>, msg: String?): Result<T> {
         logError(okHttpClient.SIMPLE_NAME_TAG, msg ?: "Error")
         runOnMainThread {
             httpBuilderImpl.onFail?.invoke(msg)
             httpBuilderImpl.onFinish?.invoke(Result.error(msg))
         }
+        return Result.error(msg ?: "Error")
     }
 
     private fun getFinalUrl(url: String): String {

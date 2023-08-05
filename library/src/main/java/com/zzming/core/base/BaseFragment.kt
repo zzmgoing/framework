@@ -18,7 +18,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
  **/
 abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
 
-    var isLoadData = false
+    private var isLoadData = false
 
     val baseActivity: BaseActivity?
         get() = activity as? BaseActivity
@@ -56,14 +56,14 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
     override fun onResume() {
         super.onResume()
         if (!isLoadData) {
-            onRefresh()
+            lazyInit()
             isLoadData = true
         }
     }
 
     abstract fun createContentView(inflater: LayoutInflater, container: ViewGroup?): View
 
-    open fun onRefresh() {
+    open fun lazyInit() {
     }
 
     override fun onChanged(t: AnyEvent?) {

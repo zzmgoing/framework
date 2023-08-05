@@ -12,7 +12,6 @@ import com.zzming.core.common.LibViewConfig
 import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logDebug
 import com.zzming.core.utils.LanguageUtil
-import com.zzming.core.utils.SPUtils
 
 /**
  * @author ZhongZiMing
@@ -20,11 +19,6 @@ import com.zzming.core.utils.SPUtils
  * @description 初始化入口
  **/
 object LibCore : Application.ActivityLifecycleCallbacks {
-
-    /**
-     * 是否已经初始化
-     */
-    private var init = false
 
     /**
      * 全局上下文
@@ -39,18 +33,15 @@ object LibCore : Application.ActivityLifecycleCallbacks {
     /**
      * 初始化
      */
-    fun init(application: Application): LibCore {
-        if (init) {
-            return this
+    fun init(application: Application) {
+        if (::context.isInitialized && context == application) {
+            return
         }
-        init = true
         context = application
         handler = Handler(Looper.getMainLooper())
-        LanguageUtil.context = application
-        LanguageUtil.changLanguage(SPUtils.getLocale())
+        LanguageUtil.changLanguage(context)
         context.registerActivityLifecycleCallbacks(this)
         logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
-        return this
     }
 
     override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
@@ -61,7 +52,7 @@ object LibCore : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
-        LanguageUtil.changLanguage(SPUtils.getLocale(), p0)
+        LanguageUtil.changLanguage(p0)
         LibViewConfig.loadLoadingDialog?.invoke(p0)?.let {
             LoadingCollector.addLoading(it)
         }

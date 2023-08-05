@@ -21,7 +21,7 @@ import com.zzming.core.extension.logDebug
 object LocationUtils : LocationListener {
 
     var location: Location? = null
-    var listener: DoThingWithParams? = null
+    private var listener: DoThingWithParams? = null
 
     private val locationManager by lazy {
         LibCore.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager

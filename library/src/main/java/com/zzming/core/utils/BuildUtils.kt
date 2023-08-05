@@ -44,20 +44,6 @@ class BuildUtils {
         fun isAtLeast23Api(): Boolean {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
         }
-
-        /**
-         * Android 5.0
-         */
-        fun isAtLeast21Api(): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        }
-
-        /**
-         * Android 4.2
-         */
-        fun isAtLeast17Api(): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-        }
     }
 
 }

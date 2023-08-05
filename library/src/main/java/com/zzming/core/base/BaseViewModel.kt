@@ -3,10 +3,13 @@ package com.zzming.core.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zzming.core.net.*
+import com.zzming.core.net.DslHttpBuilder
+import com.zzming.core.net.HttpUtils
+import com.zzming.core.net.Result
+import com.zzming.core.net.get
+import com.zzming.core.net.post
+import com.zzming.core.net.postFile
 import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
-import okhttp3.OkHttpClient
 import java.io.File
 
 /**

@@ -23,11 +23,14 @@ class CropPhotoContract(private val width: Int = 300, private val height: Int = 
 
     override fun createIntent(context: Context, input: Uri): Intent {
         // 获取输入图片uri的媒体类型
-        val mimeType = context.contentResolver.getType(input)
+        var mimeType = context.contentResolver.getType(input)
         // 创建新的图片名称
         val fileName = "IMG_${System.currentTimeMillis()}.${
             MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
         }"
+        if (mimeType == "image/jpg") {
+            mimeType = "image/jpeg"
+        }
         val outputUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // Android 10 及以上获取图片uri
             val values = contentValuesOf(

@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  * @description 应用信息表
  **/
 @Entity
-data class Config(
+data class Json(
     @PrimaryKey val key: String,
     @ColumnInfo(name = "value") val value: String
 )

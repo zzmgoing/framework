@@ -15,7 +15,6 @@
         android:clipToPadding="false"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_image" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

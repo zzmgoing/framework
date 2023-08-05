@@ -17,7 +17,7 @@ import java.io.File
 /**
  * 裁剪照片的协定
  */
-class CropPhotoContract(private val width: Int = 300, private val height: Int = 300) : ActivityResultContract<Uri, CropPhotoContract.CropOutput?>() {
+class CropPhotoContract(private val width: Int = 400, private val height: Int = 400) : ActivityResultContract<Uri, CropPhotoContract.CropOutput?>() {
 
     private var output: CropOutput? = null
 
@@ -56,10 +56,10 @@ class CropPhotoContract(private val width: Int = 300, private val height: Int = 
             .putExtra("noFaceDetection", true)
             .putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
             .putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
+            .filterSystemGallery()
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): CropOutput? {
-        LogUtils.d("Crop photo, resultCode: $resultCode output: $output")
         if (resultCode == Activity.RESULT_OK) return output
         return null
     }

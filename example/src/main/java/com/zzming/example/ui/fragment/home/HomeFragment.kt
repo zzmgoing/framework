@@ -1,6 +1,5 @@
 package com.zzming.example.ui.fragment.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
 import com.zzming.example.databinding.FragmentHomeBinding
-import com.zzming.example.listpreloader.activity.ListPreLoadActivity
-import com.zzming.example.listpreloader.activity.PreLoadActivity
-import com.zzming.example.listpreloader.activity.RecyclerViewActivity
 import com.zzming.example.ui.dialog.CommonDialog
 
 /**
@@ -42,24 +38,10 @@ class HomeFragment : BaseFragment() {
             viewModel.getBanner()
         }
 
-        binding.listPreloadActivity.setOnClickListener {
-            startActivity(Intent(baseActivity,ListPreLoadActivity::class.java))
-        }
-        binding.preloadActivity.setOnClickListener {
-            startActivity(Intent(baseActivity, PreLoadActivity::class.java))
-        }
-        binding.noPreloadActivity.setOnClickListener {
-            startActivity(Intent(baseActivity,RecyclerViewActivity::class.java))
-        }
-
     }
 
     override fun createContentView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    override fun onRefresh() {
-    }
-
 }

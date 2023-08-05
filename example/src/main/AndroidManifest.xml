@@ -20,10 +20,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".listpreloader.activity.PreLoadActivity"/>
-        <activity android:name=".listpreloader.activity.RecyclerViewActivity"/>
-        <activity android:name=".listpreloader.activity.ListPreLoadActivity"/>
-
     </application>
 
 </manifest>

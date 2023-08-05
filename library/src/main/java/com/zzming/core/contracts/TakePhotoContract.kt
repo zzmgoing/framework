@@ -10,16 +10,13 @@ import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.content.FileProvider
 import androidx.core.content.contentValuesOf
-import com.youth.banner.util.LogUtils
+import com.zzming.core.extension.logDebug
 import java.io.File
 
 /**
  * 拍照协定
  */
 class TakePhotoContract : ActivityResultContract<Unit?, Uri?>() {
-    companion object {
-        private const val TAG = "TakePhotoContract"
-    }
 
     private var uri: Uri? = null
 
@@ -45,7 +42,7 @@ class TakePhotoContract : ActivityResultContract<Unit?, Uri?>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-        LogUtils.d("Take photo, resultCode: $resultCode, uri: $uri")
+        logDebug("Take photo, resultCode: $resultCode, uri: $uri")
         if (resultCode == Activity.RESULT_OK) return uri
         return null
     }

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.zzming.core.LibCore
+import com.zzming.core.extension.appContext
 import java.io.File
 
 
@@ -20,8 +21,9 @@ class FileUtil {
         /**
          * 获取Uri
          */
-        fun getFileUri(file: File, provider: String): Uri {
+        fun file2Uri(file: File): Uri {
             return if (BuildUtils.isAtLeast24Api()) {
+                val provider = appContext.packageName + ".androidx-startup"
                 FileProvider.getUriForFile(LibCore.context, provider, file)
             } else {
                 Uri.fromFile(file)

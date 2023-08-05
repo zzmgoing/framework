@@ -23,11 +23,11 @@ object CommonDialog {
             setTitle(activity.getString(R.string.international_testing))
             setMessage(R.string.international_testing.localized(activity))
             setPositiveButton(R.string.change_language_chinese.localized(activity)) { _, _ ->
-                LanguageUtil.changLanguage(Locale.SIMPLIFIED_CHINESE)
+                LanguageUtil.changLanguage(activity, Locale.SIMPLIFIED_CHINESE)
                 APPUtils.reStartApp()
             }
             setNegativeButton(R.string.change_language_english.localized(activity)) { _, _ ->
-                LanguageUtil.changLanguage(Locale.ENGLISH)
+                LanguageUtil.changLanguage(activity, Locale.ENGLISH)
                 APPUtils.reStartApp()
             }
         }.create().show()

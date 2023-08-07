@@ -66,7 +66,7 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
     open fun lazyInit() {
     }
 
-    override fun onChanged(t: AnyEvent?) {
+    override fun onChanged(value: AnyEvent) {
 
     }
 

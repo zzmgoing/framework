@@ -48,35 +48,13 @@
             android:textSize="@dimen/dimen_24sp" />
 
         <TextView
-            android:id="@+id/list_preload_activity"
+            android:id="@+id/play_music_activity"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_50dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:text="list_preload_activity"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_24sp" />
-
-        <TextView
-            android:id="@+id/preload_activity"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="preload_activity"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_24sp" />
-
-        <TextView
-            android:id="@+id/no_preload_activity"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="no_preload_activity"
+            android:text="Music play"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_24sp" />
 

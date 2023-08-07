@@ -54,7 +54,7 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
         super.attachBaseContext(LanguageUtil.attachBaseContext(newBase!!))
     }
 
-    override fun onChanged(t: AnyEvent?) {
+    override fun onChanged(value: AnyEvent) {
 
     }
 

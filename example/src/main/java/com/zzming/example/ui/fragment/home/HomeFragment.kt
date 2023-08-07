@@ -1,5 +1,6 @@
 package com.zzming.example.ui.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
+import com.zzming.core.widget.setOnSingleClickListener
 import com.zzming.example.databinding.FragmentHomeBinding
 import com.zzming.example.ui.dialog.CommonDialog
+import com.zzming.example.ui.music.MusicActivity
 
 /**
  * @author ZhongZiMing
@@ -37,7 +40,9 @@ class HomeFragment : BaseFragment() {
         binding.getRequest.setOnClickListener {
             viewModel.getBanner()
         }
-
+        binding.playMusicActivity.setOnSingleClickListener {
+            startActivity(Intent(requireContext(), MusicActivity::class.java))
+        }
     }
 
     override fun createContentView(inflater: LayoutInflater, container: ViewGroup?): View {

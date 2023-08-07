@@ -46,4 +46,9 @@ dependencies {
     implementation project(path: ':library')
     kapt 'com.github.bumptech.glide:compiler:4.13.2'
     api 'com.google.android:flexbox:2.0.1'
+
+    implementation "androidx.media3:media3-exoplayer:1.1.0"
+    implementation "androidx.media3:media3-exoplayer-dash:1.1.0"
+    implementation "androidx.media3:media3-ui:1.1.0"
+
 }

@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.zzming.core.base.BaseFragment
 import com.zzming.core.extension.showToast
+import com.zzming.core.utils.PermissionUtils
 import com.zzming.core.widget.setOnSingleClickListener
 import com.zzming.example.databinding.FragmentHomeBinding
+import com.zzming.example.ui.camera.CameraActivity
 import com.zzming.example.ui.dialog.CommonDialog
 import com.zzming.example.ui.music.MusicActivity
 
@@ -42,6 +44,13 @@ class HomeFragment : BaseFragment() {
         }
         binding.playMusicActivity.setOnSingleClickListener {
             startActivity(Intent(requireContext(), MusicActivity::class.java))
+        }
+        binding.takePictureActivity.setOnSingleClickListener {
+            PermissionUtils.getCamera(this) {
+                if (it is Boolean && it) {
+                    startActivity(Intent(requireContext(), CameraActivity::class.java))
+                }
+            }
         }
     }
 

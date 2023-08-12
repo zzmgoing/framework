@@ -42,49 +42,92 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
-    api 'androidx.core:core-ktx:1.8.0'
+    api 'androidx.core:core-ktx:1.9.0'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // common
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'com.google.android.material:material:1.9.0'
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
     api 'androidx.recyclerview:recyclerview:1.3.1'
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    api 'com.google.android:flexbox:2.0.1'
+    // startup
     api "androidx.startup:startup-runtime:1.1.1"
-    api "androidx.room:room-runtime:2.5.2"
-    kapt "androidx.room:room-compiler:2.5.2"
-    api "androidx.room:room-ktx:2.5.2"
-    api "com.squareup.okhttp3:okhttp:4.10.0-RC1"
-    api 'com.squareup.okhttp3:logging-interceptor:4.10.0-RC1'
-    api 'com.google.code.gson:gson:2.9.0'
+    // multidex
     api 'androidx.multidex:multidex:2.0.1'
+    // RecyclerViewAdapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
-    api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx' // (必选)
-//    api 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.0-alpha.1-androidx' // (可选)
-//    api 'com.github.Justson:Downloader:v5.0.0-androidx' // (可选)
+    // divider
+    api 'com.github.fondesa:recycler-view-divider:3.5.0'
+    // banner
+    api 'io.github.youth5201314:banner:2.2.2'
+    // refresh
     api 'io.github.scwang90:refresh-layout-kernel:2.0.5'
     api 'io.github.scwang90:refresh-header-classics:2.0.5'
     api 'io.github.scwang90:refresh-footer-classics:2.0.5'
-    api 'io.github.youth5201314:banner:2.2.2'
+    // gif-drawable
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
+    // immersionbar
+    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
+    // XPopup
+    api 'com.github.li-xiaojun:XPopup:2.9.19'
+
+
+    // lifecycle
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+
+    // room
+    api "androidx.room:room-runtime:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"
+    api "androidx.room:room-ktx:2.5.2"
+
+    // okhttp
+    api "com.squareup.okhttp3:okhttp:4.10.0-RC1"
+    api 'com.squareup.okhttp3:logging-interceptor:4.10.0-RC1'
+
+    // gson
+    api 'com.google.code.gson:gson:2.9.0'
+
+    // agentweb
+    api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx' // (必选)
+//    api 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.0-alpha.1-androidx' // (可选)
+//    api 'com.github.Justson:Downloader:v5.0.0-androidx' // (可选)
+
+    // glide
     api 'com.github.bumptech.glide:glide:4.13.2'
     kapt 'com.github.bumptech.glide:compiler:4.13.2'
     api ("com.github.bumptech.glide:recyclerview-integration:4.13.2") {
         // Excludes the support library because it's already included by Glide.
         transitive = false
     }
-    api 'com.github.fondesa:recycler-view-divider:3.5.0'
+
+    // permissionx
     api 'com.guolindev.permissionx:permissionx:1.7.1'
-    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
+
+    // event-bus
     api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
-    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-    api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
-    api 'com.github.li-xiaojun:XPopup:2.9.19'
+
+    // mmkv
     api 'com.tencent:mmkv:1.3.0'
+
+    // animations
     api 'com.daimajia.androidanimations:library:2.4@aar'
-    def camerax_version = '1.3.0-beta02'
-    api "androidx.camera:camera-core:$camerax_version"
-    api "androidx.camera:camera-camera2:$camerax_version"
-    api "androidx.camera:camera-lifecycle:$camerax_version"
-    api "androidx.camera:camera-view:$camerax_version"
+
+    // camerax
+    def camerax_version = "1.3.0-alpha05"
+    api "androidx.camera:camera-core:${camerax_version}"
+    api "androidx.camera:camera-camera2:${camerax_version}"
+    api "androidx.camera:camera-lifecycle:${camerax_version}"
+    api "androidx.camera:camera-video:${camerax_version}"
+    api "androidx.camera:camera-view:${camerax_version}"
+    api "androidx.camera:camera-mlkit-vision:${camerax_version}"
+    api "androidx.camera:camera-extensions:${camerax_version}"
+
+    // exoplayer
+    api "androidx.media3:media3-exoplayer:1.1.0"
+    api "androidx.media3:media3-exoplayer-dash:1.1.0"
+    api "androidx.media3:media3-ui:1.1.0"
 }

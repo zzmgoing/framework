@@ -15,29 +15,28 @@ import androidx.core.content.ContextCompat
  * @time 2023/8/7
  * @description
  **/
-abstract class BaseCameraFragment : BaseFragment() {
+abstract class BaseCameraActivity : BaseActivity() {
 
     abstract val cameraView: PreviewView
 
     open var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+    open val cameraController by lazy {
+        LifecycleCameraController(this).apply {
+            bindToLifecycle(this@BaseCameraActivity)
+            cameraSelector = this@BaseCameraActivity.cameraSelector
+            cameraView.controller = this
+        }
+    }
 
     open val outputFileOptions: ImageCapture.OutputFileOptions
         get() {
             val contentValues = ContentValues()
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis().toString())
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            val contentResolver = requireContext().contentResolver
             val contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             return ImageCapture.OutputFileOptions.Builder(contentResolver, contentUri, contentValues).build()
         }
-
-    open val cameraController by lazy {
-        LifecycleCameraController(requireContext()).apply {
-            bindToLifecycle(this@BaseCameraFragment)
-            cameraSelector = this@BaseCameraFragment.cameraSelector
-            cameraView.controller = this
-        }
-    }
 
     fun switchCamera(selector: CameraSelector? = null) {
         cameraSelector = selector
@@ -50,7 +49,7 @@ abstract class BaseCameraFragment : BaseFragment() {
     }
 
     fun takePicture() {
-        cameraController.takePicture(outputFileOptions, ContextCompat.getMainExecutor(requireContext()),
+        cameraController.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(error: ImageCaptureException) {
                     takePictureError(error)

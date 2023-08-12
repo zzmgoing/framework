@@ -40,11 +40,7 @@ object PermissionUtils {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         ).request { a, _, _ ->
-            if (a) {
-                listener.invoke(true)
-            } else {
-                listener.invoke(false)
-            }
+            listener.invoke(a)
         }
     }
 
@@ -80,6 +76,37 @@ object PermissionUtils {
             } else {
                 listener.invoke(false)
             }
+        }
+    }
+
+    /**
+     * 获取相机权限
+     */
+    fun getCamera(fragment: Fragment, listener: DoThingWithParams) {
+        getCameraImpl(getPermissionMediator(fragment), listener)
+    }
+
+    /**
+     * 获取相机权限
+     */
+    fun getCamera(activity: FragmentActivity, listener: DoThingWithParams) {
+        getCameraImpl(getPermissionMediator(activity), listener)
+    }
+
+    /**
+     * 获取相机权限
+     */
+    private fun getCameraImpl(
+        permissionMediator: PermissionMediator,
+        listener: DoThingWithParams
+    ) {
+        val permission = arrayListOf(Manifest.permission.CAMERA)
+        if (!BuildUtils.isAtLeast29Api()) {
+            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        permissionMediator.permissions(permission).request { a, _, _ ->
+            listener.invoke(a)
         }
     }
 

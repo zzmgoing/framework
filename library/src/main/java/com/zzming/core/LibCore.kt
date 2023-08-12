@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Process
+import com.tencent.mmkv.MMKV
 import com.zzming.core.collector.ActivityCollector
 import com.zzming.core.collector.LoadingCollector
 import com.zzming.core.common.LibViewConfig
@@ -42,6 +43,12 @@ object LibCore : Application.ActivityLifecycleCallbacks {
         LanguageUtil.changLanguage(context)
         context.registerActivityLifecycleCallbacks(this)
         logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
+        initLibrary()
+    }
+
+    private fun initLibrary() {
+        val initialize = MMKV.initialize(context)
+        logDebug(SIMPLE_NAME_TAG, "MMKV初始化,dir:${initialize}")
     }
 
     override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {

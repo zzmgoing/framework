@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -18,6 +19,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.dividerBuilder
@@ -257,4 +261,16 @@ fun RecyclerView.spaceDriver(space: Float = 10f, color: Int = Color.TRANSPARENT)
         .color(color)
         .build()
         .addTo(this)
+}
+
+fun View.visible() {
+    isVisible = true
+}
+
+fun View.invisible() {
+    isInvisible = true
+}
+
+fun View.gone() {
+    isGone = true
 }

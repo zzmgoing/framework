@@ -72,6 +72,7 @@ interface DslHttpBuilder<T> {
     fun setParams(params: HashMap<String, String>)
     fun setQueryParams(queryParams: HashMap<String, String>)
     fun setBody(body: RequestBody)
+    fun setPostForm(isForm: Boolean)
     fun onSuccess(action: ((t: T) -> Unit))
     fun onFail(action: ((msg: String?) -> Unit))
     fun onFinish(action: ((result: Result<T>) -> Unit))
@@ -118,7 +119,17 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         }
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
-        requestBuilder.post(Gson().toJson(httpBuilderImpl.paramsMap ?: "").toRequestBody(JSON_TYPE))
+        if (httpBuilderImpl.isPostForm == true) {
+            val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+            httpBuilderImpl.paramsMap?.let { map ->
+                for ((k,v) in map) {
+                    builder.addFormDataPart(k,v)
+                }
+            }
+            requestBuilder.post(builder.build())
+        } else {
+            requestBuilder.post(Gson().toJson(httpBuilderImpl.paramsMap ?: "").toRequestBody(JSON_TYPE))
+        }
         return request(clazz, httpBuilderImpl)
     }
 
@@ -136,10 +147,15 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
             error(httpBuilderImpl, "The url is wrong")
             return Result.error("The url is wrong")
         }
-        val body = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(fileName ?: "file", file.name, file.asRequestBody(FILE_TYPE))
-            .build()
+        val body = MultipartBody.Builder().apply {
+            setType(MultipartBody.FORM)
+            addFormDataPart(fileName ?: "file", file.name, file.asRequestBody(FILE_TYPE))
+            httpBuilderImpl.paramsMap?.let { map ->
+                for ((k,v) in map) {
+                    addFormDataPart(k,v)
+                }
+            }
+        }.build()
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
             .post(body)
@@ -211,6 +227,7 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
     var headerMap: HashMap<String, String>? = null
     var queryParamMap: HashMap<String, String>? = null
     var paramsMap: HashMap<String, String>? = null
+    var isPostForm: Boolean? = null
     var requestBody: RequestBody? = null
     var onSuccess: ((t: T) -> Unit)? = null
     var onFail: ((msg: String?) -> Unit)? = null
@@ -231,6 +248,10 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
 
     override fun setBody(body: RequestBody) {
         this.requestBody = body
+    }
+
+    override fun setPostForm(isForm: Boolean) {
+        this.isPostForm = isForm
     }
 
     override fun onSuccess(action: ((t: T) -> Unit)) {

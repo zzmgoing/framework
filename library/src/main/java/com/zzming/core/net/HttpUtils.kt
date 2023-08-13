@@ -118,15 +118,7 @@ object HttpUtils {
         params: HashMap<String, String>? = null,
         callback: HttpCallback<*>
     ) {
-        val finalUrl = getUrl(url)
-        if (!checkUrl(finalUrl)) {
-            return
-        }
-        val request = Request.Builder().apply {
-            url(finalUrl)
-            post(JsonUtil.gson.toJson(params).toRequestBody(JSON_TYPE))
-        }.build()
-        okHttpClient.newCall(request).enqueue(callback)
+        postJson(url, params, null, callback)
     }
 
     /**
@@ -151,6 +143,70 @@ object HttpUtils {
     }
 
     /**
+     * post
+     */
+    fun postForm(
+        url: String,
+        params: HashMap<String, String>? = null,
+        headers: HashMap<String, String>? = null
+    ): String? {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return null
+        }
+        val request = Request.Builder().apply {
+            url(finalUrl)
+            addHeader(this, headers)
+            val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+            params?.let { map ->
+                for ((k,v) in map) {
+                    builder.addFormDataPart(k,v)
+                }
+            }
+            post(builder.build())
+        }.build()
+        return okHttpClient.newCall(request).execute().body?.string()
+    }
+
+    /**
+     * post
+     */
+    fun postForm(
+        url: String,
+        params: HashMap<String, String>? = null,
+        callback: HttpCallback<*>
+    ) {
+        postForm(url, params, null, callback)
+    }
+
+    /**
+     * post
+     */
+    fun postForm(
+        url: String,
+        params: HashMap<String, String>? = null,
+        headers: HashMap<String, String>? = null,
+        callback: HttpCallback<*>
+    ) {
+        val finalUrl = getUrl(url)
+        if (!checkUrl(finalUrl)) {
+            return
+        }
+        val request = Request.Builder().apply {
+            url(finalUrl)
+            addHeader(this, headers)
+            val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+            params?.let { map ->
+                for ((k,v) in map) {
+                    builder.addFormDataPart(k,v)
+                }
+            }
+            post(builder.build())
+        }.build()
+        okHttpClient.newCall(request).enqueue(callback)
+    }
+
+    /**
      * postFile
      */
     fun postFile(
@@ -158,7 +214,7 @@ object HttpUtils {
         file: File,
         callback: HttpCallback<*>
     ) {
-        postFile(url, file, null, "file", callback)
+        postFile(url, file, null, null, "file", callback)
     }
 
     /**
@@ -168,6 +224,7 @@ object HttpUtils {
         url: String,
         file: File,
         urlParams: HashMap<String, String>? = null,
+        dataParams: HashMap<String, String>? = null,
         fileName: String = "file",
         callback: HttpCallback<*>
     ) {
@@ -175,10 +232,15 @@ object HttpUtils {
         if (!checkUrl(finalUrl)) {
             return
         }
-        val body = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(fileName, file.name, file.asRequestBody(FILE_TYPE))
-            .build()
+        val body = MultipartBody.Builder().apply {
+            setType(MultipartBody.FORM)
+            addFormDataPart(fileName, file.name, file.asRequestBody(FILE_TYPE))
+            dataParams?.let { map ->
+                for ((k,v) in map) {
+                    addFormDataPart(k, v)
+                }
+            }
+        }.build()
         val request = Request.Builder().apply {
             url(createUrl(finalUrl, urlParams))
             post(body)

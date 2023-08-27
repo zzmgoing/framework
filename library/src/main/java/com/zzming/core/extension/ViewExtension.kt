@@ -4,10 +4,13 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Outline
+import android.graphics.Rect
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -273,4 +276,22 @@ fun View.invisible() {
 
 fun View.gone() {
     isGone = true
+}
+
+fun View.setViewCorner(radius: Float) {
+    outlineProvider = object : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            val rect = Rect()
+            view.getGlobalVisibleRect(rect)
+            val leftMargin = 0
+            val topMargin = 0
+            val selfRect = Rect(
+                leftMargin, topMargin,
+                rect.right - rect.left - leftMargin,
+                rect.bottom - rect.top - topMargin
+            )
+            outline.setRoundRect(selfRect, radius)
+        }
+    }
+    clipToOutline = true
 }

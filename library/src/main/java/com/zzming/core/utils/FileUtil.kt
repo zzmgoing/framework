@@ -1,11 +1,21 @@
 package com.zzming.core.utils
 
+import android.content.ContentValues
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.MediaStore
+import android.view.View
+import android.widget.ImageView
 import androidx.core.content.FileProvider
 import com.zzming.core.LibCore
 import com.zzming.core.extension.appContext
+import com.zzming.core.extension.showToast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -47,6 +57,39 @@ class FileUtil {
             return null
         }
 
+        fun view2Bitmap(view: View): Bitmap? {
+            if (view is ImageView) {
+                val drawable = view.drawable
+                if (drawable is BitmapDrawable) {
+                    return drawable.bitmap
+                }
+            }
+            view.clearFocus()
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            if (bitmap != null) {
+                val canvas = Canvas(bitmap)
+                view.draw(canvas)
+                canvas.setBitmap(null)
+            }
+            return bitmap
+        }
+
+        fun saveImage(toBitmap: Bitmap, result: (Uri?) -> Unit) {
+            MainScope().launch(Dispatchers.IO) {
+                val insertUri = appContext.contentResolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues()
+                ) ?: kotlin.run {
+                    return@launch
+                }
+                appContext.contentResolver.openOutputStream(insertUri).use {
+                    if (toBitmap.compress(Bitmap.CompressFormat.JPEG, 90, it)) {
+                        result.invoke(insertUri)
+                    } else {
+                        result.invoke(null)
+                    }
+                }
+            }
+        }
 
     }
 

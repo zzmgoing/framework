@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zzming.core.net.DslHttpBuilder
 import com.zzming.core.net.HttpUtils
-import com.zzming.core.net.Result
+import com.zzming.core.net.LoadResult
 import com.zzming.core.net.get
 import com.zzming.core.net.post
 import com.zzming.core.net.postFile
@@ -31,7 +31,7 @@ open class BaseViewModel : ViewModel() {
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T> {
+    ): LoadResult<T> {
         return okHttpClient.get(url, clazz, method)
     }
 
@@ -39,7 +39,7 @@ open class BaseViewModel : ViewModel() {
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T> {
+    ): LoadResult<T> {
         return okHttpClient.post(url, clazz, method)
     }
 
@@ -49,7 +49,7 @@ open class BaseViewModel : ViewModel() {
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T> {
+    ): LoadResult<T> {
         return okHttpClient.postFile(url, clazz, file, fileName, method)
     }
 

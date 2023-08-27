@@ -2,6 +2,7 @@ package com.zzming.core.utils
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionMediator
@@ -116,6 +117,24 @@ object PermissionUtils {
 
     private fun getPermissionMediator(fragment: Fragment): PermissionMediator {
         return PermissionX.init(fragment)
+    }
+
+
+    fun getImagePermission(): Array<String> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    fun getCameraPermission(): Array<String> {
+        val permission = arrayListOf(Manifest.permission.CAMERA)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        return permission.toTypedArray()
     }
 
 }

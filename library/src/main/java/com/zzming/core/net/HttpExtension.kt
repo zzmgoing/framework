@@ -20,7 +20,7 @@ suspend fun <T> OkHttpClient.get(
     url: String,
     clazz: Class<T>,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-): Result<T> {
+): LoadResult<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
     return httpRequestBuilderImpl.get(url, clazz, method)
 }
@@ -29,7 +29,7 @@ suspend fun <T> OkHttpClient.post(
     url: String,
     clazz: Class<T>,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-): Result<T> {
+): LoadResult<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
     return httpRequestBuilderImpl.post(url, clazz, method)
 }
@@ -40,7 +40,7 @@ suspend fun <T> OkHttpClient.postFile(
     file: File,
     fileName: String?,
     method: (DslHttpBuilder<T>.() -> Unit)? = null
-): Result<T> {
+): LoadResult<T> {
     val httpRequestBuilderImpl = DslHttpRequestBuilderImpl(this)
     return httpRequestBuilderImpl.postFile(url, clazz, file, fileName, method)
 }
@@ -50,13 +50,13 @@ interface DslHttpRequestBuilder {
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T>
+    ): LoadResult<T>
 
     suspend fun <T> post(
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T>
+    ): LoadResult<T>
 
     suspend fun <T> postFile(
         url: String,
@@ -64,7 +64,7 @@ interface DslHttpRequestBuilder {
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)? = null
-    ): Result<T>
+    ): LoadResult<T>
 }
 
 interface DslHttpBuilder<T> {
@@ -75,7 +75,7 @@ interface DslHttpBuilder<T> {
     fun setPostForm(isForm: Boolean)
     fun onSuccess(action: ((t: T) -> Unit))
     fun onFail(action: ((msg: String?) -> Unit))
-    fun onFinish(action: ((result: Result<T>) -> Unit))
+    fun onFinish(action: ((result: LoadResult<T>) -> Unit))
 }
 
 class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHttpRequestBuilder {
@@ -92,13 +92,13 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ): Result<T> {
+    ): LoadResult<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return Result.error("The url is wrong")
+            return LoadResult.error("The url is wrong")
         }
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
@@ -109,13 +109,13 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         url: String,
         clazz: Class<T>,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ): Result<T> {
+    ): LoadResult<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return Result.error("The url is wrong")
+            return LoadResult.error("The url is wrong")
         }
         requestBuilder.url(createUrl(finalUrl, httpBuilderImpl.queryParamMap))
             .addHeaders(httpBuilderImpl.headerMap)
@@ -139,13 +139,13 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         file: File,
         fileName: String?,
         method: (DslHttpBuilder<T>.() -> Unit)?
-    ): Result<T> {
+    ): LoadResult<T> {
         val httpBuilderImpl = DslHttpBuilderImpl<T>()
         method?.let { httpBuilderImpl.it() }
         val finalUrl = getFinalUrl(url)
         if (!checkUrl(finalUrl)) {
             error(httpBuilderImpl, "The url is wrong")
-            return Result.error("The url is wrong")
+            return LoadResult.error("The url is wrong")
         }
         val body = MultipartBody.Builder().apply {
             setType(MultipartBody.FORM)
@@ -162,7 +162,7 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         return request(clazz, httpBuilderImpl)
     }
 
-    private fun <T> request(clazz: Class<T>, httpBuilderImpl: DslHttpBuilderImpl<T>): Result<T> {
+    private fun <T> request(clazz: Class<T>, httpBuilderImpl: DslHttpBuilderImpl<T>): LoadResult<T> {
         try {
             val response = okHttpClient.newCall(build()).execute()
             val bodyString = response.body?.string()
@@ -171,9 +171,9 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
                     val t = Gson().fromJson(bodyString, clazz)
                     runOnMainThread {
                         httpBuilderImpl.onSuccess?.invoke(t)
-                        httpBuilderImpl.onFinish?.invoke(Result.success(t))
+                        httpBuilderImpl.onFinish?.invoke(LoadResult.success(t))
                     }
-                    Result.success(t)
+                    LoadResult.success(t)
                 } catch (ex: JsonSyntaxException) {
                     ex.printStackTrace()
                     error(httpBuilderImpl, "JSON parsing exception")
@@ -187,13 +187,13 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
         }
     }
 
-    private fun <T> error(httpBuilderImpl: DslHttpBuilderImpl<T>, msg: String?): Result<T> {
+    private fun <T> error(httpBuilderImpl: DslHttpBuilderImpl<T>, msg: String?): LoadResult<T> {
         logError(okHttpClient.SIMPLE_NAME_TAG, msg ?: "Error")
         runOnMainThread {
             httpBuilderImpl.onFail?.invoke(msg)
-            httpBuilderImpl.onFinish?.invoke(Result.error(msg))
+            httpBuilderImpl.onFinish?.invoke(LoadResult.error(msg))
         }
-        return Result.error(msg ?: "Error")
+        return LoadResult.error(msg ?: "Error")
     }
 
     private fun getFinalUrl(url: String): String {
@@ -231,7 +231,7 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
     var requestBody: RequestBody? = null
     var onSuccess: ((t: T) -> Unit)? = null
     var onFail: ((msg: String?) -> Unit)? = null
-    var onFinish: ((result: Result<T>) -> Unit)? = null
+    var onFinish: ((result: LoadResult<T>) -> Unit)? = null
 
 
     override fun setHeaders(headers: HashMap<String, String>) {
@@ -262,7 +262,7 @@ class DslHttpBuilderImpl<T> : DslHttpBuilder<T> {
         this.onFail = action
     }
 
-    override fun onFinish(action: (result: Result<T>) -> Unit) {
+    override fun onFinish(action: (result: LoadResult<T>) -> Unit) {
         this.onFinish = action
     }
 

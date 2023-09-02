@@ -47,7 +47,7 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
     }
 
     /**
-     * 拍照片
+     * 拍照片并裁剪
      */
     private val takePhotoWithCrop = registerForActivityResult(TakePhotoContract()) {
         it?.let { uri-> cropPhoto.launch(uri) }
@@ -61,7 +61,7 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
     }
 
     /**
-     * 选择照片
+     * 选择照片并裁剪
      */
     private val selectPhotoWithCrop = registerForActivityResult(SelectPhotoContract()) {
         it?.let { uri-> cropPhoto.launch(uri) }

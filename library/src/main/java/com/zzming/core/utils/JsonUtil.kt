@@ -27,6 +27,14 @@ object JsonUtil {
         } else params[index] as Class<Any>
     }
 
+    fun toJson(any: Any): String {
+        return gson.toJson(any)
+    }
+
+    fun <T> fromJson(json: String, clazz: Class<T>): T {
+        return gson.fromJson(json, clazz)
+    }
+
     fun <T> fromJsonToList(json: String): ArrayList<T> {
         val listType = object : TypeToken<ArrayList<T?>?>() {}.type
         return gson.fromJson(json, listType)

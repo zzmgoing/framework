@@ -46,8 +46,8 @@ class HomeFragment : BaseFragment() {
             startActivity(Intent(requireContext(), MusicActivity::class.java))
         }
         binding.takePictureActivity.setOnSingleClickListener {
-            PermissionUtils.getCamera(this) {
-                if (it is Boolean && it) {
+            requestPermission(PermissionUtils.getCameraPermission()) {
+                if (it) {
                     startActivity(Intent(requireContext(), CameraActivity::class.java))
                 }
             }

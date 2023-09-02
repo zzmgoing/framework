@@ -1,11 +1,11 @@
 package com.zzming.core.net
 
-import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.zzming.core.common.LibHttpConfig
 import com.zzming.core.extension.SIMPLE_NAME_TAG
 import com.zzming.core.extension.logError
 import com.zzming.core.extension.runOnMainThread
+import com.zzming.core.utils.JsonUtil
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -128,7 +128,7 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
             }
             requestBuilder.post(builder.build())
         } else {
-            requestBuilder.post(Gson().toJson(httpBuilderImpl.paramsMap ?: "").toRequestBody(JSON_TYPE))
+            requestBuilder.post(JsonUtil.toJson(httpBuilderImpl.paramsMap ?: "{}").toRequestBody(JSON_TYPE))
         }
         return request(clazz, httpBuilderImpl)
     }
@@ -168,7 +168,7 @@ class DslHttpRequestBuilderImpl(private val okHttpClient: OkHttpClient) : DslHtt
             val bodyString = response.body?.string()
             return if (response.isSuccessful && !bodyString.isNullOrEmpty()) {
                 try {
-                    val t = Gson().fromJson(bodyString, clazz)
+                    val t = JsonUtil.fromJson(bodyString, clazz)
                     runOnMainThread {
                         httpBuilderImpl.onSuccess?.invoke(t)
                         httpBuilderImpl.onFinish?.invoke(LoadResult.success(t))

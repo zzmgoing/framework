@@ -1,7 +1,5 @@
 package com.zzming.core.net
 
-import com.zzming.core.base.LoadStatus
-
 /**
  * @author MackZhong
  * @time 2022/8/4

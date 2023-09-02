@@ -1,7 +1,7 @@
-package com.zzming.core.base
+package com.zzming.core.net
 
 /**
- * @author ZhongWei
+ * @author ZhongZiMing
  * @time 2021/01/04
  * @description
  **/

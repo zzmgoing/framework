@@ -8,6 +8,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import com.zzming.core.utils.PermissionUtils
 
 
 /**
@@ -49,15 +50,19 @@ abstract class BaseCameraActivity : BaseActivity() {
     }
 
     fun takePicture() {
-        cameraController.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(error: ImageCaptureException) {
-                    takePictureError(error)
-                }
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    takePictureSuccess(outputFileResults)
-                }
-            })
+        requestPermission(PermissionUtils.getCameraPermission()) {
+            if (it) {
+                cameraController.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
+                    object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(error: ImageCaptureException) {
+                            takePictureError(error)
+                        }
+                        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                            takePictureSuccess(outputFileResults)
+                        }
+                    })
+            }
+        }
     }
 
     abstract fun takePictureError(error: ImageCaptureException)

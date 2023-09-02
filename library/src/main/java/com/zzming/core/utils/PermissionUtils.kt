@@ -1,13 +1,11 @@
 package com.zzming.core.utils
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Build
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import com.permissionx.guolindev.PermissionMediator
-import com.permissionx.guolindev.PermissionX
-import com.zzming.core.base.DoThingWithParams
+import androidx.core.content.ContextCompat
+import com.zzming.core.extension.appContext
+import com.zzming.core.extension.isHarmonyOs
 
 /**
  * @author ZhongZiMing
@@ -16,124 +14,32 @@ import com.zzming.core.base.DoThingWithParams
  **/
 object PermissionUtils {
 
-    /**
-     * 获取存储权限
-     */
-    fun getStorage(fragment: Fragment, listener: DoThingWithParams) {
-        getStorageImpl(getPermissionMediator(fragment), listener)
-    }
-
-    /**
-     * 获取存储权限
-     */
-    fun getStorage(activity: FragmentActivity, listener: DoThingWithParams) {
-        getStorageImpl(getPermissionMediator(activity), listener)
-    }
-
-    /**
-     * 获取存储权限
-     */
-    private fun getStorageImpl(
-        permissionMediator: PermissionMediator,
-        listener: DoThingWithParams
-    ) {
-        permissionMediator.permissions(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ).request { a, _, _ ->
-            listener.invoke(a)
+    fun hasPermission(permission: Array<String>): Boolean {
+        val listPermission = permission.filter {
+            ContextCompat.checkSelfPermission(appContext, it) == PackageManager.PERMISSION_GRANTED
         }
+        return permission.size == listPermission.size
     }
 
-    /**
-     * 获取定位权限
-     */
-    @SuppressLint("MissingPermission")
-    fun getLocation(fragment: Fragment, listener: DoThingWithParams) {
-        getLocationImpl(getPermissionMediator(fragment), listener)
+    fun getLocationPermission(): Array<String> {
+        return arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
-    /**
-     * 获取定位权限
-     */
-    fun getLocation(activity: FragmentActivity, listener: DoThingWithParams) {
-        getLocationImpl(getPermissionMediator(activity), listener)
-    }
-
-    /**
-     * 获取定位权限
-     */
-    @SuppressLint("MissingPermission")
-    private fun getLocationImpl(
-        permissionMediator: PermissionMediator,
-        listener: DoThingWithParams
-    ) {
-        permissionMediator.permissions(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ).request { a, _, _ ->
-            if (a) {
-                LocationUtils.requestLocation(listener)
-            } else {
-                listener.invoke(false)
-            }
-        }
-    }
-
-    /**
-     * 获取相机权限
-     */
-    fun getCamera(fragment: Fragment, listener: DoThingWithParams) {
-        getCameraImpl(getPermissionMediator(fragment), listener)
-    }
-
-    /**
-     * 获取相机权限
-     */
-    fun getCamera(activity: FragmentActivity, listener: DoThingWithParams) {
-        getCameraImpl(getPermissionMediator(activity), listener)
-    }
-
-    /**
-     * 获取相机权限
-     */
-    private fun getCameraImpl(
-        permissionMediator: PermissionMediator,
-        listener: DoThingWithParams
-    ) {
-        val permission = arrayListOf(Manifest.permission.CAMERA)
-        if (!BuildUtils.isAtLeast29Api()) {
+    fun getImagePermission(): Array<String> {
+        val permission = arrayListOf<String>()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || isHarmonyOs()) {
             permission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
-        permissionMediator.permissions(permission).request { a, _, _ ->
-            listener.invoke(a)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permission.add(Manifest.permission.READ_MEDIA_IMAGES)
         }
-    }
-
-    private fun getPermissionMediator(activity: FragmentActivity): PermissionMediator {
-        return PermissionX.init(activity)
-    }
-
-    private fun getPermissionMediator(fragment: Fragment): PermissionMediator {
-        return PermissionX.init(fragment)
-    }
-
-
-    fun getImagePermission(): Array<String> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
+        return permission.toTypedArray()
     }
 
     fun getCameraPermission(): Array<String> {
         val permission = arrayListOf(Manifest.permission.CAMERA)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
+        permission.addAll(getImagePermission())
         return permission.toTypedArray()
     }
 

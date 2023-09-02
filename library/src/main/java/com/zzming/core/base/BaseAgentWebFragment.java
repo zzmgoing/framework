@@ -1,7 +1,7 @@
 package com.zzming.core.base;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -40,7 +40,7 @@ public abstract class BaseAgentWebFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
-        mAgentWeb = AgentWeb.with(this)
+        AgentWeb.PreAgentWeb preAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(getAgentWebParent(), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator(getIndicatorColor(), getIndicatorHeight())
                 .setWebView(getWebView())
@@ -56,9 +56,13 @@ public abstract class BaseAgentWebFragment extends Fragment {
                 .setMainFrameErrorView(mErrorLayoutEntity.layoutRes, mErrorLayoutEntity.reloadId)
                 .useMiddlewareWebChrome(getMiddleWareWebChrome())
                 .useMiddlewareWebClient(getMiddleWareWebClient())
-                .createAgentWeb()//
-                .ready()//
-                .go(getUrl());
+                .createAgentWeb()
+                .ready();
+        if (TextUtils.isEmpty(getUrl())) {
+            mAgentWeb = preAgentWeb.get();
+        } else {
+            mAgentWeb = preAgentWeb.go(getUrl());
+        }
     }
 
 
@@ -115,13 +119,6 @@ public abstract class BaseAgentWebFragment extends Fragment {
         super.onResume();
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
     protected @Nullable
     String getUrl() {
         return "";
@@ -135,13 +132,13 @@ public abstract class BaseAgentWebFragment extends Fragment {
         super.onDestroy();
     }
 
-    protected @Nullable
-    IAgentWebSettings getAgentWebSettings() {
+    @Nullable
+    protected IAgentWebSettings getAgentWebSettings() {
         return AgentWebSettingsImpl.getInstance();
     }
 
-    protected @Nullable
-    WebChromeClient getWebChromeClient() {
+    @Nullable
+    protected WebChromeClient getWebChromeClient() {
         return null;
     }
 

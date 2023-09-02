@@ -1,30 +1,30 @@
 package com.zzming.core.widget
 
 import android.view.View
-import com.zzming.core.utils.ClickUtils
 
 /**
  * @author MackZhong
  * @time 2022/8/4
  * @description
  **/
-class SingleClickListener(
-    private val listener: View.OnClickListener? = null,
-    private val l: ((view: View?) -> Unit)? = null
-) : View.OnClickListener {
+class SingleClickListener(private val listener: (view: View?) -> Unit) : View.OnClickListener {
+
+    private var lastClickTime: Long = 0
 
     override fun onClick(p0: View?) {
-        if (ClickUtils.checkDoubleClick()) {
+        if (checkDoubleClick()) {
             return
         }
-        listener?.onClick(p0)
-        l?.invoke(p0)
+        listener.invoke(p0)
     }
 
-}
+    private fun checkDoubleClick() : Boolean {
+        val currentClickTime = System.currentTimeMillis()
+        val isDoubleClick = currentClickTime - lastClickTime < 1000
+        lastClickTime = currentClickTime
+        return isDoubleClick
+    }
 
-fun View.setOnSingleClickListener(listener: View.OnClickListener) {
-    setOnClickListener(SingleClickListener(listener))
 }
 
 fun View.setOnSingleClickListener(listener: (view: View?) -> Unit) {

@@ -27,6 +27,6 @@ object RoomAgent {
     /**
      * configDao
      */
-    val configDao by lazy { db.jsonDao() }
+    val jsonDao by lazy { db.jsonDao() }
 
 }

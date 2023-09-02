@@ -26,6 +26,9 @@ interface JsonDao {
     @Delete
     fun delete(json: Json)
 
+    @Query("DELETE FROM json WHERE `key` ==:key")
+    fun deleteByKey(key: String)
+
     @Query("REPLACE INTO json(`key`,`value`) VALUES(:key,:value)")
     fun insertOrUpdate(key: String, value: String)
 

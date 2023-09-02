@@ -12,6 +12,8 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.zzming.core.contracts.CropPhotoContract
 import com.zzming.core.contracts.SelectPhotoContract
 import com.zzming.core.contracts.TakePhotoContract
+import com.zzming.core.extension.logDebug
+import com.zzming.core.utils.JsonUtil
 import com.zzming.core.utils.PermissionUtils
 
 /**
@@ -25,7 +27,6 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
 
     val baseActivity: BaseActivity?
         get() = activity as? BaseActivity
-
 
     /**
      * 拍照或选择照片回调
@@ -45,7 +46,7 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
     }
 
     /**
-     * 拍照片
+     * 拍照片并裁剪
      */
     private val takePhotoWithCrop = registerForActivityResult(TakePhotoContract()) {
         it?.let { uri-> cropPhoto.launch(uri) }
@@ -59,7 +60,7 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
     }
 
     /**
-     * 选择照片
+     * 选择照片并裁剪
      */
     private val selectPhotoWithCrop = registerForActivityResult(SelectPhotoContract()) {
         it?.let { uri-> cropPhoto.launch(uri) }
@@ -76,6 +77,7 @@ abstract class BaseFragment : Fragment(), Observer<AnyEvent> {
      * 申请权限
      */
     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        logDebug("zzm permission: ${JsonUtil.gson.toJson(it)}")
         permissionCallback?.invoke(!it.values.contains(false))
     }
 

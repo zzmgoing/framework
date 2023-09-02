@@ -104,9 +104,6 @@ dependencies {
         transitive = false
     }
 
-    // permissionx
-    api 'com.guolindev.permissionx:permissionx:1.7.1'
-
     // event-bus
     api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 

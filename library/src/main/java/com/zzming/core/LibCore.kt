@@ -40,7 +40,6 @@ object LibCore : Application.ActivityLifecycleCallbacks {
         }
         context = application
         handler = Handler(Looper.getMainLooper())
-        LanguageUtil.changLanguage(context)
         context.registerActivityLifecycleCallbacks(this)
         logDebug(SIMPLE_NAME_TAG, "LibCore初始化,进程ID:${Process.myPid()}")
         initLibrary()
@@ -59,7 +58,9 @@ object LibCore : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(p0: Activity, p1: Bundle?) {
         ActivityCollector.addActivity(p0)
-        LanguageUtil.changLanguage(p0)
+        if (LibViewConfig.isSupportLanguage) {
+            LanguageUtil.changLanguage(p0)
+        }
         LibViewConfig.loadLoadingDialog?.invoke(p0)?.let {
             LoadingCollector.addLoading(it)
         }

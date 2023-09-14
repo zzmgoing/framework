@@ -11,6 +11,11 @@ import com.zzming.core.dialog.LoadingDialogListener
 object LibViewConfig {
 
     /**
+     * 是否支持多语言
+     */
+    var isSupportLanguage = false
+
+    /**
      * 加载loading
      */
     var loadLoadingDialog: ((activity: Activity) -> LoadingDialogListener?)? = null

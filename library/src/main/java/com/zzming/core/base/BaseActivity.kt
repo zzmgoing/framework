@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.jeremyliao.liveeventbus.LiveEventBus
+import com.zzming.core.common.LibViewConfig
 import com.zzming.core.contracts.CropPhotoContract
 import com.zzming.core.contracts.SelectPhotoContract
 import com.zzming.core.contracts.TakePhotoContract
@@ -22,7 +23,7 @@ import com.zzming.core.utils.ViewUtils
  * @time 2020/6/5 18:57
  * @description Activity基类
  **/
-abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
+abstract class BaseActivity : AppCompatActivity(), Observer<AnyEvent> {
 
     /**
      * 判断当前Activity是否在前台
@@ -50,7 +51,7 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
      * 拍照片并裁剪
      */
     private val takePhotoWithCrop = registerForActivityResult(TakePhotoContract()) {
-        it?.let { uri-> cropPhoto.launch(uri) }
+        it?.let { uri -> cropPhoto.launch(uri) }
     }
 
     /**
@@ -64,14 +65,14 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
      * 选择照片并裁剪
      */
     private val selectPhotoWithCrop = registerForActivityResult(SelectPhotoContract()) {
-        it?.let { uri-> cropPhoto.launch(uri) }
+        it?.let { uri -> cropPhoto.launch(uri) }
     }
 
     /**
      * 裁剪照片
      */
     private val cropPhoto = registerForActivityResult(CropPhotoContract()) {
-        it?.uri?.let { uri-> photoCallback?.invoke(uri) }
+        it?.uri?.let { uri -> photoCallback?.invoke(uri) }
     }
 
     /**
@@ -112,7 +113,14 @@ abstract class BaseActivity: AppCompatActivity(), Observer<AnyEvent> {
     }
 
     override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase!!))
+        super.attachBaseContext(attachBaseLanguageContext(newBase))
+    }
+
+    open fun attachBaseLanguageContext(newBase: Context?): Context? {
+        if (LibViewConfig.isSupportLanguage && newBase != null) {
+            return LanguageUtil.attachBaseContext(newBase)
+        }
+        return newBase
     }
 
     override fun onChanged(value: AnyEvent) {

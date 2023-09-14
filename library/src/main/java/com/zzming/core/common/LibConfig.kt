@@ -48,10 +48,5 @@ object LibConfig {
             }
         }
 
-    /**
-     * facebook id
-     */
-    var FACEBOOK_APP_ID: String = ""
-
 
 }
